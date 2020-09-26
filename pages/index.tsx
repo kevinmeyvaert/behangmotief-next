@@ -48,13 +48,20 @@ const Home: FC<Props> = ({ initialData }) => {
   return (
     <>
       <Head>
-        <title>Behangmotief - Documenteert nachtelijke taferelen.</title>
+        <title>Behangmotief</title>
+        <meta
+          name="description"
+          content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
+        />
         <link rel="shortcut icon" href="favicon.png" />
         <meta property="og:title" content="BEHANGMOTIEF" />
         <meta property="og:site_name" content="BEHANGMOTIEF" />
         <meta property="og:url" content="http://behangmotief.be/" />
         <meta property="og:type" content="website" />
-        <meta property="og:description" content="Documenteert nachtelijke taferelen." />
+        <meta
+          property="og:description"
+          content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
+        />
         <meta property="og:image" content="http://behangmotief.be/og.jpg" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:url" content="http://behangmotief.be/" />
