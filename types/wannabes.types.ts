@@ -380,3 +380,39 @@ export type SearchQuery = { __typename?: 'Query' } & {
     }
   >;
 };
+
+export type AlbumQueryVariables = Exact<{
+  slug?: Maybe<Scalars['String']>;
+}>;
+
+export type AlbumQuery = { __typename?: 'Query' } & {
+  post?: Maybe<
+    { __typename?: 'Post' } & Pick<Post, 'date' | 'id' | 'url'> & {
+        thumbnail?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'resized'>>;
+        artist?: Maybe<{ __typename?: 'Artist' } & Pick<Artist, 'name'>>;
+        venue?: Maybe<{ __typename?: 'Venue' } & Pick<Venue, 'name'>>;
+        thumbs?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'Image' } & Pick<Image, 'resized'> & {
+                  dimensions?: Maybe<
+                    { __typename?: 'Dimensions' } & Pick<Dimensions, 'width' | 'height'>
+                  >;
+                }
+            >
+          >
+        >;
+        images?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'Image' } & Pick<Image, 'hires'> & {
+                  dimensions?: Maybe<
+                    { __typename?: 'Dimensions' } & Pick<Dimensions, 'width' | 'height'>
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+};

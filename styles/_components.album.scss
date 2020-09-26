@@ -1,0 +1,69 @@
+/*
+    Components: Album
+    ---
+    Album component.
+*/
+  
+  .c-album {
+    text-align: center;
+  }
+  
+  .c-album--photo-item {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+  
+    @include mq(bp5) {
+      width: 80%;
+      margin-bottom: 4rem;
+    }
+  }
+  
+  .c-album--photo-item:nth-child(even) {
+    @include mq(bp5) {
+      margin-left: calc(var(--random) * 1rem);
+    }
+  }
+  
+  .c-album--photo-item:nth-child(odd) {
+    @include mq(bp5) {
+      margin-right: calc(var(--random) * 1rem);
+    }
+  }
+  
+  .c-album--photo-item:first-child {
+    @include mq(bp5) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  
+  .c-album--photo-credits {
+    text-align: right;
+    margin: .5rem 0 2rem 0;
+    color: palette(color-neutral, x-dark);
+    font-size: #{$ms-2 / $alpha-font-size}rem;
+    
+    strong {
+      font-weight: 700;
+    }
+  }
+  
+  .lazy-load-image-background.blur {
+    filter: blur(15px);
+  }
+  
+  .lazy-load-image-background.blur.lazy-load-image-loaded {
+    filter: blur(0);
+    transition: filter 0.3s;
+  }
+  
+  .lazy-load-image-background.blur > img {
+    opacity: 0;
+  }
+  
+  .lazy-load-image-background.blur.lazy-load-image-loaded > img {
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+  

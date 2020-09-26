@@ -15,7 +15,7 @@ interface Props {
 
 const MasonryItem: FC<Props> = ({ src, artist, venue, slug, dimensions }) => (
   <div className="c-masonry--item">
-    <Link href="/album/[slug]" as={`/album/${slug}`}>
+    <Link href="/album/[...slug]" as={`/album/${slug}`}>
       <a>
         <OverviewImage
           src={`https://r.wannabes.be/S=W800,H800,PD2/${src}`}

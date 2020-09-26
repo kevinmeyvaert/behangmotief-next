@@ -6,7 +6,7 @@ import Masonry from 'react-masonry-component';
 
 import { WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
-import { SearchQuery } from '../types/wannabes.types';
+import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
 import Logo from '../components/Logo';
 
