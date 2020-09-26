@@ -12,7 +12,7 @@ import Logo from '../components/Logo';
 
 const NUMBER_OF_POSTS = 15;
 const masonryOptions = {
-  transitionDuration: 1,
+  transitionDuration: 0,
 };
 
 interface Props {
