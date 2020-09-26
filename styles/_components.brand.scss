@@ -14,17 +14,13 @@
  .c-logo--wrap {
     display: flex;
     align-items: center;
-
-    > small {
-        margin: 0 0 0 .2rem;
-        color: palette(color-neutral, x-dark);
-    }
+    margin: 3rem 0 0 0;
  }
 
  .c-logo {
     display: inline-block;
-    width: 3.25rem;
-    height: 3.25rem;
+    width: 5rem;
+    height: 5rem;
     margin-bottom: 0;
     background-repeat: no-repeat;
     background-position: center;
