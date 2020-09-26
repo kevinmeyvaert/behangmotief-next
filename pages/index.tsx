@@ -3,6 +3,7 @@ import request from 'graphql-request';
 import { FC, useEffect } from 'react';
 import Head from 'next/head';
 import Masonry from 'react-masonry-component';
+import type { GetStaticPaths, GetStaticProps } from 'next';
 
 import { WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
@@ -99,12 +100,19 @@ const Home: FC<Props> = ({ initialData }) => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const initialPosts: SearchQuery = await request(WANNABES_API_ENDPOINT, POSTS, {
     start: 0,
     limit: NUMBER_OF_POSTS,
   });
   return { props: { initialData: [initialPosts] } };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: ['/'],
+    fallback: true,
+  };
 };
 
 export default Home;
