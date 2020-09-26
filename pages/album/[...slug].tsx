@@ -16,7 +16,7 @@ const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, 
 
 const AlbumPage: FC<Props> = ({ post }) => {
   if (!post) return null;
-  const { artist, venue, images, thumbnail, thumbs } = post;
+  const { artist, venue, images, thumbnail, thumbs, date } = post;
   return (
     <>
       <Head>
@@ -47,8 +47,13 @@ const AlbumPage: FC<Props> = ({ post }) => {
           <Logo title="Behangmotief" link="/" />
         </div>
       </section>
-      <section className="c-row c-row--flush">
-        <div className="o-container o-flex o-align-center o-justify-center">{artist.name}</div>
+      <section className="c-row">
+        <div className="o-container o-flex o-flex--vertical o-align-center o-justify-center">
+          <h2 className="c-album--title">{artist.name}</h2>
+          <p className="c-album--meta">
+            {venue.name} | {new Date(date).toLocaleDateString('be-NL')}
+          </p>
+        </div>
       </section>
       <section className="c-row">
         <div className="o-container">

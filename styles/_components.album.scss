@@ -7,6 +7,17 @@
   .c-album {
     text-align: center;
   }
+
+  .c-album--title {
+    font-family: "Merriweather Sans", Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .c-album--meta {
+    font-size: .8rem;
+    color: palette(color-neutral, base);
+  }
   
   .c-album--photo-item {
     width: 100%;
@@ -35,17 +46,6 @@
     @include mq(bp5) {
       margin-left: auto;
       margin-right: auto;
-    }
-  }
-  
-  .c-album--photo-credits {
-    text-align: right;
-    margin: .5rem 0 2rem 0;
-    color: palette(color-neutral, x-dark);
-    font-size: #{$ms-2 / $alpha-font-size}rem;
-    
-    strong {
-      font-weight: 700;
     }
   }
   
