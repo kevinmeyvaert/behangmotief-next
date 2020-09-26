@@ -1,0 +1,12 @@
+overwrite: true
+schema:
+  - 'https://graphql.wannabes.be/graphql'
+documents: 'queries/wannabes.ts'
+generates:
+  types/wannabes.types.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+    config:
+      namingConvention:
+        enumValues: keep
