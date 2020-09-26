@@ -108,11 +108,4 @@ export const getStaticProps: GetStaticProps = async () => {
   return { props: { initialData: [initialPosts] } };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: ['/'],
-    fallback: true,
-  };
-};
-
 export default Home;
