@@ -1,0 +1,110 @@
+/*
+    Objects: Flexbox
+    ---
+    Flexbox system. Control the widths with utility classes
+*/
+
+// Flexbox container
+
+.o-flex {
+    display: flex;
+}
+
+// Media query dependant flexbox containers
+
+.o-flex-bp2 {
+    @include mq(bp2) {
+        display: flex;
+    }
+}
+
+.o-flex-bp3 {
+    @include mq(bp3) {
+        display: flex;
+    }
+}
+
+.o-flex-bp4 {
+    @include mq(bp4) {
+        display: flex;
+    }
+}
+
+// default flex is set to no-wrap
+
+.o-flex--wrap {
+    flex-wrap: wrap;
+}
+
+// Orientation
+// default = row
+
+.o-flex--horizontal-rev {
+    flex-direction: row-reverse;
+}
+
+.o-flex--vertical {
+    flex-direction: column;
+}
+
+.o-flex--vertical-rev {
+    flex-direction: column-reverse;
+}
+
+// Alignment
+
+.o-align-start {
+    align-items: flex-start;
+}
+
+.o-align-end {
+    align-items: flex-end;
+}
+
+.o-align-center {
+    align-items: center;
+}
+
+.o-align-stretch {
+    align-items: stretch;
+}
+
+.o-align-baseline {
+    align-items: baseline;
+}
+
+// Align self
+
+.o-align-self-start {
+    align-self: start;
+}
+
+.o-align-self-center {
+    align-self: center;
+}
+
+.o-align-self-end {
+    align-self: end;
+}
+
+// Justify
+
+.o-justify-start {
+    justify-content: flex-start;
+}
+
+.o-justify-end {
+    justify-content: flex-end;
+}
+
+.o-justify-center {
+    justify-content: center;
+}
+
+.o-justify-space-around {
+    justify-content: space-around;
+}
+
+.o-justify-space-between {
+    justify-content: space-between;
+}

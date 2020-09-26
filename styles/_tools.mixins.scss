@@ -1,0 +1,135 @@
+//
+//  Tools: Mixins
+//  ---
+//  Global mixins
+//
+
+// Calculate text-color based on background-color
+
+@mixin text-color($c1) {
+    // Calculations based on https://vimeo.com/60224584
+    @if (.2126*red($c1) + .7152*green($c1) + .0722*blue($c1))/255 <= .5 {
+        color: mix(#FFF, $c1, 95%);
+    } @else {
+        color: mix(#000, $c1, 70%);
+    }
+}
+
+//
+// Media Query mixin
+// @include mq(#point, #query1, #query2);
+//
+
+@mixin mq($breakpoint, $query1: min, $query2: width) {
+    $query: map-get($breakpoints, $breakpoint);
+
+    @if $query != null {
+        @media (#{$query1}-#{$query2}: #{$query}) {
+            @content;
+        }
+    } @else {
+        @media (#{$query1}-#{$query2}: $breakpoint) {
+            @content;
+        }
+    }
+}
+
+// Clearfix.
+// @mixin clearfix
+
+@mixin clearfix {
+    *zoom: 1;
+
+    &::before,
+    &::after {
+        display: table;
+        content: '';
+    }
+
+    &::after {
+        clear: both;
+    }
+}
+
+// Prevent Long URL’s From Breaking Out of Container.
+// http://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container
+
+@mixin word-break {
+    word-break: break-all;
+    hyphens: auto;
+}
+
+// Hide an element to all devices except screen readers
+
+@mixin hide-text {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+//
+// Modularscale mixin
+// @include ms0(1);
+//
+
+@mixin ms-3($line-height:.25) {
+    @include text-dimensions($ms-3,$line-height);
+}
+
+@mixin ms-2($line-height:.5) {
+    @include text-dimensions($ms-2,$line-height);
+}
+
+@mixin ms-1($line-height:.75) {
+    @include text-dimensions($ms-1,$line-height);
+}
+
+@mixin ms0($line-height:1) {
+    @include text-dimensions($ms0,$line-height);
+}
+
+@mixin ms1($line-height:1.25) {
+    @include text-dimensions($ms1,$line-height);
+}
+
+@mixin ms2($line-height:1.5) {
+    @include text-dimensions($ms2,$line-height);
+}
+
+@mixin ms3($line-height:1.75) {
+    @include text-dimensions($ms3,$line-height);
+}
+
+@mixin ms4($line-height:2) {
+    @include text-dimensions($ms4,$line-height);
+}
+
+@mixin ms5($line-height:2.25) {
+    @include text-dimensions($ms5,$line-height);
+}
+
+@mixin ms6($line-height:2.5) {
+    @include text-dimensions($ms6,$line-height);
+}
+
+@mixin ms7($line-height:2.75) {
+    @include text-dimensions($ms7,$line-height);
+}
+
+@mixin ms8($line-height:3) {
+    @include text-dimensions($ms8,$line-height);
+}
+
+@mixin ms9($line-height:3.25) {
+    @include text-dimensions($ms9,$line-height);
+}
+
+@mixin ms10($line-height:3.75) {
+    @include text-dimensions($ms10,$line-height);
+}
+
+@mixin ms11($line-height:4) {
+    @include text-dimensions($ms11,$line-height);
+}

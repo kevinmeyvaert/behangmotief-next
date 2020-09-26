@@ -1,0 +1,48 @@
+/*
+    Components: Brand
+    ---
+    Brand image/logo
+*/
+
+/**
+ *  1. Needs to be the width of the logo you are using.
+ *  2. Logo is set as background-image.
+ *     Text-indent is set to prevent text from showing on top of the background-image.
+ *  3. Fix optic alignment of the logo inside the header.
+ */
+
+ .c-logo--wrap {
+    display: flex;
+    align-items: center;
+
+    > small {
+        margin: 0 0 0 .2rem;
+        color: palette(color-neutral, x-dark);
+    }
+ }
+
+ .c-logo {
+    display: inline-block;
+    width: 3.25rem;
+    height: 3.25rem;
+    margin-bottom: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    text-indent: -99999px; /* [2] */
+    cursor: pointer;
+}
+
+.c-logo--link {
+    transition: opacity $animation-duration-beta;
+    opacity: .5;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+    .c-logo__link {
+        display: block;
+        height: 100%;
+    }
