@@ -86,7 +86,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
 
   const { post }: { post: AlbumQuery['post'] } = await fetcher(ALBUM, mergeSlug);
-  return { props: { post } };
+  return { props: { post }, revalidate: 1800 };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
