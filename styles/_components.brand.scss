@@ -11,34 +11,63 @@
  *  3. Fix optic alignment of the logo inside the header.
  */
 
- .c-logo--wrap {
-    display: flex;
-    align-items: center;
-    margin: 3rem 0 0 0;
- }
+.c-logo--wrap {
+  display: flex;
+  align-items: center;
+}
 
- .c-logo {
-    display: inline-block;
-    width: 5rem;
-    height: 5rem;
-    margin-bottom: 0;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    text-indent: -99999px; /* [2] */
-    cursor: pointer;
+.c-header--wrap {
+  flex: 1;
+  flex-direction: row;
+}
+
+.c-logo {
+  transition: 0.5s;
+  display: inline-block;
+  width: calc(0.2 * 475px);
+  height: calc(0.2 * 321px);
+  margin-bottom: 0;
+  text-indent: -99999px; /* [2] */
+  cursor: pointer;
+
+  background-color: black;
+  -webkit-mask-image: url('/logo.svg');
+  mask-image: url('/logo.svg');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  transform: scale(var(--scroll, 1));
+
+  @include mq(bp3) {
+    transform: scale(1);
+  }
 }
 
 .c-logo--link {
-    transition: opacity $animation-duration-beta;
-    opacity: .5;
+  transition: opacity $animation-duration-beta;
+  opacity: 0.5;
 
-    &:hover {
-        opacity: 1;
-    }
+  &:hover {
+    opacity: 1;
+  }
 }
 
-    .c-logo__link {
-        display: block;
-        height: 100%;
-    }
+.c-logo__link {
+  display: block;
+  height: 100%;
+}
+
+.themed-main {
+  transition: 0.5s;
+}
+
+.isDark {
+  background-color: black;
+  color: white;
+}
+
+.isLight {
+  background-color: white;
+  color: black;
+}

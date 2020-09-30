@@ -8,16 +8,46 @@
     text-align: center;
   }
 
+  .c-album-header {
+    z-index: 2;
+    display: none;
+    @include mq(bp3) {
+      display: block;
+    }
+  }
+
+  .c-album-mobile-header {
+    z-index: 2;
+    display: block;
+    @include mq(bp3) {
+      display: none;
+    }
+  }
+
   .c-album--title {
     font-family: "Merriweather Sans", Arial, Helvetica, sans-serif;
     font-weight: 700;
     margin-bottom: 5px;
+    text-transform: uppercase;
+    animation: fadein .5s;
   }
 
   .c-album--meta {
     font-size: .8rem;
-    color: palette(color-neutral, base);
+    margin-bottom: 0;
+    text-align: right;
+    animation: fadein .5s;
   }
+
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
   
   .c-album--photo-item {
     width: 100%;

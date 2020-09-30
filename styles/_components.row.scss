@@ -30,6 +30,11 @@
     padding: 0;
   }
   
+  .c-row--sticky {
+    position: sticky;
+    top: 0;
+  }
+
   // Row backgrounds
   
   .c-row--alpha {

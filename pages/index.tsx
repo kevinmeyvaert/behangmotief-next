@@ -3,7 +3,7 @@ import request from 'graphql-request';
 import { FC, useEffect } from 'react';
 import Head from 'next/head';
 import Masonry from 'react-masonry-component';
-import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { GetStaticProps } from 'next';
 
 import { WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
@@ -69,7 +69,7 @@ const Home: FC<Props> = ({ initialData }) => {
         <meta name="twitter:title" content="BEHANGMOTIEF" />
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
-      <section className="c-row c-row--flush">
+      <section className="c-row">
         <div className="o-container o-flex o-align-center o-justify-center">
           <Logo title="Behangmotief" link="/" />
         </div>
