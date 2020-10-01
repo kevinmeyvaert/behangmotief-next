@@ -39,8 +39,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   });
-  const posts = data.reduce((acc, page) =>
-  [...acc, ...page.posts.data.map((post) => post)], []);
+  const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
   return (
     <>
       <Head>
@@ -73,20 +72,24 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <div className="o-container">
           {(!isLoadingInitialData && (
             <Masonry
-            breakpointCols={3}
-            className="c-masonry"
-            columnClassName="c-masonry--grid-column">
-              
+              breakpointCols={{
+                default: 3,
+                700: 2,
+                500: 1,
+              }}
+              className="c-masonry"
+              columnClassName="c-masonry--grid-column"
+            >
               {posts.map((post) => (
-                  <MasonryItem
-                    src={post.thumbnail.hires}
-                    artist={post.artist.name}
-                    venue={post.venue.name}
-                    slug={post.slug}
-                    key={post.slug}
-                    dimensions={post.thumbnail.dimensions}
-                  />
-                ))}
+                <MasonryItem
+                  src={post.thumbnail.hires}
+                  artist={post.artist.name}
+                  venue={post.venue.name}
+                  slug={post.slug}
+                  key={post.slug}
+                  dimensions={post.thumbnail.dimensions}
+                />
+              ))}
             </Masonry>
           )) ||
             null}
