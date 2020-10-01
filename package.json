@@ -18,7 +18,7 @@
     "react": "16.13.1",
     "react-content-loader": "^5.1.2",
     "react-dom": "16.13.1",
-    "react-masonry-component": "^6.2.1",
+    "react-masonry-css": "^1.0.14",
     "swr": "^0.3.5"
   },
   "devDependencies": {

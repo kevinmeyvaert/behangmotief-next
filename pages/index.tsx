@@ -2,7 +2,7 @@ import { useSWRInfinite } from 'swr';
 import request from 'graphql-request';
 import { FC, useEffect } from 'react';
 import Head from 'next/head';
-import Masonry from 'react-masonry-component';
+import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
 
 import { WANNABES_API_ENDPOINT } from '../lib/api';
@@ -11,10 +11,7 @@ import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
 import Logo from '../components/Logo';
 
-const NUMBER_OF_POSTS = 15;
-const masonryOptions = {
-  transitionDuration: 0,
-};
+const NUMBER_OF_POSTS = 20;
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const { data, error, size, setSize } = useSWRInfinite(
@@ -42,6 +39,8 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   });
+  const posts = data.reduce((acc, page) =>
+  [...acc, ...page.posts.data.map((post) => post)], []);
   return (
     <>
       <Head>
@@ -73,9 +72,12 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
       <section className="c-row">
         <div className="o-container">
           {(!isLoadingInitialData && (
-            <Masonry elementType="div" options={masonryOptions} className="c-masonry">
-              {data.map((page) =>
-                page.posts.data.map((post) => (
+            <Masonry
+            breakpointCols={3}
+            className="c-masonry"
+            columnClassName="c-masonry--grid-column">
+              
+              {posts.map((post) => (
                   <MasonryItem
                     src={post.thumbnail.hires}
                     artist={post.artist.name}
@@ -84,8 +86,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
                     key={post.slug}
                     dimensions={post.thumbnail.dimensions}
                   />
-                )),
-              )}
+                ))}
             </Masonry>
           )) ||
             null}
