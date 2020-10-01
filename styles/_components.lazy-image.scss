@@ -24,5 +24,12 @@
 }
 
 .lazy-image--blurred {
+  opacity: 1;
   filter: blur(5px);
+}
+
+.lazy-image-blurred-loaded {
+  opacity: 0;
+  filter: blur(0px);
+  transition: 1s;
 }
