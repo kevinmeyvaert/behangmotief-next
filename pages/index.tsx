@@ -11,7 +11,7 @@ import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
 import Logo from '../components/Logo';
 
-const NUMBER_OF_POSTS = 20;
+const NUMBER_OF_POSTS = 15;
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const { data, error, size, setSize } = useSWRInfinite(
