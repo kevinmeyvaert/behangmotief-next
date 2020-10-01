@@ -29,7 +29,7 @@ const LazyImage: FC<Props> = ({
   return (
     <div className={className ? `lazy-image--wrapper ${className}` : 'lazy-image--wrapper'}>
       <div style={{ paddingBottom: `${100 / aspectRatio}%` }} />
-      <img src={lowQualitySrc} aria-hidden="true" className={!loaded ? "lazy-image--blurred" : "lazy-image-blurred-loaded"} />
+      <img src={lowQualitySrc} aria-hidden="true" className={!loaded ? "lazy-image--blurred" : "lazy-image--blurred lazy-image-blurred-loaded"} />
       <img
         loading="lazy"
         src={src}
