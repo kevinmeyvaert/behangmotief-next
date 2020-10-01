@@ -3,7 +3,7 @@ import request from 'graphql-request';
 import { FC, useEffect } from 'react';
 import Head from 'next/head';
 import Masonry from 'react-masonry-component';
-import type { GetStaticProps } from 'next';
+import type { InferGetStaticPropsType } from 'next';
 
 import { WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
@@ -16,11 +16,7 @@ const masonryOptions = {
   transitionDuration: 0,
 };
 
-interface Props {
-  initialData: SearchQuery[];
-}
-
-const Home: FC<Props> = ({ initialData }) => {
+const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const { data, error, size, setSize } = useSWRInfinite(
     (index) => {
       return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
@@ -100,7 +96,7 @@ const Home: FC<Props> = ({ initialData }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps = async () => {
   const initialPosts: SearchQuery = await request(WANNABES_API_ENDPOINT, POSTS, {
     start: 0,
     limit: NUMBER_OF_POSTS,

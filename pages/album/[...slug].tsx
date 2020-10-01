@@ -1,21 +1,17 @@
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Head from 'next/head';
 import request from 'graphql-request';
-import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { InferGetStaticPropsType } from 'next';
 import { FC, useEffect, useState } from 'react';
 import { WANNABES_API_ENDPOINT } from '../../lib/api';
 import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import type { AlbumQuery, SearchQuery } from '../../types/wannabes.types';
 import AlbumHeader from '../../components/AlbumHeader';
 import AlbumMobileHeader from '../../components/AlbumMobileHeader';
-
-interface Props {
-  post: AlbumQuery['post'];
-}
+import LazyImage from '../../components/LazyImage';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<Props> = ({ post }) => {
+const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
   const [isDark, setIsDark] = useState(false);
   const [scroll, setScroll] = useState(0);
   useEffect(() => {
@@ -73,16 +69,12 @@ const AlbumPage: FC<Props> = ({ post }) => {
               {images.map((photo, index) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <li key={index} className="c-album--photo-item">
-                  <LazyLoadImage
-                    visibleByDefault={index <= 1}
+                  <LazyImage
+                    src={photo.hires}
+                    lowQualitySrc={thumbs[index].resized}
                     alt={artist.name}
                     sizes="(min-width: 73.75em) calc(80% * 73.75em)"
                     srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400,PD2/${photo.hires} 400w`}
-                    src={photo.hires}
-                    effect="blur"
-                    placeholderSrc={thumbs[index].resized}
-                    style={{ maxWidth: '100%' }}
-                    threshold={500}
                   />
                 </li>
               ))}
@@ -94,7 +86,7 @@ const AlbumPage: FC<Props> = ({ post }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   const { slug } = params;
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
 
@@ -102,7 +94,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return { props: { post }, revalidate: 1800 };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths = async () => {
   const albums: SearchQuery = await request(WANNABES_API_ENDPOINT, ALBUM_PATHS);
   const paths = albums.posts.data;
 
