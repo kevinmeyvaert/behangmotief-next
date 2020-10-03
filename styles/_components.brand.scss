@@ -25,8 +25,8 @@
 .c-logo {
   transition: 0.5s opacity;
   display: inline-block;
-  width: calc(0.2 * 475px);
-  height: calc(0.2 * 321px);
+  width: calc(0.2 * 480px);
+  height: calc(0.2 * 327px);
   margin-bottom: 0;
   text-indent: -99999px; /* [2] */
   cursor: pointer;
@@ -69,6 +69,6 @@
 }
 
 .isLight {
-  background-color: white;
+  background-color: $html-background-color;
   color: black;
 }

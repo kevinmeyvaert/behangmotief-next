@@ -3,8 +3,8 @@ import Logo from './Logo';
 
 interface Props {
   artist: string;
-  venue: string;
-  date: string;
+  venue?: string;
+  date?: string;
   isDark: boolean;
   scrollY: number;
 }
@@ -29,9 +29,9 @@ const AlbumMobileHeader: FC<Props> = ({ artist, venue, date, isDark, scrollY }) 
       <section className="c-row c-album-mobile-header">
         <div className="o-container o-flex o-flex--vertical o-align-start o-justify-center">
           <h2 className="o-justify-start c-album--title">{artist}</h2>
-          <p className="o-justify-end c-album--meta">
+          {date && venue ? <p className="o-justify-end c-album--meta">
             {venue} | {new Date(date).toLocaleDateString('be-NL')}
-          </p>
+          </p> : null}
         </div>
       </section>
     </>
