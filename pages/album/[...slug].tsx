@@ -2,16 +2,18 @@ import Head from 'next/head';
 import request from 'graphql-request';
 import type { InferGetStaticPropsType } from 'next';
 import { FC, useEffect, useState } from 'react';
-import { WANNABES_API_ENDPOINT } from '../../lib/api';
+import { datoRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
 import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import type { AlbumQuery, SearchQuery } from '../../types/wannabes.types';
 import AlbumHeader from '../../components/AlbumHeader';
 import AlbumMobileHeader from '../../components/AlbumMobileHeader';
 import LazyImage from '../../components/LazyImage';
+import Navigation from '../../components/Navigation';
+import { NAVIGATION } from '../../queries/dato';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
+const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, navigation }) => {
   const [isDark, setIsDark] = useState(false);
   const [scroll, setScroll] = useState(0);
   useEffect(() => {
@@ -55,6 +57,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           <meta name="twitter:image" content={thumbnail.resized} />
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
+        <Navigation items={navigation.items} />
         <AlbumMobileHeader
           artist={artist.name}
           venue={venue.name}
@@ -91,7 +94,11 @@ export const getStaticProps = async ({ params }) => {
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
 
   const { post }: { post: AlbumQuery['post'] } = await fetcher(ALBUM, mergeSlug);
-  return { props: { post }, revalidate: 1800 };
+  const { navigation } = await datoRequest({
+    query: NAVIGATION,
+  });
+
+  return { props: { post, navigation }, revalidate: 1800 };
 };
 
 export const getStaticPaths = async () => {

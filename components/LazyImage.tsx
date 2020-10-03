@@ -4,7 +4,7 @@ interface Props {
   className?: string;
   src: string;
   srcSet: string;
-  sizes: string;
+  sizes?: string;
   alt: string;
   lowQualitySrc: string;
   aspectRatio?: number;

@@ -5,15 +5,17 @@ import Head from 'next/head';
 import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
 
-import { WANNABES_API_ENDPOINT } from '../lib/api';
+import { datoRequest, WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
 import Logo from '../components/Logo';
+import Navigation from '../components/Navigation';
+import { NAVIGATION } from '../queries/dato';
 
 const NUMBER_OF_POSTS = 15;
 
-const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
+const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData, navigation }) => {
   const { data, error, size, setSize } = useSWRInfinite(
     (index) => {
       return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
@@ -63,6 +65,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <meta name="twitter:title" content="BEHANGMOTIEF" />
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
+      <Navigation items={navigation.items} />
       <section className="c-row">
         <div className="o-container o-flex o-align-center o-justify-center">
           <Logo title="Behangmotief" link="/" />
@@ -105,7 +108,10 @@ export const getStaticProps = async () => {
     start: 0,
     limit: NUMBER_OF_POSTS,
   });
-  return { props: { initialData: [initialPosts] }, revalidate: 1800 };
+  const { navigation } = await datoRequest({
+    query: NAVIGATION,
+  });
+  return { props: { initialData: [initialPosts], navigation }, revalidate: 1800 };
 };
 
 export default Home;

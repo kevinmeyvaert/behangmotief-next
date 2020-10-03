@@ -44,7 +44,7 @@
 // Palettes
 $palettes: (
     color-neutral: (
-        xx-light:                    #FFFFFF,
+        xx-light:                    #fcfcff,
         x-light:                     #F2F0F4,
         light:                       #C9C5CE,
         base:                        #555555,
@@ -287,7 +287,7 @@ $link-font-weight:                      $beta-font-weight;
 
 $link-color:                            palette(color-neutral,xx-dark);
 $link-color--visited:                   palette(color-neutral, xx-dark);
-$link-color--hover:                     var(--league-color, palette(color-beta, dark));
+$link-color--hover:                     var(--league-color, palette(color-neutral, base));
 $link-color--focus:                     palette(color-neutral);
 
 $link-outline:                          0;
