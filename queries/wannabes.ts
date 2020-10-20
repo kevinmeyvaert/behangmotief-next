@@ -11,6 +11,7 @@ export const POSTS = gql`
         date
         slug
         thumbnail {
+          blurhash
           hires
           dimensions {
             width
@@ -56,14 +57,8 @@ export const ALBUM = gql`
       venue {
         name
       }
-      thumbs: images {
-        dimensions {
-          width
-          height
-        }
-        resized(width: 400, height: 300)
-      }
       images {
+        blurhash
         hires
         dimensions {
           width

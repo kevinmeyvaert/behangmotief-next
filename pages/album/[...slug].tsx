@@ -29,8 +29,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
     return () => window.removeEventListener('scroll', handleScroll);
   });
 
-  if (!post) return null;
-  const { artist, venue, images, thumbnail, thumbs, date } = post;
+  const { artist, venue, images, thumbnail, date } = post;
   return (
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
@@ -74,8 +73,9 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
                 <li key={index} className="c-album--photo-item">
                   <LazyImage
                     src={photo.hires}
-                    lowQualitySrc={thumbs[index].resized}
+                    blurhash={photo.blurhash}
                     alt={artist.name}
+                    dimensions={photo.dimensions}
                     sizes="(min-width: 73.75em) calc(80% * 73.75em)"
                     srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400,PD2/${photo.hires} 400w`}
                   />

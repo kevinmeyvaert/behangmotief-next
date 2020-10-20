@@ -1,42 +1,31 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 import Link from 'next/link';
-import { FC, useEffect, useState } from 'react';
-import { Artist, Dimensions, Post, Venue } from '../types/wannabes.types';
+import { FC } from 'react';
+import { Artist, Dimensions, Image, Post, Venue } from '../types/wannabes.types';
+import LazyImage from '../components/LazyImage';
 
 interface Props {
   src: string;
   artist: Artist['name'];
   venue: Venue['name'];
   slug: Post['slug'];
+  dimensions: Dimensions;
+  blurhash: Image['blurhash'];
 }
 
-const MasonryItem: FC<Props> = ({ src, artist, venue, slug }) => {
-  const [loaded, setLoaded] = useState(false);
-  const handleFallbackImage = (e) => (e.target.src = '/placeholder.jpg');
-
-  useEffect(() => {
-    setLoaded(false);
-  }, []);
-
+const MasonryItem: FC<Props> = ({ src, artist, venue, slug, dimensions, blurhash }) => {
   return (
     <div className="c-masonry--item">
       <Link href="/album/[...slug]" as={`/album/${slug}`}>
         <a>
-          <img
-            src={`https://r.wannabes.be/S=W10,H10,PD2/${src}`}
-            aria-hidden="true"
-            style={{ width: '100%', filter: 'blur(5px)', display: loaded ? 'none' : 'block' }}
-          />
-          <img
-            loading="lazy"
+          <LazyImage
             srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${src} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${src} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${src} 800w, https://r.wannabes.be/S=W400,H400,PD2/${src} 400w`}
             sizes="(min-width: 90em) 25vw, (min-width: 73.75em) 33vw, (min-width: 35.5em) 50vw, 100vw"
             src={`https://r.wannabes.be/S=W800,H800,PD2/${src}`}
             alt={artist}
-            onError={handleFallbackImage}
-            onLoad={() => setLoaded(true)}
-            style={{ position: loaded ? 'relative' : 'absolute' }}
+            dimensions={dimensions}
+            blurhash={blurhash}
           />
         </a>
       </Link>
