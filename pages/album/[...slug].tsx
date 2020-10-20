@@ -29,7 +29,9 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
     return () => window.removeEventListener('scroll', handleScroll);
   });
 
+  if (!post) return null;
   const { artist, venue, images, thumbnail, date } = post;
+  
   return (
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
