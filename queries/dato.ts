@@ -8,6 +8,9 @@ export const ABOUT = gql`
       }
       headerImage {
         url
+        blurhash
+        width
+        height
       }
     }
   }
@@ -28,6 +31,9 @@ export const SERIE = gql`
       description
       photos {
         url
+        blurhash
+        width
+        height
       }
     }
   }

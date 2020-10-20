@@ -41,11 +41,11 @@ const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navi
       <section className="c-row c-row--flush">
         <LazyImage
           src={about.headerImage.url}
-          lowQualitySrc={`${about.headerImage.url}?h=20&w=30`}
+          blurhash={about.headerImage.blurhash}
           srcSet={`${about.headerImage.url}?h=1066&w=1600 1600w, ${about.headerImage.url}?h=800&w=1200 1200w, ${about.headerImage.url}?h=533&w=800 800w, ${about.headerImage.url}?h=266&w=400 400w`}
-          aspectRatio={3 / 2}
           alt="Kevin Meyvaert"
           className="c-page--header-image"
+          dimensions={{ width: about.headerImage.width, height: about.headerImage.height }}
         />
       </section>
       <section className="c-row">

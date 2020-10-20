@@ -70,10 +70,11 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie,
                 <li key={index} className="c-album--photo-item">
                   <LazyImage
                     src={photo.hires}
-                    lowQualitySrc={`${photo.url}?h=20&w=20`}
+                    blurhash={photo.blurhash}
                     alt={title}
                     sizes="(min-width: 73.75em) calc(80% * 73.75em)"
                     srcSet={`${photo.url}?h=1066&w=1600 1600w, ${photo.url}?h=800&w=1200 1200w, ${photo.url}?h=533&w=800 800w, ${photo.url}?h=266&w=400 400w`}
+                    dimensions={{ width: photo.width, height: photo.height }}
                   />
                 </li>
               ))}
