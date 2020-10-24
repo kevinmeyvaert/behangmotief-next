@@ -10,6 +10,7 @@ import AlbumMobileHeader from '../../components/AlbumMobileHeader';
 import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
 import { NAVIGATION, SERIE, SERIES_PATHS } from '../../queries/dato';
+import Masonry from 'react-masonry-css';
 
 const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie, navigation }) => {
   const [isDark, setIsDark] = useState(false);
@@ -56,18 +57,21 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie,
           <meta name="twitter:card" content="summary_large_image" />
         </Head> */}
         <Navigation items={navigation.items} />
-        <AlbumMobileHeader
-          artist={title}
-          isDark={isDark}
-          scrollY={scroll}
-        />
+        <AlbumMobileHeader artist={title} isDark={isDark} scrollY={scroll} />
         <AlbumHeader artist={title} isDark={isDark} />
         <section className="c-row">
           <div className="o-container">
-            <ul className="o-list c-album">
+            <Masonry
+              breakpointCols={{
+                default: 2,
+                768: 1,
+              }}
+              className="c-masonry c-masonry--gutter"
+              columnClassName="c-masonry--grid-column  c-masonry--grid-column--gutter"
+            >
               {photos.map((photo, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <li key={index} className="c-album--photo-item">
+                <figure key={index} className="c-album--photo-item">
                   <LazyImage
                     src={photo.hires}
                     blurhash={photo.blurhash}
@@ -76,9 +80,9 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie,
                     srcSet={`${photo.url}?h=1066&w=1600 1600w, ${photo.url}?h=800&w=1200 1200w, ${photo.url}?h=533&w=800 800w, ${photo.url}?h=266&w=400 400w`}
                     dimensions={{ width: photo.width, height: photo.height }}
                   />
-                </li>
+                </figure>
               ))}
-            </ul>
+            </Masonry>
           </div>
         </section>
       </main>
@@ -90,7 +94,7 @@ export const getStaticProps = async ({ params }) => {
   const { slug } = params;
   const { serie } = await datoRequest({
     query: SERIE,
-    variables: { slug }
+    variables: { slug },
   });
   const { navigation } = await datoRequest({
     query: NAVIGATION,

@@ -1,6 +1,7 @@
 .c-nav {
+  font-family: 'Merriweather Sans', Arial, Helvetica, sans-serif;
   h2 {
-    font-size: .8rem;
+    font-size: 0.8rem;
     margin-bottom: 1rem;
     line-height: 1;
     font-weight: 700;
@@ -10,15 +11,16 @@
 }
 
 .c-navigation--main {
- list-style: none;
- padding: 0;
- & li {
-   margin-bottom: .5rem;
- }
- & a {
-  color: palette(color-neutral, xx-dark);
-  text-decoration: none;
- }
+  list-style: none;
+  padding: 0;
+  & li {
+    margin-bottom: 0.5rem;
+  }
+  & a {
+    color: palette(color-neutral, xx-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
 }
 
 .c-nav-dark {

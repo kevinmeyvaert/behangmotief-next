@@ -65,27 +65,7 @@
     margin-bottom: 1.5rem;
   
     @include mq(bp5) {
-      width: 80%;
-      margin-bottom: 4rem;
-    }
-  }
-  
-  .c-album--photo-item:nth-child(even) {
-    @include mq(bp5) {
-      margin-left: calc(var(--random) * 1rem);
-    }
-  }
-  
-  .c-album--photo-item:nth-child(odd) {
-    @include mq(bp5) {
-      margin-right: calc(var(--random) * 1rem);
-    }
-  }
-  
-  .c-album--photo-item:first-child {
-    @include mq(bp5) {
-      margin-left: auto;
-      margin-right: auto;
+      margin-bottom: 2rem;
     }
   }
   
