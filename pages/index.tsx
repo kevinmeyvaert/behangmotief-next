@@ -1,6 +1,6 @@
 import { useSWRInfinite } from 'swr';
 import request from 'graphql-request';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import Head from 'next/head';
 import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
@@ -12,6 +12,8 @@ import MasonryItem from '../components/MasonryItem';
 import Logo from '../components/Logo';
 import Navigation from '../components/Navigation';
 import { NAVIGATION } from '../queries/dato';
+import useEndlessScroll from '../hooks/useEndlessScroll';
+import { loadingStatus } from '../lib/helpers';
 
 const NUMBER_OF_POSTS = 15;
 
@@ -26,21 +28,19 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData,
         limit,
       });
     },
-    { initialData },
+    { initialData, revalidateOnFocus: false },
   );
-  const isLoadingInitialData = !data && !error && !data;
-  const isLoadingMore =
-    isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
-  // 🐁 Handle endless scroll
-  useEffect(() => {
-    const handleScroll = async () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoadingMore) {
-        setSize(size + 1);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
+
+  const canLoadMore = size * NUMBER_OF_POSTS < initialData[0].posts.pagination.total;
+  const [, isLoadingMore] = loadingStatus(data, error, size);
+  useEndlessScroll(
+    size,
+    setSize,
+    isLoadingMore,
+    1000,
+    canLoadMore,
+  );
+
   const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
   return (
     <>
@@ -73,33 +73,29 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData,
       </section>
       <section className="c-row">
         <div className="o-container">
-          {(!isLoadingInitialData && (
-            <Masonry
-              breakpointCols={{
-                default: 3,
-                700: 2,
-                500: 1,
-              }}
-              className="c-masonry"
-              columnClassName="c-masonry--grid-column"
-            >
-              {posts.map((post) => (
-                <MasonryItem
-                  src={post.thumbnail.hires}
-                  artist={post.artist.name}
-                  venue={post.venue.name}
-                  slug={post.slug}
-                  key={post.slug}
-                  dimensions={post.thumbnail?.dimensions}
-                  blurhash={post.thumbnail.blurhash}
-                />
-              ))}
-            </Masonry>
-          )) ||
-            null}
+          <Masonry
+            breakpointCols={{
+              default: 3,
+              700: 2,
+              500: 1,
+            }}
+            className="c-masonry"
+            columnClassName="c-masonry--grid-column"
+          >
+            {posts.map((post) => (
+              <MasonryItem
+                src={post.thumbnail.hires}
+                artist={post.artist.name}
+                venue={post.venue.name}
+                slug={post.slug}
+                key={post.slug}
+                dimensions={post.thumbnail?.dimensions}
+                blurhash={post.thumbnail.blurhash}
+              />
+            ))}
+          </Masonry>
         </div>
       </section>
-      {(isLoadingMore && <div className="c-masonry--loading">Loading more..</div>) || null}
     </>
   );
 };

@@ -10,6 +10,7 @@ import AlbumMobileHeader from '../../components/AlbumMobileHeader';
 import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
 import { NAVIGATION } from '../../queries/dato';
+import Masonry from 'react-masonry-css';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
@@ -69,10 +70,17 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
         <AlbumHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <section className="c-row">
           <div className="o-container">
-            <ul className="o-list c-album">
+          <Masonry
+            breakpointCols={{
+              default: 2,
+              768: 1,
+            }}
+            className="c-masonry c-masonry--gutter"
+            columnClassName="c-masonry--grid-column  c-masonry--grid-column--gutter"
+          >
               {images.map((photo, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <li key={index} className="c-album--photo-item">
+                <figure key={index} className="c-album--photo-item">
                   <LazyImage
                     src={photo.hires}
                     blurhash={photo.blurhash}
@@ -81,9 +89,9 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
                     sizes="(min-width: 73.75em) calc(80% * 73.75em)"
                     srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400,PD2/${photo.hires} 400w`}
                   />
-                </li>
+                </figure>
               ))}
-            </ul>
+            </Masonry>
           </div>
         </section>
       </main>
