@@ -5,19 +5,22 @@ import Head from 'next/head';
 import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
 
-import { datoRequest, WANNABES_API_ENDPOINT } from '../lib/api';
+import {
+  contentfulRequest,
+  WANNABES_API_ENDPOINT,
+} from '../lib/api';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
 import Logo from '../components/Logo';
 import Navigation from '../components/Navigation';
-import { NAVIGATION } from '../queries/dato';
 import useEndlessScroll from '../hooks/useEndlessScroll';
 import { loadingStatus } from '../lib/helpers';
+import { NAVIGATION } from '../queries/contentful';
 
 const NUMBER_OF_POSTS = 15;
 
-const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData, navigation }) => {
+const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData, navigationItems }) => {
   const { data, error, size, setSize } = useSWRInfinite(
     (index) => {
       return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
@@ -33,13 +36,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData,
 
   const canLoadMore = size * NUMBER_OF_POSTS < initialData[0].posts.pagination.total;
   const [, isLoadingMore] = loadingStatus(data, error, size);
-  useEndlessScroll(
-    size,
-    setSize,
-    isLoadingMore,
-    1000,
-    canLoadMore,
-  );
+  useEndlessScroll(size, setSize, isLoadingMore, 1000, canLoadMore);
 
   const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
   return (
@@ -65,7 +62,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData,
         <meta name="twitter:title" content="BEHANGMOTIEF" />
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
-      <Navigation items={navigation.items} />
+      <Navigation items={navigationItems} />
       <section className="c-row">
         <div className="o-container o-flex o-align-center o-justify-center">
           <Logo title="Behangmotief" link="/" />
@@ -105,10 +102,9 @@ export const getStaticProps = async () => {
     start: 0,
     limit: NUMBER_OF_POSTS,
   });
-  const { navigation } = await datoRequest({
-    query: NAVIGATION,
-  });
-  return { props: { initialData: [initialPosts], navigation }, revalidate: 1800 };
+  const { navigation } = await contentfulRequest({ query: NAVIGATION });
+  const navigationItems = navigation.pageCollection.items; 
+  return { props: { initialData: [initialPosts], navigationItems }, revalidate: 1800 };
 };
 
 export default Home;

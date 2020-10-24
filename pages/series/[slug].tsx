@@ -1,26 +1,22 @@
-import Head from 'next/head';
-import request from 'graphql-request';
 import type { InferGetStaticPropsType } from 'next';
 import { FC, useEffect, useState } from 'react';
-import { datoRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
-import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
-import type { AlbumQuery, SearchQuery } from '../../types/wannabes.types';
+import { contentfulRequest } from '../../lib/api';
 import AlbumHeader from '../../components/AlbumHeader';
 import AlbumMobileHeader from '../../components/AlbumMobileHeader';
-import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
-import { NAVIGATION, SERIE, SERIES_PATHS } from '../../queries/dato';
-import Masonry from 'react-masonry-css';
+import { NAVIGATION, SERIE } from '../../queries/contentful';
+import BlockNewsPaper from '../../components/blocks/BlockNewsPaper';
 
-const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie, navigation }) => {
+const SeriesPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
+  serie,
+  navigationItems,
+}) => {
   const [isDark, setIsDark] = useState(false);
-  const [scroll, setScroll] = useState(0);
   useEffect(() => {
     const handleScroll = async () => {
-      setScroll(window.scrollY);
-      if (window.scrollY >= 75) {
+      if (window.scrollY > 75 && !isDark) {
         setIsDark(true);
-      } else {
+      } else if (window.scrollY < 75 && isDark) {
         setIsDark(false);
       }
     };
@@ -29,7 +25,6 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie,
   });
 
   if (!serie) return null;
-  const { title, description, photos } = serie;
   return (
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
@@ -56,33 +51,14 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie,
           <meta name="twitter:image" content={thumbnail.resized} />
           <meta name="twitter:card" content="summary_large_image" />
         </Head> */}
-        <Navigation items={navigation.items} />
-        <AlbumMobileHeader artist={title} isDark={isDark} scrollY={scroll} />
-        <AlbumHeader artist={title} isDark={isDark} />
+        <Navigation items={navigationItems} />
+        <AlbumMobileHeader artist={serie.title} isDark={isDark} />
+        <AlbumHeader artist={serie.title} isDark={isDark} />
         <section className="c-row">
           <div className="o-container">
-            <Masonry
-              breakpointCols={{
-                default: 2,
-                768: 1,
-              }}
-              className="c-masonry c-masonry--gutter"
-              columnClassName="c-masonry--grid-column  c-masonry--grid-column--gutter"
-            >
-              {photos.map((photo, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <figure key={index} className="c-album--photo-item">
-                  <LazyImage
-                    src={photo.hires}
-                    blurhash={photo.blurhash}
-                    alt={title}
-                    sizes="(min-width: 73.75em) calc(80% * 73.75em)"
-                    srcSet={`${photo.url}?h=1066&w=1600 1600w, ${photo.url}?h=800&w=1200 1200w, ${photo.url}?h=533&w=800 800w, ${photo.url}?h=266&w=400 400w`}
-                    dimensions={{ width: photo.width, height: photo.height }}
-                  />
-                </figure>
-              ))}
-            </Masonry>
+            {serie.contentBlocksCollection.items.map((contentBlock, i) => (
+              <BlockNewsPaper contentBlock={contentBlock} key={i} />
+            ))}
           </div>
         </section>
       </main>
@@ -90,28 +66,16 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ serie,
   );
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const { slug } = params;
-  const { serie } = await datoRequest({
-    query: SERIE,
-    variables: { slug },
-  });
-  const { navigation } = await datoRequest({
-    query: NAVIGATION,
-  });
 
-  return { props: { serie, navigation }, revalidate: 1800 };
-};
+  const { pagesCollection } = await contentfulRequest({ query: SERIE, variables: { slug } });
+  const [serie] = pagesCollection.items;
 
-export const getStaticPaths = async () => {
-  const { seriesPaths } = await datoRequest({
-    query: SERIES_PATHS,
-  });
+  const { navigation } = await contentfulRequest({ query: NAVIGATION });
+  const navigationItems = navigation.pageCollection.items;
 
-  return {
-    paths: seriesPaths.map((slug) => `/series/${slug}`),
-    fallback: true,
-  };
+  return { props: { serie, navigationItems } };
 };
 
 export default SeriesPage;

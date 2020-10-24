@@ -6,10 +6,9 @@ interface Props {
   venue?: string;
   date?: string;
   isDark: boolean;
-  scrollY: number;
 }
 
-const AlbumMobileHeader: FC<Props> = ({ artist, venue, date, isDark, scrollY }) => {
+const AlbumMobileHeader: FC<Props> = ({ artist, venue, date, isDark }) => {
   return (
     <>
       <section className="c-row c-row--sticky c-album-mobile-header">
@@ -18,10 +17,11 @@ const AlbumMobileHeader: FC<Props> = ({ artist, venue, date, isDark, scrollY }) 
           link="/"
           isDark={isDark}
           style={{
+            transition: '.2s',
             flex: 1,
             alignSelf: 'center',
             marginBottom: '20px',
-            '--scroll': scrollY / 150 <= 0.5 ? 1 - scrollY / 150 : 0.5,
+            '--scroll': !isDark ? 1 : 0.5,
           }}
           className="c-header--wrap o-justify-center"
         />

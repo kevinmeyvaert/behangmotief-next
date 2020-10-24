@@ -2,19 +2,19 @@ import Head from 'next/head';
 import request from 'graphql-request';
 import type { InferGetStaticPropsType } from 'next';
 import { FC, useEffect, useState } from 'react';
-import { datoRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
+import { contentfulRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
 import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import type { AlbumQuery, SearchQuery } from '../../types/wannabes.types';
 import AlbumHeader from '../../components/AlbumHeader';
 import AlbumMobileHeader from '../../components/AlbumMobileHeader';
 import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
-import { NAVIGATION } from '../../queries/dato';
 import Masonry from 'react-masonry-css';
+import { NAVIGATION } from '../../queries/contentful';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, navigation }) => {
+const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, navigationItems }) => {
   const [isDark, setIsDark] = useState(false);
   const [scroll, setScroll] = useState(0);
   useEffect(() => {
@@ -59,7 +59,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
           <meta name="twitter:image" content={thumbnail.resized} />
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
-        <Navigation items={navigation.items} />
+        <Navigation items={navigationItems} />
         <AlbumMobileHeader
           artist={artist.name}
           venue={venue.name}
@@ -104,11 +104,10 @@ export const getStaticProps = async ({ params }) => {
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
 
   const { post }: { post: AlbumQuery['post'] } = await fetcher(ALBUM, mergeSlug);
-  const { navigation } = await datoRequest({
-    query: NAVIGATION,
-  });
+  const { navigation } = await contentfulRequest({ query: NAVIGATION });
+  const navigationItems = navigation.pageCollection.items; 
 
-  return { props: { post, navigation }, revalidate: 1800 };
+  return { props: { post, navigationItems }, revalidate: 1800 };
 };
 
 export const getStaticPaths = async () => {

@@ -2,13 +2,14 @@ import { FC } from 'react';
 import Head from 'next/head';
 import type { InferGetStaticPropsType } from 'next';
 
-import { datoRequest } from '../lib/api';
+import { contentfulRequest, datoRequest } from '../lib/api';
 import Logo from '../components/Logo';
 import Navigation from '../components/Navigation';
-import { ABOUT, NAVIGATION } from '../queries/dato';
+import { ABOUT } from '../queries/dato';
 import LazyImage from '../components/LazyImage';
+import { NAVIGATION } from '../queries/contentful';
 
-const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navigation }) => {
+const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navigationItems }) => {
   return (
     <>
       <Head>
@@ -32,7 +33,7 @@ const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navi
         <meta name="twitter:title" content="BEHANGMOTIEF" />
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
-      <Navigation items={navigation.items} />
+      <Navigation items={navigationItems} />
       <section className="c-row">
         <div className="o-container o-flex o-align-center o-justify-center">
           <Logo title="Behangmotief" link="/" />
@@ -63,10 +64,9 @@ export const getStaticProps = async () => {
   const { about } = await datoRequest({
     query: ABOUT,
   });
-  const { navigation } = await datoRequest({
-    query: NAVIGATION,
-  });
-  return { props: { about, navigation }, revalidate: 1800 };
+  const { navigation } = await contentfulRequest({ query: NAVIGATION });
+  const navigationItems = navigation.pageCollection.items; 
+  return { props: { about, navigationItems }, revalidate: 1800 };
 };
 
 export default About;

@@ -1,0 +1,32 @@
+.duoImageBigPicture {
+  width: 100%;
+  position: relative;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.bigWrap {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.halfWrap {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.duoImageBigPicture p {
+  font-style: italic;
+  color: lightgray;
+  font-size: 0.8em;
+}
+
+.imageInsidePicture {
+  box-sizing: border-box;
+}
