@@ -28,29 +28,6 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
   return (
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
-        {/* <Head>
-          <title>{`${artist.name} | ${venue.name} - Behangmotief`}</title>
-          <meta
-            name="description"
-            content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
-          />
-
-          <meta property="og:title" content={`${artist.name} | ${venue.name}`} />
-          <meta property="og:type" content="website" />
-          <meta
-            property="og:description"
-            content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
-          />
-          <meta property="og:image" content={thumbnail.resized} />
-
-          <meta name="twitter:title" content={`${artist.name} | ${venue.name}`} />
-          <meta
-            name="twitter:description"
-            content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
-          />
-          <meta name="twitter:image" content={thumbnail.resized} />
-          <meta name="twitter:card" content="summary_large_image" />
-        </Head> */}
         <Navigation items={navigationItems} />
         <AlbumMobileHeader artist={serie.title} isDark={isDark} />
         <AlbumHeader artist={serie.title} isDark={isDark} />
