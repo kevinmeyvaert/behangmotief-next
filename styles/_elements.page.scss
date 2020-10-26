@@ -23,6 +23,10 @@ body {
   }
 }
 
+main {
+  padding-bottom: 2rem;
+}
+
 ::-moz-selection {
   background-color: $body-selection-background-color;
   color: $body-selection-color;
