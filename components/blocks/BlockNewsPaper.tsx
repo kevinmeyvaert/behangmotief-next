@@ -7,50 +7,59 @@ const BlockNewsPaper = ({ contentBlock }) => {
       animateOnce
       animateIn="fadeInUp"
       duration={1}
-      className={"duoImageBigPicture"}
+      className={'duoImageBigPicture'}
       style={!contentBlock.fullPageImage ? { paddingTop: '66.66%' } : {}}
     >
       {contentBlock.fullPageImage && (
-        <img
-          alt={contentBlock.title}
-          src={contentBlock.fullPageImage.url}
-          className={"duoImageBlockFirstPhoto"}
-          style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}
-        />
+        <picture>
+          <source srcSet={`${contentBlock.fullPageImage.url}?w=1330&h=1330&fm=webp&q=80`} />
+          <source srcSet={`${contentBlock.fullPageImage.url}?w=1330&h=1330&fm=jpg&q=90`} />
+          <img
+            alt={contentBlock.title}
+            src={`${contentBlock.fullPageImage.url}?w=1330&h=1330`}
+            className={'duoImageBlockFirstPhoto'}
+            style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}
+          />
+        </picture>
       )}
-      <div
-        className={"bigWrap"}
-        style={{ justifyContent: contentBlock.direction }}
-      >
-        <div className={"halfWrap"}>
+      <div className={'bigWrap'} style={{ justifyContent: contentBlock.direction }}>
+        <div className={'halfWrap'}>
           <ScrollAnimation
             animateOnce
             animateIn="fadeInUp"
             duration={1}
-            className={"imageInsidePicture"}
+            className={'imageInsidePicture'}
             style={{ width: `${contentBlock.firstImageSize}%` }}
           >
-            <img
-              alt={contentBlock.title}
-              src={contentBlock.firstImage.url}
-              className={"duoImageBlockSecondPhoto"}
-            />
+            <picture>
+              <source srcSet={`${contentBlock.firstImage.url}?w=1330&h=1330&fm=webp&q=80`} />
+              <source srcSet={`${contentBlock.firstImage.url}?w=1330&h=1330&fm=jpg&q=90`} />
+              <img
+                alt={contentBlock.title}
+                src={`${contentBlock.firstImage.url}?w=1330&h=1330`}
+                className={'duoImageBlockSecondPhoto'}
+              />
+            </picture>
           </ScrollAnimation>
         </div>
         {contentBlock.secondImage && (
-          <div className={"halfWrap"}>
+          <div className={'halfWrap'}>
             <ScrollAnimation
               animateOnce
               animateIn="fadeInUp"
               duration={1}
-              className={"imageInsidePicture"}
+              className={'imageInsidePicture'}
               style={{ width: `${contentBlock.secondImageSize}%` }}
             >
-              <img
-                alt={contentBlock.title}
-                src={contentBlock.secondImage.url}
-                className={"duoImageBlockSecondPhoto"}
-              />
+              <picture>
+                <source srcSet={`${contentBlock.secondImage.url}?w=1330&h=1330&fm=webp&q=80`} />
+                <source srcSet={`${contentBlock.secondImage.url}?w=1330&h=1330&fm=jpg&q=90`} />
+                <img
+                  alt={contentBlock.title}
+                  src={`${contentBlock.secondImage.url}?w=1330&h=1330`}
+                  className={'duoImageBlockSecondPhoto'}
+                />
+              </picture>
             </ScrollAnimation>
           </div>
         )}
