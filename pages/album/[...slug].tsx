@@ -16,13 +16,11 @@ const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, 
 
 const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, navigationItems }) => {
   const [isDark, setIsDark] = useState(false);
-  const [scroll, setScroll] = useState(0);
   useEffect(() => {
     const handleScroll = async () => {
-      setScroll(window.scrollY);
-      if (window.scrollY >= 75) {
+      if (window.scrollY > 75 && !isDark) {
         setIsDark(true);
-      } else {
+      } else if (window.scrollY < 75 && isDark) {
         setIsDark(false);
       }
     };
@@ -65,7 +63,6 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
           venue={venue.name}
           isDark={isDark}
           date={date}
-          scrollY={scroll}
         />
         <AlbumHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <section className="c-row">

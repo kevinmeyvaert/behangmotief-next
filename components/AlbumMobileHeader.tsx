@@ -17,7 +17,6 @@ const AlbumMobileHeader: FC<Props> = ({ artist, venue, date, isDark }) => {
           link="/"
           isDark={isDark}
           style={{
-            transition: '.2s',
             flex: 1,
             alignSelf: 'center',
             marginBottom: '20px',
