@@ -5,10 +5,7 @@ import Head from 'next/head';
 import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
 
-import {
-  contentfulRequest,
-  WANNABES_API_ENDPOINT,
-} from '../lib/api';
+import { contentfulRequest, WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
@@ -20,7 +17,10 @@ import { NAVIGATION } from '../queries/contentful';
 
 const NUMBER_OF_POSTS = 15;
 
-const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData, navigationItems }) => {
+const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  initialData,
+  navigationItems,
+}) => {
   const { data, error, size, setSize } = useSWRInfinite(
     (index) => {
       return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
@@ -40,7 +40,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData,
 
   const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
   return (
-    <>
+    <main className="themed-main isLight">
       <Head>
         <title>Behangmotief</title>
         <meta
@@ -93,7 +93,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData,
           </Masonry>
         </div>
       </section>
-    </>
+    </main>
   );
 };
 
@@ -103,7 +103,7 @@ export const getStaticProps = async () => {
     limit: NUMBER_OF_POSTS,
   });
   const { navigation } = await contentfulRequest({ query: NAVIGATION });
-  const navigationItems = navigation.pageCollection.items; 
+  const navigationItems = navigation.pageCollection.items;
   return { props: { initialData: [initialPosts], navigationItems }, revalidate: 1800 };
 };
 

@@ -11,7 +11,7 @@ import { NAVIGATION } from '../queries/contentful';
 
 const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navigationItems }) => {
   return (
-    <>
+    <main className="themed-main isLight">
       <Head>
         <title>Behangmotief</title>
         <meta
@@ -39,14 +39,13 @@ const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navi
           <Logo title="Behangmotief" link="/" />
         </div>
       </section>
-      <section className="c-row c-row--flush">
+      <section className="c-row">
         <div className="o-container">
           <LazyImage
             src={about.headerImage.url}
             blurhash={about.headerImage.blurhash}
             srcSet={`${about.headerImage.url}?h=1066&w=1600 1600w, ${about.headerImage.url}?h=800&w=1200 1200w, ${about.headerImage.url}?h=533&w=800 800w, ${about.headerImage.url}?h=266&w=400 400w`}
             alt="Kevin Meyvaert"
-            className="c-page--header-image"
             dimensions={{ width: about.headerImage.width, height: about.headerImage.height }}
           />
         </div>
@@ -56,7 +55,7 @@ const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navi
           <div dangerouslySetInnerHTML={{ __html: about.content[0].content }} />
         </div>
       </section>
-    </>
+    </main>
   );
 };
 

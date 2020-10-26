@@ -8,8 +8,31 @@ const BlockNewsPaper = ({ contentBlock }) => {
     >
       {contentBlock.fullPageImage && (
         <picture>
-          <source srcSet={`${contentBlock.fullPageImage.url}?w=1330&h=1330&fm=webp&q=80`} />
-          <source srcSet={`${contentBlock.fullPageImage.url}?w=1330&h=1330&fm=jpg&q=90`} />
+          <source
+            media="(min-width: 1440px)"
+            srcSet={`${contentBlock.fullPageImage.url}?w=2000&h=2000&fm=webp&q=80`}
+          />
+          <source
+            media="(min-width: 800px)"
+            srcSet={`${contentBlock.fullPageImage.url}?w=1330&h=1330&fm=webp&q=80`}
+          />
+          <source
+            media="(max-width: 800px)"
+            srcSet={`${contentBlock.fullPageImage.url}?w=800&h=800&fm=webp&q=80`}
+          />
+
+          <source
+            media="(min-width: 1440px)"
+            srcSet={`${contentBlock.fullPageImage.url}?w=2000&h=2000&fm=jpg&q=90`}
+          />
+          <source
+            media="(min-width: 800px)"
+            srcSet={`${contentBlock.fullPageImage.url}?w=1330&h=1330&fm=jpg&q=90`}
+          />
+          <source
+            media="(max-width: 800px)"
+            srcSet={`${contentBlock.fullPageImage.url}?w=800&h=800&fm=jpg&q=90`}
+          />
           <img
             alt={contentBlock.title}
             src={`${contentBlock.fullPageImage.url}?w=1330&h=1330`}
@@ -25,8 +48,31 @@ const BlockNewsPaper = ({ contentBlock }) => {
             style={{ width: `${contentBlock.firstImageSize}%` }}
           >
             <picture>
-              <source srcSet={`${contentBlock.firstImage.url}?w=1330&h=1330&fm=webp&q=80`} />
-              <source srcSet={`${contentBlock.firstImage.url}?w=1330&h=1330&fm=jpg&q=90`} />
+              <source
+                media="(min-width: 1440px)"
+                srcSet={`${contentBlock.firstImage.url}?w=2000&h=2000&fm=webp&q=80`}
+              />
+              <source
+                media="(min-width: 800px)"
+                srcSet={`${contentBlock.firstImage.url}?w=1330&h=1330&fm=webp&q=80`}
+              />
+              <source
+                media="(max-width: 800px)"
+                srcSet={`${contentBlock.firstImage.url}?w=800&h=800&fm=webp&q=80`}
+              />
+
+              <source
+                media="(min-width: 1440px)"
+                srcSet={`${contentBlock.firstImage.url}?w=2000&h=2000&fm=jpg&q=90`}
+              />
+              <source
+                media="(min-width: 800px)"
+                srcSet={`${contentBlock.firstImage.url}?w=1330&h=1330&fm=jpg&q=90`}
+              />
+              <source
+                media="(max-width: 800px)"
+                srcSet={`${contentBlock.firstImage.url}?w=800&h=800&fm=jpg&q=90`}
+              />
               <img
                 alt={contentBlock.title}
                 src={`${contentBlock.firstImage.url}?w=1330&h=1330`}
@@ -42,8 +88,31 @@ const BlockNewsPaper = ({ contentBlock }) => {
               style={{ width: `${contentBlock.secondImageSize}%` }}
             >
               <picture>
-                <source srcSet={`${contentBlock.secondImage.url}?w=1330&h=1330&fm=webp&q=80`} />
-                <source srcSet={`${contentBlock.secondImage.url}?w=1330&h=1330&fm=jpg&q=90`} />
+                <source
+                  media="(min-width: 1440px)"
+                  srcSet={`${contentBlock.secondImage.url}?w=2000&h=2000&fm=webp&q=80`}
+                />
+                <source
+                  media="(min-width: 800px)"
+                  srcSet={`${contentBlock.secondImage.url}?w=1330&h=1330&fm=webp&q=80`}
+                />
+                <source
+                  media="(max-width: 800px)"
+                  srcSet={`${contentBlock.secondImage.url}?w=800&h=800&fm=webp&q=80`}
+                />
+
+                <source
+                  media="(min-width: 1440px)"
+                  srcSet={`${contentBlock.secondImage.url}?w=2000&h=2000&fm=jpg&q=90`}
+                />
+                <source
+                  media="(min-width: 800px)"
+                  srcSet={`${contentBlock.secondImage.url}?w=1330&h=1330&fm=jpg&q=90`}
+                />
+                <source
+                  media="(max-width: 800px)"
+                  srcSet={`${contentBlock.secondImage.url}?w=800&h=800&fm=jpg&q=90`}
+                />
                 <img
                   alt={contentBlock.title}
                   src={`${contentBlock.secondImage.url}?w=1330&h=1330`}

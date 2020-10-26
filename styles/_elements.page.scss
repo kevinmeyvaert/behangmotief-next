@@ -7,7 +7,6 @@
 html {
   font: $html-font-weight #{($html-font-size / 16) * 100%}/#{$html-line-height} $html-font-family;
   -webkit-overflow-scrolling: touch;
-  background-color: $html-background-color;
 
   @if $html-responsive-font-size == true {
     @include mq($html-responsive-font-breakpoint) {
@@ -34,14 +33,4 @@ body {
   background-color: $body-selection-background-color;
   color: $body-selection-color;
   text-shadow: $body-selection-text-shadow;
-}
-
-.c-page--header-image {
-  //transform: translateY(-50%)
-  margin-top: -40%;
-  z-index: -1;
-
-  @include mq(bp4) {
-    margin-top: -12%;
-  }
 }
