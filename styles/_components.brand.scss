@@ -23,7 +23,6 @@
 }
 
 .c-logo {
-  transition: 0.5s opacity;
   display: inline-block;
   width: calc(0.2 * 480px);
   height: calc(0.2 * 327px);
@@ -46,7 +45,6 @@
 }
 
 .c-logo--link {
-  transition: opacity $animation-duration-beta;
   opacity: 0.5;
 
   &:hover {
@@ -57,10 +55,6 @@
 .c-logo__link {
   display: block;
   height: 100%;
-}
-
-.themed-main {
-  transition: 0.5s;
 }
 
 .isDark {
