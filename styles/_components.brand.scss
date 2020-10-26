@@ -57,6 +57,10 @@
   height: 100%;
 }
 
+.themed-main {
+  transition: background-color 0.5s;
+}
+
 .isDark {
   background-color: black;
   color: white;
