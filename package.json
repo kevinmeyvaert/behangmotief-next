@@ -18,7 +18,6 @@
     "next-plugin-graphql": "0.0.2",
     "node-sass": "^4.14.1",
     "react": "16.13.1",
-    "react-animate-on-scroll": "^2.1.5",
     "react-blurhash": "git+https://github.com/zeroxme/react-blurhash.git",
     "react-dom": "16.13.1",
     "react-masonry-css": "^1.0.14",

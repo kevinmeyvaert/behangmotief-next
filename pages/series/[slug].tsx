@@ -34,7 +34,7 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
         <section className="c-row">
           <div className="o-container">
             {serie.contentBlocksCollection.items.map((contentBlock, i) => (
-              <BlockNewsPaper contentBlock={contentBlock} key={i} />
+              <BlockNewsPaper contentBlock={contentBlock} key={`${i}+${contentBlock.title}`} />
             ))}
           </div>
         </section>

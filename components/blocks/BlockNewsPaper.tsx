@@ -1,12 +1,8 @@
 import React from 'react';
-import ScrollAnimation from 'react-animate-on-scroll';
 
 const BlockNewsPaper = ({ contentBlock }) => {
   return (
-    <ScrollAnimation
-      animateOnce
-      animateIn="fadeInUp"
-      duration={1}
+    <div
       className={'duoImageBigPicture'}
       style={!contentBlock.fullPageImage ? { paddingTop: '66.66%' } : {}}
     >
@@ -24,10 +20,7 @@ const BlockNewsPaper = ({ contentBlock }) => {
       )}
       <div className={'bigWrap'} style={{ justifyContent: contentBlock.direction }}>
         <div className={'halfWrap'}>
-          <ScrollAnimation
-            animateOnce
-            animateIn="fadeInUp"
-            duration={1}
+          <div
             className={'imageInsidePicture'}
             style={{ width: `${contentBlock.firstImageSize}%` }}
           >
@@ -40,14 +33,11 @@ const BlockNewsPaper = ({ contentBlock }) => {
                 className={'duoImageBlockSecondPhoto'}
               />
             </picture>
-          </ScrollAnimation>
+          </div>
         </div>
         {contentBlock.secondImage && (
           <div className={'halfWrap'}>
-            <ScrollAnimation
-              animateOnce
-              animateIn="fadeInUp"
-              duration={1}
+            <div
               className={'imageInsidePicture'}
               style={{ width: `${contentBlock.secondImageSize}%` }}
             >
@@ -60,11 +50,11 @@ const BlockNewsPaper = ({ contentBlock }) => {
                   className={'duoImageBlockSecondPhoto'}
                 />
               </picture>
-            </ScrollAnimation>
+            </div>
           </div>
         )}
       </div>
-    </ScrollAnimation>
+    </div>
   );
 };
 

@@ -21,16 +21,16 @@ const Navigation = ({ items }) => {
           <div className="o-container">
             <div className="o-grid o-grid--gutter">
               <div className="o-grid__item u-1-of-3-bp2">
-              <h2>Behangmotief</h2>
+                <h2>Behangmotief</h2>
                 <ul className="c-navigation--main">
                   <li>
                     <Link href="/about" as="/about">
-                      About
+                      <a onClick={() => toggleMobileNav()}>About</a>
                     </Link>
                   </li>
                   <li>
                     <Link href="/" as="/">
-                      Wannabes
+                      <a onClick={() => toggleMobileNav()}>Wannabes</a>
                     </Link>
                   </li>
                 </ul>
@@ -41,7 +41,7 @@ const Navigation = ({ items }) => {
                   {items.map((item) => (
                     <li key={item.slug}>
                       <Link href="/series/[slug]" as={`/series/${item.slug}`}>
-                        {item.title}
+                        <a onClick={() => toggleMobileNav()}>{item.title}</a>
                       </Link>
                     </li>
                   ))}
