@@ -25,14 +25,17 @@ export const SERIE = gql`
             ... on BlockNewsPaper {
               firstImage {
                 url
+                fileName
               }
               firstImageSize
               secondImage {
                 url
+                fileName
               }
               secondImageSize
               fullPageImage {
                 url
+                fileName
               }
               fullPageImageDescription
               direction
