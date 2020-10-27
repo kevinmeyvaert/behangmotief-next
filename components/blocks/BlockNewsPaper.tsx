@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 
 const BlockNewsPaper = ({ contentBlock }) => {
@@ -6,7 +6,15 @@ const BlockNewsPaper = ({ contentBlock }) => {
     <div className="outer">
       <div className={'inner'} style={!contentBlock.fullPageImage ? { paddingTop: '66.66%' } : {}}>
         {contentBlock.fullPageImage && (
-          <Image src={contentBlock.fullPageImage.url} alt={contentBlock.title} unsized />
+          <div style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}>
+            <Image
+              src={contentBlock.fullPageImage.url}
+              alt={contentBlock.title}
+              unsized
+              className={'duoImageBlockFirstPhoto'}
+              style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}
+            />
+          </div>
         )}
         <div className={'bigWrap'} style={{ justifyContent: contentBlock.direction }}>
           <div className={'halfWrap'}>
@@ -14,7 +22,12 @@ const BlockNewsPaper = ({ contentBlock }) => {
               className={'imageInsidePicture'}
               style={{ width: `${contentBlock.firstImageSize}%` }}
             >
-              <Image src={contentBlock.firstImage.url} alt={contentBlock.title} unsized />
+              <Image
+                src={contentBlock.firstImage.url}
+                alt={contentBlock.title}
+                unsized
+                className={'duoImageBlockSecondPhoto'}
+              />
             </div>
           </div>
           {contentBlock.secondImage && (
