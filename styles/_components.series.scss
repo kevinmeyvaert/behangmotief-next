@@ -1,8 +1,20 @@
-.duoImageBigPicture {
-  width: 100%;
+.outer {
   position: relative;
-  margin-bottom: 2rem;
   overflow: hidden;
+  margin-bottom: 4rem;
+  &:before {
+    display: block;
+    content: '';
+    width: 100%;
+    padding-top: (2 / 3) * 100%;
+  }
+  > .inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
 }
 
 .bigWrap {
