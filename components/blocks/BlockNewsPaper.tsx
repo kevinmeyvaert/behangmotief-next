@@ -17,7 +17,7 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock }) => {
           {contentBlock.fullPageImage ? (
             <figure style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}>
               <Image
-                // TODO: Add sizes
+                sizes="(min-width: 90em) calc(100vw - 6rem), calc(100vw - 6rem)"
                 src={contentBlock.fullPageImage.url}
                 alt={contentBlock.title}
                 unsized
@@ -30,11 +30,10 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock }) => {
               <figure style={{ width: `${contentBlock.firstImageSize}%` }}>
                 <ScrollAnimation animateOnce animateIn="fadeInUp" duration={1}>
                   <Image
-                    // TODO: Add sizes
+                    sizes="(min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
                     src={contentBlock.firstImage.url}
                     alt={contentBlock.title}
                     unsized
-                    className={'duoImageBlockSecondPhoto'}
                   />
                 </ScrollAnimation>
               </figure>
@@ -44,7 +43,7 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock }) => {
                 <figure style={{ width: `${contentBlock.secondImageSize}%` }}>
                   <ScrollAnimation animateOnce animateIn="fadeInUp" duration={1}>
                     <Image
-                      // TODO: Add sizes
+                      sizes="(min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
                       src={contentBlock.secondImage.url}
                       alt={contentBlock.title}
                       unsized
