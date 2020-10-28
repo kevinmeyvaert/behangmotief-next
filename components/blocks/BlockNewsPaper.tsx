@@ -18,7 +18,7 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
           {contentBlock.fullPageImage ? (
             <figure style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}>
               <Image
-                sizes="(max-width: 48em) calc(100vw - 3rem), (min-width: 90em) calc(100vw - 6rem), calc(100vw - 6rem)"
+                sizes="(max-width: 48em) calc(100vw - 3rem), (min-width: 90em) calc(100vw - 6rem), calc(90em - 6rem)"
                 src={contentBlock.fullPageImage.url}
                 alt={contentBlock.title}
                 unsized
