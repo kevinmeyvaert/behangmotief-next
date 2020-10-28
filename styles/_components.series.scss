@@ -18,7 +18,7 @@
   }
 }
 
-.bigWrap {
+.big-wrap {
   position: absolute;
   top: 0;
   display: flex;
@@ -28,18 +28,8 @@
   align-items: center;
 }
 
-.halfWrap {
+.half-wrap {
   width: 50%;
   display: flex;
   justify-content: center;
-}
-
-.duoImageBigPicture p {
-  font-style: italic;
-  color: lightgray;
-  font-size: 0.8em;
-}
-
-.imageInsidePicture {
-  box-sizing: border-box;
 }

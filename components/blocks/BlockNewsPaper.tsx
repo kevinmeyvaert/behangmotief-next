@@ -1,48 +1,62 @@
-import React, { useEffect } from 'react';
+import React, { FC } from 'react';
 import Image from 'next/image';
+import ScrollAnimation from 'react-animate-on-scroll';
 
-const BlockNewsPaper = ({ contentBlock }) => {
+interface Props {
+  contentBlock: any;
+}
+
+const BlockNewsPaper: FC<Props> = ({ contentBlock }) => {
   return (
-    <div className="outer">
-      <div className={'inner'} style={!contentBlock.fullPageImage ? { paddingTop: '66.66%' } : {}}>
-        {contentBlock.fullPageImage && (
-          <div style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}>
-            <Image
-              src={contentBlock.fullPageImage.url}
-              alt={contentBlock.title}
-              unsized
-              className={'duoImageBlockFirstPhoto'}
-              style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}
-            />
-          </div>
-        )}
-        <div className={'bigWrap'} style={{ justifyContent: contentBlock.direction }}>
-          <div className={'halfWrap'}>
-            <div
-              className={'imageInsidePicture'}
-              style={{ width: `${contentBlock.firstImageSize}%` }}
-            >
+    <ScrollAnimation animateOnce animateIn="fadeInUp" duration={1}>
+      <section className="outer">
+        <div
+          className={'inner'}
+          style={!contentBlock.fullPageImage ? { paddingTop: '66.66%' } : {}}
+        >
+          {contentBlock.fullPageImage ? (
+            <figure style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}>
               <Image
-                src={contentBlock.firstImage.url}
+                // TODO: Add sizes
+                src={contentBlock.fullPageImage.url}
                 alt={contentBlock.title}
                 unsized
-                className={'duoImageBlockSecondPhoto'}
+                style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}
               />
+            </figure>
+          ) : null}
+          <div className="big-wrap" style={{ justifyContent: contentBlock.direction }}>
+            <div className="half-wrap">
+              <figure style={{ width: `${contentBlock.firstImageSize}%` }}>
+                <ScrollAnimation animateOnce animateIn="fadeInUp" duration={1}>
+                  <Image
+                    // TODO: Add sizes
+                    src={contentBlock.firstImage.url}
+                    alt={contentBlock.title}
+                    unsized
+                    className={'duoImageBlockSecondPhoto'}
+                  />
+                </ScrollAnimation>
+              </figure>
             </div>
-          </div>
-          {contentBlock.secondImage && (
-            <div className={'halfWrap'}>
-              <div
-                className={'imageInsidePicture'}
-                style={{ width: `${contentBlock.secondImageSize}%` }}
-              >
-                <Image src={contentBlock.secondImage.url} alt={contentBlock.title} unsized />
+            {contentBlock.secondImage ? (
+              <div className="half-wrap">
+                <figure style={{ width: `${contentBlock.secondImageSize}%` }}>
+                  <ScrollAnimation animateOnce animateIn="fadeInUp" duration={1}>
+                    <Image
+                      // TODO: Add sizes
+                      src={contentBlock.secondImage.url}
+                      alt={contentBlock.title}
+                      unsized
+                    />
+                  </ScrollAnimation>
+                </figure>
               </div>
-            </div>
-          )}
+            ) : null}
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </ScrollAnimation>
   );
 };
 
