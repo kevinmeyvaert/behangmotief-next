@@ -23,6 +23,7 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
                 alt={contentBlock.title}
                 unsized
                 style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}
+                loading={single ? 'eager' : 'lazy'}
               />
             </figure>
           ) : null}
@@ -35,6 +36,7 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
                     src={contentBlock.firstImage.url}
                     alt={contentBlock.title}
                     unsized
+                    loading={single ? 'eager' : 'lazy'}
                   />
                 </ScrollAnimation>
               </figure>
@@ -48,6 +50,7 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
                       src={contentBlock.secondImage.url}
                       alt={contentBlock.title}
                       unsized
+                      loading={single ? 'eager' : 'lazy'}
                     />
                   </ScrollAnimation>
                 </figure>

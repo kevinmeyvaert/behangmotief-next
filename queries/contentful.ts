@@ -50,7 +50,7 @@ export const SERIE = gql`
 
 export const RANDOM_SPREADS = gql`
   query RandomSpread {
-    randomSpreads: blockNewsPaperCollection(limit: 15, order: sys_firstPublishedAt_DESC) {
+    randomSpreads: blockNewsPaperCollection(limit: 5, order: sys_firstPublishedAt_DESC) {
       items {
         ... on BlockNewsPaper {
           firstImage {
