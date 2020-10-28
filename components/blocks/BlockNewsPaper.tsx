@@ -32,7 +32,7 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
               <figure style={{ width: `${contentBlock.firstImageSize}%` }}>
                 <ScrollAnimation animateOnce animateIn="fadeInUp" duration={single ? 0 : 1}>
                   <Image
-                    sizes="(min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
+                    sizes="(max-width: 48em) 50vw, (min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
                     src={contentBlock.firstImage.url}
                     alt={contentBlock.title}
                     unsized
@@ -46,7 +46,8 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
                 <figure style={{ width: `${contentBlock.secondImageSize}%` }}>
                   <ScrollAnimation animateOnce animateIn="fadeInUp" duration={single ? 0 : 1}>
                     <Image
-                      sizes="(min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
+                      sizes="(max-width: 48em) 50vw, 
+                      (min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
                       src={contentBlock.secondImage.url}
                       alt={contentBlock.title}
                       unsized
