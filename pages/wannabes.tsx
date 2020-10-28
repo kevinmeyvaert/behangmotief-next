@@ -1,9 +1,9 @@
+import { useSWRInfinite } from 'swr';
 import request from 'graphql-request';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Head from 'next/head';
 import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
-import Slider from 'react-slick';
 
 import { contentfulRequest, WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
@@ -11,29 +11,38 @@ import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
 import Logo from '../components/Logo';
 import Navigation from '../components/Navigation';
-import { NAVIGATION, RANDOM_SPREADS } from '../queries/contentful';
-import BlockNewsPaper from '../components/blocks/BlockNewsPaper';
+import useEndlessScroll from '../hooks/useEndlessScroll';
+import { loadingStatus } from '../lib/helpers';
+import { NAVIGATION } from '../queries/contentful';
 
-const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  posts,
-  spreads,
+const NUMBER_OF_POSTS = 15;
+
+const Wannabes: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  initialData,
   navigationItems,
 }) => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    arrows: false,
-    autoplay: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplaySpeed: 5000,
-  };
+  const { data, error, size, setSize } = useSWRInfinite(
+    (index) => {
+      return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
+    },
+    (query, start, limit) => {
+      return request(WANNABES_API_ENDPOINT, query, {
+        start,
+        limit,
+      });
+    },
+    { initialData, revalidateOnFocus: false },
+  );
 
+  const canLoadMore = size * NUMBER_OF_POSTS < initialData[0].posts.pagination.total;
+  const [, isLoadingMore] = loadingStatus(data, error, size);
+  useEndlessScroll(size, setSize, isLoadingMore, 1000, canLoadMore);
+
+  const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
   return (
     <main className="themed-main isLight">
       <Head>
-        <title>Behangmotief</title>
+        <title>Wannabes - Behangmotief</title>
         <meta
           name="description"
           content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
@@ -57,13 +66,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <section className="c-row">
         <div className="o-container o-flex o-align-center o-justify-center">
           <Logo title="Behangmotief" link="/" />
-        </div>
-      </section>
-      <section className="c-row">
-        <div className="o-container c-slider">
-          <Slider {...settings}>
-            {spreads.map(spread => <BlockNewsPaper contentBlock={spread} single key={spread.spreadTitle} />)}
-          </Slider>
         </div>
       </section>
       <section className="c-row">
@@ -96,15 +98,13 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 };
 
 export const getStaticProps = async () => {
-  const { posts }: SearchQuery = await request(WANNABES_API_ENDPOINT, POSTS, {
+  const initialPosts: SearchQuery = await request(WANNABES_API_ENDPOINT, POSTS, {
     start: 0,
-    limit: 6,
+    limit: NUMBER_OF_POSTS,
   });
-  const { randomSpreads } = await contentfulRequest({ query: RANDOM_SPREADS });
-  const spreads = randomSpreads.items;
   const { navigation } = await contentfulRequest({ query: NAVIGATION });
   const navigationItems = navigation.pageCollection.items;
-  return { props: { posts: posts.data, spreads, navigationItems }, revalidate: 1800 };
+  return { props: { initialData: [initialPosts], navigationItems }, revalidate: 1800 };
 };
 
-export default Home;
+export default Wannabes;

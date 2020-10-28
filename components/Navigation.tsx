@@ -24,12 +24,12 @@ const Navigation = ({ items }) => {
                 <h2>Behangmotief</h2>
                 <ul className="c-navigation--main">
                   <li>
-                    <Link href="/about" as="/about">
+                    <Link href="/about">
                       <a onClick={() => toggleMobileNav()}>About</a>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/" as="/">
+                    <Link href="/wannabes">
                       <a onClick={() => toggleMobileNav()}>Wannabes</a>
                     </Link>
                   </li>
@@ -40,7 +40,7 @@ const Navigation = ({ items }) => {
                 <ul className="c-navigation--main">
                   {items.map((item) => (
                     <li key={item.slug}>
-                      <Link href="/series/[slug]" as={`/series/${item.slug}`}>
+                      <Link href={`/series/${item.slug}`}>
                         <a onClick={() => toggleMobileNav()}>{item.title}</a>
                       </Link>
                     </li>

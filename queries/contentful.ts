@@ -47,3 +47,32 @@ export const SERIE = gql`
     }
   }
 `;
+
+export const RANDOM_SPREADS = gql`
+  query RandomSpread {
+    randomSpreads: blockNewsPaperCollection(limit: 15, order: sys_firstPublishedAt_DESC) {
+      items {
+        ... on BlockNewsPaper {
+          firstImage {
+            url
+            fileName
+          }
+          firstImageSize
+          secondImage {
+            url
+            fileName
+          }
+          secondImageSize
+          fullPageImage {
+            url
+            fileName
+          }
+          fullPageImageDescription
+          direction
+          aside
+          spreadTitle
+        }
+      }
+    }
+  }
+`;
