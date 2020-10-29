@@ -31,67 +31,85 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   };
 
   return (
-    <main className="themed-main isLight">
-      <Head>
-        <title>Behangmotief</title>
-        <meta
-          name="description"
-          content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
-        />
-        <link rel="shortcut icon" href="favicon.png" />
-        <meta property="og:title" content="BEHANGMOTIEF" />
-        <meta property="og:site_name" content="BEHANGMOTIEF" />
-        <meta property="og:url" content="http://behangmotief.be/" />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:description"
-          content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
-        />
-        <meta property="og:image" content="http://behangmotief.be/og.jpg" />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:url" content="http://behangmotief.be/" />
-        <meta name="twitter:title" content="BEHANGMOTIEF" />
-        <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
-      </Head>
-      <Navigation items={navigationItems} />
-      <section className="c-row">
-        <div className="o-container o-flex o-align-center o-justify-center">
-          <Logo title="Behangmotief" link="/" />
+    <>
+      <main className="themed-main isLight">
+        <Head>
+          <title>Behangmotief</title>
+          <meta
+            name="description"
+            content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
+          />
+          <link rel="shortcut icon" href="favicon.png" />
+          <meta property="og:title" content="BEHANGMOTIEF" />
+          <meta property="og:site_name" content="BEHANGMOTIEF" />
+          <meta property="og:url" content="http://behangmotief.be/" />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:description"
+            content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
+          />
+          <meta property="og:image" content="http://behangmotief.be/og.jpg" />
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:url" content="http://behangmotief.be/" />
+          <meta name="twitter:title" content="BEHANGMOTIEF" />
+          <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
+        </Head>
+        <Navigation items={navigationItems} />
+        <section className="c-row">
+          <div className="o-container o-flex o-align-center o-justify-center">
+            <Logo title="Behangmotief" link="/" />
+          </div>
+        </section>
+        <section className="c-row">
+          <div className="o-container c-slider">
+            <Slider {...settings}>
+              {spreads.map((spread) => (
+                <BlockNewsPaper contentBlock={spread} single key={spread.spreadTitle} />
+              ))}
+            </Slider>
+          </div>
+          <div className="o-container  o-flex o-align-center o-justify-end">
+            <button className="c-home--button">See all 2020 highlights →</button>
+          </div>
+        </section>
+        <section className="c-row">
+          <div className="o-container">
+            <Masonry
+              breakpointCols={{
+                default: 3,
+                700: 2,
+                500: 1,
+              }}
+              className="c-masonry"
+              columnClassName="c-masonry--grid-column"
+            >
+              {posts.map((post) => (
+                <MasonryItem
+                  src={post.thumbnail.hires}
+                  artist={post.artist.name}
+                  venue={post.venue.name}
+                  slug={post.slug}
+                  key={post.slug}
+                  dimensions={post.thumbnail?.dimensions}
+                  blurhash={post.thumbnail.blurhash}
+                />
+              ))}
+            </Masonry>
+            <div className="o-container o-flex o-align-center o-justify-end">
+              <button className="c-home--button">See all recent albums →</button>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="c-row c-row--flush footer">
+        <div className="o-container o-flex o-align-center o-justify-space-between">
+          Made with ♥️ in Gent.
+          <div>
+            <a href="https://instagram.com/behangmotief">@behangmotief</a>
+          </div>
         </div>
-      </section>
-      <section className="c-row">
-        <div className="o-container c-slider">
-          <Slider {...settings}>
-            {spreads.map(spread => <BlockNewsPaper contentBlock={spread} single key={spread.spreadTitle} />)}
-          </Slider>
-        </div>
-      </section>
-      <section className="c-row">
-        <div className="o-container">
-          <Masonry
-            breakpointCols={{
-              default: 3,
-              700: 2,
-              500: 1,
-            }}
-            className="c-masonry"
-            columnClassName="c-masonry--grid-column"
-          >
-            {posts.map((post) => (
-              <MasonryItem
-                src={post.thumbnail.hires}
-                artist={post.artist.name}
-                venue={post.venue.name}
-                slug={post.slug}
-                key={post.slug}
-                dimensions={post.thumbnail?.dimensions}
-                blurhash={post.thumbnail.blurhash}
-              />
-            ))}
-          </Masonry>
-        </div>
-      </section>
-    </main>
+      </footer>
+    </>
   );
 };
 

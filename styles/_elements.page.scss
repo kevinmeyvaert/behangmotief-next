@@ -40,5 +40,30 @@ main {
 }
 
 .c-slider {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+}
+
+.footer {
+  background-color: black;
+  color: white;
+  padding: 2rem 1.5rem !important;
+  font-size: .8rem;
+
+  a {
+    &,
+    &:visited {
+      color: white;
+    }
+  }
+
+  @include mq(bp3) {
+    padding: 2rem 0 !important;
+  }
+}
+
+.c-home--button {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
 }
