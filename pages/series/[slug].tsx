@@ -7,6 +7,7 @@ import Navigation from '../../components/Navigation';
 import { NAVIGATION, SERIE } from '../../queries/contentful';
 import BlockNewsPaper from '../../components/blocks/BlockNewsPaper';
 import Head from 'next/head';
+import Footer from '../../components/Footer';
 
 const SeriesPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
   serie,
@@ -50,6 +51,7 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
           </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 };

@@ -11,10 +11,14 @@ import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
 import Masonry from 'react-masonry-css';
 import { NAVIGATION } from '../../queries/contentful';
+import Footer from '../../components/Footer';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, navigationItems }) => {
+const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  post,
+  navigationItems,
+}) => {
   const [isDark, setIsDark] = useState(false);
   useEffect(() => {
     const handleScroll = async () => {
@@ -30,7 +34,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
 
   if (!post) return null;
   const { artist, venue, images, thumbnail, date } = post;
-  
+
   return (
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
@@ -58,23 +62,18 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
         <Navigation items={navigationItems} />
-        <AlbumMobileHeader
-          artist={artist.name}
-          venue={venue.name}
-          isDark={isDark}
-          date={date}
-        />
+        <AlbumMobileHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <AlbumHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <section className="c-row">
           <div className="o-container">
-          <Masonry
-            breakpointCols={{
-              default: 2,
-              768: 1,
-            }}
-            className="c-masonry c-masonry--gutter"
-            columnClassName="c-masonry--grid-column  c-masonry--grid-column--gutter"
-          >
+            <Masonry
+              breakpointCols={{
+                default: 2,
+                768: 1,
+              }}
+              className="c-masonry c-masonry--gutter"
+              columnClassName="c-masonry--grid-column  c-masonry--grid-column--gutter"
+            >
               {images.map((photo, index) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <figure key={index} className="c-album--photo-item">
@@ -92,6 +91,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post, n
           </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 };
@@ -102,7 +102,7 @@ export const getStaticProps = async ({ params }) => {
 
   const { post }: { post: AlbumQuery['post'] } = await fetcher(ALBUM, mergeSlug);
   const { navigation } = await contentfulRequest({ query: NAVIGATION });
-  const navigationItems = navigation.pageCollection.items; 
+  const navigationItems = navigation.pageCollection.items;
 
   return { props: { post, navigationItems }, revalidate: 1800 };
 };

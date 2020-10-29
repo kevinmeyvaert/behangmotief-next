@@ -1,6 +1,7 @@
 import request from 'graphql-request';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
 import Slider from 'react-slick';
@@ -13,12 +14,14 @@ import Logo from '../components/Logo';
 import Navigation from '../components/Navigation';
 import { NAVIGATION, RANDOM_SPREADS } from '../queries/contentful';
 import BlockNewsPaper from '../components/blocks/BlockNewsPaper';
+import Footer from '../components/Footer';
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   posts,
   spreads,
   navigationItems,
 }) => {
+  const router = useRouter();
   const settings = {
     dots: true,
     infinite: true,
@@ -69,7 +72,12 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
             </Slider>
           </div>
           <div className="o-container  o-flex o-align-center o-justify-end">
-            <button className="c-home--button">See all 2020 highlights →</button>
+            <button
+              className="c-home--button"
+              onClick={() => router.push('/series/2020').then(() => window.scrollTo(0, 0))}
+            >
+              See all 2020 highlights →
+            </button>
           </div>
         </section>
         <section className="c-row">
@@ -96,19 +104,17 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
               ))}
             </Masonry>
             <div className="o-container o-flex o-align-center o-justify-end">
-              <button className="c-home--button">See all recent albums →</button>
+              <button
+                className="c-home--button"
+                onClick={() => router.push('/wannabes').then(() => window.scrollTo(0, 0))}
+              >
+                See all recent albums →
+              </button>
             </div>
           </div>
         </section>
       </main>
-      <footer className="c-row c-row--flush footer">
-        <div className="o-container o-flex o-align-center o-justify-space-between">
-          Made with ♥️ in Gent.
-          <div>
-            <a href="https://instagram.com/behangmotief">@behangmotief</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 };

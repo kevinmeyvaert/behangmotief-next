@@ -14,6 +14,7 @@ import Navigation from '../components/Navigation';
 import useEndlessScroll from '../hooks/useEndlessScroll';
 import { loadingStatus } from '../lib/helpers';
 import { NAVIGATION } from '../queries/contentful';
+import Footer from '../components/Footer';
 
 const NUMBER_OF_POSTS = 15;
 
@@ -40,60 +41,63 @@ const Wannabes: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
   return (
-    <main className="themed-main isLight">
-      <Head>
-        <title>Wannabes - Behangmotief</title>
-        <meta
-          name="description"
-          content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
-        />
-        <link rel="shortcut icon" href="favicon.png" />
-        <meta property="og:title" content="BEHANGMOTIEF" />
-        <meta property="og:site_name" content="BEHANGMOTIEF" />
-        <meta property="og:url" content="http://behangmotief.be/" />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:description"
-          content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
-        />
-        <meta property="og:image" content="http://behangmotief.be/og.jpg" />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:url" content="http://behangmotief.be/" />
-        <meta name="twitter:title" content="BEHANGMOTIEF" />
-        <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
-      </Head>
-      <Navigation items={navigationItems} />
-      <section className="c-row">
-        <div className="o-container o-flex o-align-center o-justify-center">
-          <Logo title="Behangmotief" link="/" />
-        </div>
-      </section>
-      <section className="c-row">
-        <div className="o-container">
-          <Masonry
-            breakpointCols={{
-              default: 3,
-              700: 2,
-              500: 1,
-            }}
-            className="c-masonry"
-            columnClassName="c-masonry--grid-column"
-          >
-            {posts.map((post) => (
-              <MasonryItem
-                src={post.thumbnail.hires}
-                artist={post.artist.name}
-                venue={post.venue.name}
-                slug={post.slug}
-                key={post.slug}
-                dimensions={post.thumbnail?.dimensions}
-                blurhash={post.thumbnail.blurhash}
-              />
-            ))}
-          </Masonry>
-        </div>
-      </section>
-    </main>
+    <>
+      <main className="themed-main isLight">
+        <Head>
+          <title>Wannabes - Behangmotief</title>
+          <meta
+            name="description"
+            content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
+          />
+          <link rel="shortcut icon" href="favicon.png" />
+          <meta property="og:title" content="BEHANGMOTIEF" />
+          <meta property="og:site_name" content="BEHANGMOTIEF" />
+          <meta property="og:url" content="http://behangmotief.be/" />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:description"
+            content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
+          />
+          <meta property="og:image" content="http://behangmotief.be/og.jpg" />
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:url" content="http://behangmotief.be/" />
+          <meta name="twitter:title" content="BEHANGMOTIEF" />
+          <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
+        </Head>
+        <Navigation items={navigationItems} />
+        <section className="c-row">
+          <div className="o-container o-flex o-align-center o-justify-center">
+            <Logo title="Behangmotief" link="/" />
+          </div>
+        </section>
+        <section className="c-row">
+          <div className="o-container">
+            <Masonry
+              breakpointCols={{
+                default: 3,
+                700: 2,
+                500: 1,
+              }}
+              className="c-masonry"
+              columnClassName="c-masonry--grid-column"
+            >
+              {posts.map((post) => (
+                <MasonryItem
+                  src={post.thumbnail.hires}
+                  artist={post.artist.name}
+                  venue={post.venue.name}
+                  slug={post.slug}
+                  key={post.slug}
+                  dimensions={post.thumbnail?.dimensions}
+                  blurhash={post.thumbnail.blurhash}
+                />
+              ))}
+            </Masonry>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 };
 
