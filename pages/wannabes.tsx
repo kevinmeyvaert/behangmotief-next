@@ -15,6 +15,7 @@ import useEndlessScroll from '../hooks/useEndlessScroll';
 import { loadingStatus } from '../lib/helpers';
 import { NAVIGATION } from '../queries/contentful';
 import Footer from '../components/Footer';
+import useDarkMode from '../hooks/useDarkMode';
 
 const NUMBER_OF_POSTS = 15;
 
@@ -22,6 +23,7 @@ const Wannabes: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   initialData,
   navigationItems,
 }) => {
+  const isDark = useDarkMode();
   const { data, error, size, setSize } = useSWRInfinite(
     (index) => {
       return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
@@ -42,7 +44,7 @@ const Wannabes: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
   return (
     <>
-      <main className="themed-main isLight">
+      <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
         <Head>
           <title>Wannabes - Behangmotief</title>
           <meta
@@ -64,12 +66,7 @@ const Wannabes: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <meta name="twitter:title" content="BEHANGMOTIEF" />
           <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
         </Head>
-        <Navigation items={navigationItems} />
-        <section className="c-row">
-          <div className="o-container o-flex o-align-center o-justify-center">
-            <Logo title="Behangmotief" link="/" />
-          </div>
-        </section>
+        <Navigation items={navigationItems} isDark={isDark} />
         <section className="c-row">
           <div className="o-container">
             <Masonry
