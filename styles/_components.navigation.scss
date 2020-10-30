@@ -1,4 +1,8 @@
 .c-nav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
   h2 {
     font-size: 0.8rem;
     margin-bottom: 1rem;
@@ -6,6 +10,25 @@
     font-weight: 700;
     text-transform: uppercase;
     color: palette(color-neutral, light);
+  }
+
+  .isDark & {
+    .has-open-nav & {
+      background: linear-gradient(
+        rgba(0, 0, 0, 1) 20%,
+        rgba(0, 0, 0, 0.5) 80%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+  }
+
+}
+
+.c-nav-active {
+  padding: 1rem 1rem 0 1rem;
+
+  @include mq(bp3) {
+    margin-top: 3rem;
   }
 }
 
@@ -16,19 +39,15 @@
     margin-bottom: 0.5rem;
   }
   & a {
-    color: palette(color-neutral, xx-dark);
+    .isDark & {
+      color: palette(color-neutral, xx-light);
+    }
+    .isLight & {
+      color: palette(color-neutral, xx-dark);
+    }
     text-decoration: none;
     font-size: 0.9rem;
   }
-}
-
-.c-nav-dark {
-  color: palette(color-neutral, xx-dark);
-  background-color: palette(color-neutral, xx-light);
-}
-
-.c-nav-light {
-  color: palette(color-neutral, xx-dark);
 }
 
 // Mobile navigation actions
@@ -45,20 +64,24 @@
   display: block;
   outline: 0;
   cursor: pointer;
+  padding: 0 1rem 0 0;
 }
 
 .c-nav-trigger__top,
 .c-nav-trigger__middle,
 .c-nav-trigger__bottom {
   display: block;
-  background-color: palette(color-neutral, xx-dark);
   transform-origin: 50%;
   transition: all $animation-duration-beta;
   margin: 6px 0;
   width: 24px;
   height: 2px;
 
-  .c-nav-dark & {
+  .isDark & {
+    background-color: palette(color-neutral, xx-light);
+  }
+
+  .isLight & {
     background-color: palette(color-neutral, xx-dark);
   }
 }

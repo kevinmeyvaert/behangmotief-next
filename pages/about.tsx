@@ -3,17 +3,19 @@ import Head from 'next/head';
 import type { InferGetStaticPropsType } from 'next';
 
 import { contentfulRequest, datoRequest } from '../lib/api';
-import Logo from '../components/Logo';
 import Navigation from '../components/Navigation';
 import { ABOUT } from '../queries/dato';
 import LazyImage from '../components/LazyImage';
 import { NAVIGATION } from '../queries/contentful';
 import Footer from '../components/Footer';
+import useDarkMode from '../hooks/useDarkMode';
 
 const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navigationItems }) => {
+  const isDark = useDarkMode();
+
   return (
     <>
-      <main className="themed-main isLight">
+      <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
         <Head>
           <title>Behangmotief</title>
           <meta
@@ -35,12 +37,7 @@ const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navi
           <meta name="twitter:title" content="BEHANGMOTIEF" />
           <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
         </Head>
-        <Navigation items={navigationItems} />
-        <section className="c-row">
-          <div className="o-container o-flex o-align-center o-justify-center">
-            <Logo title="Behangmotief" link="/" />
-          </div>
-        </section>
+        <Navigation items={navigationItems} isDark={isDark} />
         <section className="c-row">
           <div className="o-container">
             <LazyImage

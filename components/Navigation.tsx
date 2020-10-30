@@ -1,12 +1,13 @@
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { MobileNavigationContext } from '../context/MobileNavContext';
+import Logo from './Logo';
 
-const Navigation = ({ items }) => {
+const Navigation = ({ items, isDark }) => {
   const { toggleMobileNav, mobileNavActive } = useContext(MobileNavigationContext);
   return (
     <>
-      <section className={mobileNavActive ? 'c-row c-nav c-nav-dark' : 'c-row c-nav c-nav-light'}>
+      <section className='c-row c-nav'>
         <div className="o-container o-flex o-align-center o-justify-end">
           <div className="c-nav-actions">
             <a onClick={toggleMobileNav} className="c-nav-trigger">
@@ -17,8 +18,19 @@ const Navigation = ({ items }) => {
             </a>
           </div>
         </div>
+        <div className="o-container o-flex o-align-center o-justify-center">
+          <Logo
+            title="Behangmotief"
+            link="/"
+            isDark={isDark}
+            style={{
+              marginBottom: '20px',
+              '--scroll': !isDark ? 1 : 0.5,
+            }}
+          />
+        </div>
         <nav className={mobileNavActive ? undefined : 'is-hidden'}>
-          <div className="o-container">
+          <div className="o-container c-nav-active">
             <div className="o-grid o-grid--gutter">
               <div className="o-grid__item u-1-of-3-bp2">
                 <h2>Behangmotief</h2>

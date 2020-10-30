@@ -10,11 +10,11 @@ import { contentfulRequest, WANNABES_API_ENDPOINT } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 import MasonryItem from '../components/MasonryItem';
-import Logo from '../components/Logo';
 import Navigation from '../components/Navigation';
 import { NAVIGATION, RANDOM_SPREADS } from '../queries/contentful';
 import BlockNewsPaper from '../components/blocks/BlockNewsPaper';
 import Footer from '../components/Footer';
+import useDarkMode from '../hooks/useDarkMode';
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   posts,
@@ -22,6 +22,8 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   navigationItems,
 }) => {
   const router = useRouter();
+  const isDark = useDarkMode();
+
   const settings = {
     dots: true,
     infinite: true,
@@ -35,7 +37,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   return (
     <>
-      <main className="themed-main isLight">
+      <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
         <Head>
           <title>Behangmotief</title>
           <meta
@@ -57,12 +59,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <meta name="twitter:title" content="BEHANGMOTIEF" />
           <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
         </Head>
-        <Navigation items={navigationItems} />
-        <section className="c-row">
-          <div className="o-container o-flex o-align-center o-justify-center">
-            <Logo title="Behangmotief" link="/" />
-          </div>
-        </section>
+        <Navigation items={navigationItems} isDark={isDark} />
         <section className="c-row">
           <div className="o-container c-slider">
             <Slider {...settings}>

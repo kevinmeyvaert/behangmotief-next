@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import request from 'graphql-request';
 import type { InferGetStaticPropsType } from 'next';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { contentfulRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
 import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import type { AlbumQuery, SearchQuery } from '../../types/wannabes.types';
@@ -12,6 +12,7 @@ import Navigation from '../../components/Navigation';
 import Masonry from 'react-masonry-css';
 import { NAVIGATION } from '../../queries/contentful';
 import Footer from '../../components/Footer';
+import useDarkMode from '../../hooks/useDarkMode';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
@@ -19,18 +20,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   post,
   navigationItems,
 }) => {
-  const [isDark, setIsDark] = useState(false);
-  useEffect(() => {
-    const handleScroll = async () => {
-      if (window.scrollY > 75 && !isDark) {
-        setIsDark(true);
-      } else if (window.scrollY < 75 && isDark) {
-        setIsDark(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
+  const isDark = useDarkMode();
 
   if (!post) return null;
   const { artist, venue, images, thumbnail, date } = post;
@@ -61,7 +51,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <meta name="twitter:image" content={thumbnail.resized} />
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
-        <Navigation items={navigationItems} />
+        <Navigation items={navigationItems} isDark={isDark} />
         <AlbumMobileHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <AlbumHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <section className="c-row">

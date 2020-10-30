@@ -79,9 +79,30 @@ main {
   padding: .5rem;
   font-size: .8rem;
 
+  .isDark & {
+    border: 1px solid white;
+    color: white;
+
+    @include mq(bp2) {
+      border: none;
+    }
+  }
+
   @include mq(bp2) {
     width: initial;
     border: none;
     padding: 0;
+  }
+}
+
+.slick-dots li button:before {
+  .isDark & {
+    color: white;
+  }
+}
+.slick-dots li.slick-active button:before {
+  .isDark & {
+    color: white;
+  opacity: 1;
   }
 }
