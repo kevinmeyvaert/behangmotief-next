@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   margin: 3rem 0;
+  overflow: hidden;
 
   @include mq(bp3) {
     flex-direction: row;
