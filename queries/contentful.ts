@@ -14,6 +14,83 @@ export const NAVIGATION = gql`
   }
 `;
 
+const NewsPaper = gql`
+  fragment blockNewsPaper on BlockNewsPaper {
+    firstImage {
+      url
+      width
+      height
+      fileName
+    }
+    firstImageSize
+    secondImage {
+      url
+      width
+      height
+      fileName
+    }
+    secondImageSize
+    fullPageImage {
+      url
+      width
+      height
+      fileName
+    }
+    fullPageImageDescription
+    direction
+    aside
+  }
+`;
+
+const DuoPhoto = gql`
+  fragment blockDuoPhoto on BlockDuoPhoto {
+    firstPhoto {
+      url
+      width
+      height
+    }
+    secondPhoto {
+      url
+      width
+      height
+    }
+    firstPhotoDescription
+    secondPhotoDescription
+    style
+  }
+`;
+
+const BlockText = gql`
+  fragment blockText on BlockText {
+    text
+  }
+`;
+
+export const PAGE = gql`
+  query Page($id: String!) {
+    page: pages(id: $id) {
+      title
+      slug
+      pageImage {
+        url
+        width
+        height
+      }
+      contentBlocksCollection {
+        items {
+          __typename
+          ...blockDuoPhoto
+          ...blockText
+          ...blockNewsPaper
+        }
+      }
+    }
+  }
+  ${BlockText}
+  ${DuoPhoto}
+  ${NewsPaper}
+`;
+
 export const SERIE = gql`
   query Serie($slug: String) {
     pagesCollection(where: { slug: $slug }) {
@@ -22,57 +99,22 @@ export const SERIE = gql`
         slug
         contentBlocksCollection(limit: 25) {
           items {
-            ... on BlockNewsPaper {
-              firstImage {
-                url
-                fileName
-              }
-              firstImageSize
-              secondImage {
-                url
-                fileName
-              }
-              secondImageSize
-              fullPageImage {
-                url
-                fileName
-              }
-              fullPageImageDescription
-              direction
-              aside
-            }
+            ...blockNewsPaper
           }
         }
       }
     }
   }
+  ${NewsPaper}
 `;
 
 export const RANDOM_SPREADS = gql`
   query RandomSpread {
     randomSpreads: blockNewsPaperCollection(limit: 5, order: sys_firstPublishedAt_DESC) {
       items {
-        ... on BlockNewsPaper {
-          firstImage {
-            url
-            fileName
-          }
-          firstImageSize
-          secondImage {
-            url
-            fileName
-          }
-          secondImageSize
-          fullPageImage {
-            url
-            fileName
-          }
-          fullPageImageDescription
-          direction
-          aside
-          spreadTitle
-        }
+        ...blockNewsPaper
       }
     }
   }
+  ${NewsPaper}
 `;

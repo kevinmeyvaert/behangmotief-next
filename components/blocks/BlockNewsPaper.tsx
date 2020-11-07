@@ -4,7 +4,7 @@ import ScrollAnimation from 'react-animate-on-scroll';
 
 interface Props {
   contentBlock: any;
-  single: boolean;
+  single?: boolean;
 }
 
 const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {

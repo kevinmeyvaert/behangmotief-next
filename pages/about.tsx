@@ -2,20 +2,19 @@ import { FC } from 'react';
 import Head from 'next/head';
 import type { InferGetStaticPropsType } from 'next';
 
-import { contentfulRequest, datoRequest } from '../lib/api';
+import { contentfulRequest } from '../lib/api';
 import Navigation from '../components/Navigation';
-import { ABOUT } from '../queries/dato';
-import LazyImage from '../components/LazyImage';
-import { NAVIGATION } from '../queries/contentful';
+import { NAVIGATION, PAGE } from '../queries/contentful';
 import Footer from '../components/Footer';
-import useDarkMode from '../hooks/useDarkMode';
+import BlockNewsPaper from '../components/blocks/BlockNewsPaper';
+import BlockText from '../components/blocks/BlockText';
+import BlockDuoPhoto from '../components/blocks/BlockDuoPhoto';
+import Image from 'next/image';
 
-const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navigationItems }) => {
-  const isDark = useDarkMode();
-
+const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ page, navigationItems }) => {
   return (
     <>
-      <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
+      <main className="themed-main isLight">
         <Head>
           <title>Behangmotief</title>
           <meta
@@ -37,21 +36,33 @@ const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navi
           <meta name="twitter:title" content="BEHANGMOTIEF" />
           <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
         </Head>
-        <Navigation items={navigationItems} isDark={isDark} />
+        <Navigation items={navigationItems} isDark={false} />
         <section className="c-row">
           <div className="o-container">
-            <LazyImage
-              src={about.headerImage.url}
-              blurhash={about.headerImage.blurhash}
-              srcSet={`${about.headerImage.url}?h=1066&w=1600 1600w, ${about.headerImage.url}?h=800&w=1200 1200w, ${about.headerImage.url}?h=533&w=800 800w, ${about.headerImage.url}?h=266&w=400 400w`}
+            <Image
+              sizes="(max-width: 48em) calc(100vw - 3rem), (min-width: 90em) calc(100vw - 6rem), calc(90em - 6rem)"
+              src={page.pageImage.url}
               alt="Kevin Meyvaert"
-              dimensions={{ width: about.headerImage.width, height: about.headerImage.height }}
+              loading="eager"
+              width={page.pageImage.width}
+              height={page.pageImage.height}
             />
           </div>
         </section>
         <section className="c-row">
           <div className="o-container">
-            <div dangerouslySetInnerHTML={{ __html: about.content[0].content }} />
+            {page.contentBlocksCollection.items.map((contentBlock) => {
+              switch (contentBlock.__typename) {
+                case 'BlockText':
+                  return <BlockText contentBlock={contentBlock} key={contentBlock.id} />;
+                case 'BlockDuoPhoto':
+                  return <BlockDuoPhoto contentBlock={contentBlock} key={contentBlock.id} />;
+                case 'BlockNewsPaper':
+                  return <BlockNewsPaper contentBlock={contentBlock} key={contentBlock.id} />;
+                default:
+                  return null;
+              }
+            })}
           </div>
         </section>
       </main>
@@ -61,12 +72,13 @@ const About: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ about, navi
 };
 
 export const getStaticProps = async () => {
-  const { about } = await datoRequest({
-    query: ABOUT,
-  });
   const { navigation } = await contentfulRequest({ query: NAVIGATION });
+  const { page } = await contentfulRequest({
+    query: PAGE,
+    variables: { id: '4NRslbg5z2idfu35byoeEu' },
+  });
   const navigationItems = navigation.pageCollection.items;
-  return { props: { about, navigationItems }, revalidate: 1800 };
+  return { props: { page, navigationItems }, revalidate: 1800 };
 };
 
 export default About;

@@ -12,6 +12,16 @@
     color: palette(color-neutral, light);
   }
 
+  .isLight & {
+    .has-open-nav & {
+      background: linear-gradient(
+        rgba(252,252,255, 1) 20%,
+        rgba(252,252,255, 0.5) 75%,
+        rgba(252,252,255, 0) 100%
+      );
+    }
+  }
+
   .isDark & {
     .has-open-nav & {
       background: linear-gradient(
