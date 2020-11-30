@@ -1,17 +1,34 @@
 import { gql } from 'graphql-request';
 
+const PagesLink = gql`
+  fragment pagesLink on Pages {
+    title
+    slug
+  }
+`;
+
+const AlbumsLink = gql`
+  fragment albumsLink on Albums {
+    title
+    slug
+  }
+`;
+
 export const NAVIGATION = gql`
   query Navigation {
     navigation(id: "tdwDULl9qTZlG7UJWiz5V") {
       name
       pageCollection {
         items {
-          slug
-          title
+          __typename
+          ...pagesLink
+          ...albumsLink
         }
       }
     }
   }
+  ${PagesLink}
+  ${AlbumsLink}
 `;
 
 const NewsPaper = gql`
@@ -117,4 +134,23 @@ export const RANDOM_SPREADS = gql`
     }
   }
   ${NewsPaper}
+`;
+
+export const CONTENTFUL_ALBUM = gql`
+  query Album($slug: String) {
+    albumsCollection(where: { slug: $slug }) {
+      items {
+        title
+        slug
+        photosCollection {
+          items {
+            url
+          }
+        }
+        coverPhoto {
+          url
+        }
+      }
+    }
+  }
 `;

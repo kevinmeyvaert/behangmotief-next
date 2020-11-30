@@ -50,13 +50,15 @@ const Navigation = ({ items, isDark }) => {
               <div className="o-grid__item u-1-of-3-bp2">
                 <h2>Series</h2>
                 <ul className="c-navigation--main">
-                  {items.map((item) => (
+                  {items.map((item) => {
+                    const path = item.__typename === 'Pages' ? 'series' : 'specials';
+                    return (
                     <li key={item.slug}>
-                      <Link href={`/series/${item.slug}`}>
+                      <Link href={`/${path}/${item.slug}`}>
                         <a onClick={() => toggleMobileNav()}>{item.title}</a>
                       </Link>
                     </li>
-                  ))}
+                  )})}
                 </ul>
               </div>
             </div>
