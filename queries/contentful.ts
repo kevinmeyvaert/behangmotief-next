@@ -115,7 +115,7 @@ export const SERIE = gql`
         title
         slug
         pageImage {
-          url
+          url(transform: { width: 1200, height: 630, resizeStrategy: FIT })
         }
         contentBlocksCollection(limit: 25) {
           items {
