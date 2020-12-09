@@ -114,6 +114,9 @@ export const SERIE = gql`
       items {
         title
         slug
+        pageImage {
+          url
+        }
         contentBlocksCollection(limit: 25) {
           items {
             ...blockNewsPaper
