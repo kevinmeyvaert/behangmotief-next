@@ -25,7 +25,7 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
         <meta property="og:image" content="website" />
         <meta property="og:title" content={`${serie.title} - Behangmotief`} />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content={serie.pageImage.url} />
+        <meta property="og:image" content={serie.pageImage?.url} />
         <meta property="og:description" content={`${serie.title}, a series of photos`} />
         <meta name="twitter:title" content={`${serie.title} - Behangmotief`} />
         <meta name="twitter:description" content={`${serie.title}, a series of photos`} />
