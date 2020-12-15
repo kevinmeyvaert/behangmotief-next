@@ -3,8 +3,8 @@ import request from 'graphql-request';
 import type { InferGetStaticPropsType } from 'next';
 import { FC } from 'react';
 import { contentfulRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
-import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
-import type { AlbumQuery, SearchQuery } from '../../types/wannabes.types';
+import { ALBUM } from '../../queries/wannabes';
+import type { AlbumQuery } from '../../types/wannabes.types';
 import AlbumHeader from '../../components/AlbumHeader';
 import AlbumMobileHeader from '../../components/AlbumMobileHeader';
 import LazyImage from '../../components/LazyImage';
@@ -16,13 +16,11 @@ import useDarkMode from '../../hooks/useDarkMode';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+const AlbumPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
   post,
   navigationItems,
 }) => {
   const isDark = useDarkMode();
-
-  if (!post) return null;
   const { artist, venue, images, thumbnail, date } = post;
 
   return (
@@ -86,7 +84,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   );
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   const { slug } = params;
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
 
@@ -94,17 +92,7 @@ export const getStaticProps = async ({ params }) => {
   const { navigation } = await contentfulRequest({ query: NAVIGATION });
   const navigationItems = navigation.pageCollection.items;
 
-  return { props: { post, navigationItems }, revalidate: 1800 };
-};
-
-export const getStaticPaths = async () => {
-  const albums: SearchQuery = await request(WANNABES_API_ENDPOINT, ALBUM_PATHS);
-  const paths = albums.posts.data;
-
-  return {
-    paths: paths.map((slug) => `/album/${slug}`),
-    fallback: true,
-  };
+  return { props: { post, navigationItems } };
 };
 
 export default AlbumPage;
