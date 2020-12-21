@@ -51,8 +51,30 @@ const SeriesPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
 export const getServerSideProps = async ({ params }) => {
   const { slug } = params;
 
+  let serie;
+
   const { pagesCollection } = await contentfulRequest({ query: SERIE, variables: { slug } });
-  const [serie] = pagesCollection.items;
+  const [page] = pagesCollection.items;
+
+  const { contentBlocksCollection } = page;
+  serie = page;
+
+  // Contentfull query complexity hack
+  if (contentBlocksCollection.items.length === 25) {
+    const { pagesCollection: extraPagesCollection } = await contentfulRequest({
+      query: SERIE,
+      variables: { slug, skip: 25 },
+    });
+    const [extraPage] = extraPagesCollection.items;
+    const { contentBlocksCollection: extraContentBlocksCollection, ...rest } = extraPage;
+
+    serie = {
+      ...rest,
+      contentBlocksCollection: {
+        items: [...contentBlocksCollection.items, ...extraContentBlocksCollection.items],
+      },
+    };
+  }
 
   const { navigation } = await contentfulRequest({ query: NAVIGATION });
   const navigationItems = navigation.pageCollection.items;

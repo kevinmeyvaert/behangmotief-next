@@ -109,7 +109,7 @@ export const PAGE = gql`
 `;
 
 export const SERIE = gql`
-  query Serie($slug: String) {
+  query Serie($slug: String, $skip: Int) {
     pagesCollection(where: { slug: $slug }) {
       items {
         title
@@ -117,7 +117,7 @@ export const SERIE = gql`
         pageImage {
           url(transform: { width: 1200, height: 630, resizeStrategy: FIT })
         }
-        contentBlocksCollection(limit: 25) {
+        contentBlocksCollection(limit: 25, skip: $skip) {
           items {
             ...blockNewsPaper
           }

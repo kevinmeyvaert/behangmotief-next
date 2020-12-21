@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import request from 'graphql-request';
-import type { InferGetStaticPropsType } from 'next';
+import type { InferGetServerSidePropsType } from 'next';
 import { FC } from 'react';
 import { contentfulRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
 import { ALBUM } from '../../queries/wannabes';
@@ -16,7 +16,7 @@ import useDarkMode from '../../hooks/useDarkMode';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
+const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
   post,
   navigationItems,
 }) => {
