@@ -42,7 +42,7 @@ const Navigation = ({ items, isDark }) => {
                   </li>
                   <li>
                     <Link href="/wannabes">
-                      <a onClick={() => toggleMobileNav()}>Wannabes</a>
+                      <a onClick={() => toggleMobileNav()}>Albums</a>
                     </Link>
                   </li>
                 </ul>

@@ -71,9 +71,9 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <div className="o-container  o-flex o-align-center o-justify-end">
             <button
               className="c-home--button"
-              onClick={() => router.push('/series/2020').then(() => window.scrollTo(0, 0))}
+              onClick={() => router.push('/series/democrazy-resideert-in-minard').then(() => window.scrollTo(0, 0))}
             >
-              See all 2020 highlights →
+              See all Democrazy Minard residency highlights →
             </button>
           </div>
         </section>
