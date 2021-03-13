@@ -57,7 +57,9 @@ const SpecialsPage: FC<InferGetStaticPropsType<typeof getServerSideProps>> = ({
                     sizes="(min-width: 73.75em) 650px, (min-width: 768px) calc(50vw), 100vw"
                     src={photo.url}
                     alt={title}
-                    unsized
+                    layout="responsive"
+                    width={photo.width}
+                    height={photo.height}
                     loading="lazy"
                   />
                 </figure>

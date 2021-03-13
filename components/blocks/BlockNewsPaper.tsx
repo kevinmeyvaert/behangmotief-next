@@ -21,7 +21,9 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
                 sizes="(max-width: 48em) calc(100vw - 3rem), (min-width: 90em) calc(100vw - 6rem), calc(90em - 6rem)"
                 src={contentBlock.fullPageImage.url}
                 alt={contentBlock.title}
-                unsized
+                layout="intrinsic"
+                width={contentBlock.fullPageImage.width}
+                height={contentBlock.fullPageImage.height}
                 style={contentBlock.aside ? { transform: 'translateX(-25.33%)' } : {}}
                 loading={single ? 'eager' : 'lazy'}
               />
@@ -35,7 +37,9 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
                     sizes="(max-width: 48em) 50vw, (min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
                     src={contentBlock.firstImage.url}
                     alt={contentBlock.title}
-                    unsized
+                    layout="responsive"
+                    width={contentBlock.firstImage.width}
+                    height={contentBlock.firstImage.height}
                     loading={single ? 'eager' : 'lazy'}
                   />
                 </ScrollAnimation>
@@ -50,7 +54,9 @@ const BlockNewsPaper: FC<Props> = ({ contentBlock, single = false }) => {
                       (min-width: 90em) calc(50vw - 6rem), calc(50vw - 6rem)"
                       src={contentBlock.secondImage.url}
                       alt={contentBlock.title}
-                      unsized
+                      layout="responsive"
+                      width={contentBlock.secondImage.width}
+                      height={contentBlock.secondImage.height}
                       loading={single ? 'eager' : 'lazy'}
                     />
                   </ScrollAnimation>

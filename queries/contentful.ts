@@ -148,6 +148,8 @@ export const CONTENTFUL_ALBUM = gql`
         photosCollection {
           items {
             url
+            width
+            height
           }
         }
         coverPhoto {
