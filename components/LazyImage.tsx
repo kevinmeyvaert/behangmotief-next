@@ -1,17 +1,18 @@
-import { useState, FC, useEffect, useRef } from 'react';
-import { Dimensions, Image } from '../types/wannabes.types';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Blurhash } from 'react-blurhash';
+
+import { Dimensions, Image } from '../types/wannabes.types';
 
 const useImageLoaded = () => {
   const [loaded, setLoaded] = useState(false);
-  const ref = useRef();
+  const ref = useRef(null);
 
   const onLoad = () => {
     setLoaded(true);
   };
 
   useEffect(() => {
-    if (ref.current && ref.current.complete) {
+    if (ref?.current && ref.current.complete) {
       onLoad();
     }
   });
