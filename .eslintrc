@@ -5,6 +5,10 @@
     "node": true,
     "browser": true
   },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "plugins": [
     "react",
     "@typescript-eslint",
@@ -17,24 +21,24 @@
     "airbnb-typescript",
     "plugin:prettier/recommended",
     "prettier/react",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
   ],
   "rules": {
     "no-param-reassign": [
       "error",
       {
         "props": true,
-        "ignorePropertyModificationsFor": [
-          "draft"
-        ]
+        "ignorePropertyModificationsFor": ["draft"]
       }
     ],
-    "import/no-unresolved": [ "off"],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "no-underscore-dangle": "off",
     "sort-imports": "off",
     "import/order": "off",
-    "import/prefer-default-export": [
-      "off"
-    ],
+    "import/no-unresolved": ["off"],
+    "import/prefer-default-export": ["off"],
     "no-unused-expressions": [
       "warn",
       {
@@ -45,9 +49,7 @@
     "react/jsx-props-no-spreading": [
       "error",
       {
-        "exceptions": [
-          "Component"
-        ]
+        "exceptions": ["Component"]
       }
     ],
     "react/react-in-jsx-scope": "off",
@@ -55,10 +57,7 @@
     "react/jsx-filename-extension": [
       "warn",
       {
-        "extensions": [
-          ".jsx",
-          ".tsx"
-        ]
+        "extensions": [".jsx", ".tsx"]
       }
     ],
     "react-hooks/rules-of-hooks": "error",
