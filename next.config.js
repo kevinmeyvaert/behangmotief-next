@@ -1,6 +1,4 @@
-const withSass = require('@zeit/next-sass');
-
-module.exports = withSass({
+module.exports = {
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200, 1400, 2500],
     domains: ['images.ctfassets.net'],
@@ -8,4 +6,4 @@ module.exports = withSass({
   env: {
     NEXT_GTM: process.env.NEXT_GTM,
   },
-});
+};
