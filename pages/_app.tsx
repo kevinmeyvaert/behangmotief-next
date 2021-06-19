@@ -1,20 +1,13 @@
 import '../styles/index.scss';
 
-import { init } from 'cookie-though';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
 
 import MobileNavigationContextWrapper, {
   MobileNavigationContext,
 } from '../context/MobileNavContext';
-import usePolicy from '../hooks/usePolicy';
-import { config, CookiePolicy } from '../lib/ct';
-
-if (typeof window !== 'undefined') {
-  init(config);
-}
 
 export function reportWebVitals({ id, name, label, value }) {
   if (!(window as any).dataLayer) {
@@ -38,19 +31,11 @@ export function reportWebVitals({ id, name, label, value }) {
 
 function Tracking({ children }) {
   const router = useRouter();
-  const [enabled, setEnabled] = useState(false);
-  const policy = usePolicy(CookiePolicy.Statistics);
-  // eslint-disable-next-line consistent-return
+
   useEffect(() => {
-    if (policy) {
       TagManager.initialize({ gtmId: process.env.NEXT_GTM });
-      return setEnabled(true);
-    }
-    if (enabled) {
-      // eslint-disable-next-line no-restricted-globals
-      location.reload();
-    }
-  }, [policy]);
+  }, []);
+
   useEffect(() => {
     setTimeout(() => {
       if (!window || !(window as any).dataLayer) return;

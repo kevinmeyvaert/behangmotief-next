@@ -68,14 +68,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
               ))}
             </Slider>
           </div>
-          <div className="o-container  o-flex o-align-center o-justify-end">
-            <button
-              className="c-home--button"
-              onClick={() => router.push('/series/democrazy-resideert-in-minard').then(() => window.scrollTo(0, 0))}
-            >
-              See all Democrazy Minard residency highlights →
-            </button>
-          </div>
         </section>
         <section className="c-row">
           <div className="o-container">

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { MobileNavigationContext } from '../context/MobileNavContext';
 import Logo from './Logo';
 
