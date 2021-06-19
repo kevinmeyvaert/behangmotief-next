@@ -6,4 +6,7 @@ module.exports = {
   env: {
     NEXT_GTM: process.env.NEXT_GTM,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
