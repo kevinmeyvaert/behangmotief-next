@@ -22,6 +22,7 @@ const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
 }) => {
   const isDark = useDarkMode();
   const { artist, venue, images, thumbnail, date } = post;
+  const filteredImages = images.filter(i => i.photographer.firstName === 'Kevin');
 
   return (
     <>
@@ -62,7 +63,7 @@ const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
               className="c-masonry c-masonry--gutter"
               columnClassName="c-masonry--grid-column  c-masonry--grid-column--gutter"
             >
-              {images.map((photo, index) => (
+              {filteredImages.map((photo, index) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <figure key={index} className="c-album--photo-item">
                   <LazyImage

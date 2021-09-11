@@ -117,7 +117,22 @@ export const getStaticProps = async () => {
   const spreads = randomSpreads.items;
   const { navigation } = await contentfulRequest({ query: NAVIGATION });
   const navigationItems = navigation.pageCollection.items;
-  return { props: { posts: posts.data, spreads, navigationItems }, revalidate: 1800 };
+
+  const updatedPostData = posts.data.map(p => {
+    if (p.thumbnail.photographer.firstName !== 'Kevin') {
+      const kevThumbnail = p.images.filter(i => i.photographer.firstName === 'Kevin')[0]
+      return {
+        ...p, thumbnail: {
+          blurhash: kevThumbnail.blurhash,
+          hires: kevThumbnail.resized,
+        }
+      }
+    } else {
+      return p
+    }
+  });
+
+  return { props: { posts: updatedPostData, spreads, navigationItems }, revalidate: 1800 };
 };
 
 export default Home;

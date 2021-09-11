@@ -42,6 +42,19 @@ const Wannabes: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   useEndlessScroll(size, setSize, isLoadingMore, 1000, canLoadMore);
 
   const posts = data.reduce((acc, page) => [...acc, ...page.posts.data.map((post) => post)], []);
+  const updatedPosts = posts.map(p => {
+    if (p.thumbnail.photographer.firstName !== 'Kevin') {
+      const kevThumbnail = p.images.filter(i => i.photographer.firstName === 'Kevin')[0]
+      return {
+        ...p, thumbnail: {
+          blurhash: kevThumbnail.blurhash,
+          hires: kevThumbnail.resized,
+        }
+      }
+    } else {
+      return p
+    }
+  });
   return (
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
@@ -78,7 +91,7 @@ const Wannabes: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
               className="c-masonry"
               columnClassName="c-masonry--grid-column"
             >
-              {posts.map((post) => (
+              {updatedPosts.map((post) => (
                 <MasonryItem
                   src={post.thumbnail.hires}
                   artist={post.artist.name}
