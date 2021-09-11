@@ -89,6 +89,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                   key={post.slug}
                   dimensions={post.thumbnail?.dimensions}
                   blurhash={post.thumbnail.blurhash}
+                  event={post.event?.name}
                 />
               ))}
             </Masonry>

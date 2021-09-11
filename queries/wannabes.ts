@@ -32,6 +32,9 @@ export const POSTS = gql`
           id
           name
         }
+        event {
+          name
+        }
       }
       pagination {
         start

@@ -12,9 +12,10 @@ interface Props {
   slug: Post['slug'];
   dimensions: Dimensions;
   blurhash: Image['blurhash'];
+  event?: Post['event'];
 }
 
-const MasonryItem: FC<Props> = ({ src, artist, venue, slug, dimensions, blurhash }) => {
+const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, blurhash }) => {
   return (
     <div className="c-masonry--item">
       <Link href="/album/[...slug]" as={`/album/${slug}`}>
@@ -29,7 +30,7 @@ const MasonryItem: FC<Props> = ({ src, artist, venue, slug, dimensions, blurhash
           />
         </a>
       </Link>
-      <p>{`${artist} at ${venue}`}</p>
+      <p>{`${artist} at ${event ? event : venue}`}</p>
     </div>
   );
 };
