@@ -11,7 +11,11 @@
     "preserveConstEnums": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "lib": ["es6", "dom", "es2016"],
+    "lib": [
+      "es6",
+      "dom",
+      "es2016"
+    ],
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -19,8 +23,16 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
-  "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.config.js"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.config.js"
+  ]
 }

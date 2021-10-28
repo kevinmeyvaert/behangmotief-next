@@ -1,28 +1,25 @@
-import Head from 'next/head';
 import request from 'graphql-request';
 import type { InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 import { FC } from 'react';
-import { contentfulRequest, WANNABES_API_ENDPOINT } from '../../lib/api';
-import { ALBUM } from '../../queries/wannabes';
-import type { AlbumQuery } from '../../types/wannabes.types';
+import Masonry from 'react-masonry-css';
+
 import AlbumHeader from '../../components/AlbumHeader';
 import AlbumMobileHeader from '../../components/AlbumMobileHeader';
+import Footer from '../../components/Footer';
 import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
-import Masonry from 'react-masonry-css';
-import { NAVIGATION } from '../../queries/contentful';
-import Footer from '../../components/Footer';
 import useDarkMode from '../../hooks/useDarkMode';
+import { WANNABES_API_ENDPOINT } from '../../lib/api';
+import { ALBUM } from '../../queries/wannabes';
+import type { AlbumQuery } from '../../types/wannabes.types';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
-  post,
-  navigationItems,
-}) => {
+const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ post }) => {
   const isDark = useDarkMode();
   const { artist, venue, images, thumbnail, date } = post;
-  const filteredImages = images.filter(i => i.photographer.firstName === 'Kevin');
+  const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
 
   return (
     <>
@@ -50,7 +47,7 @@ const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
           <meta name="twitter:image" content={thumbnail.resized} />
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
-        <Navigation items={navigationItems} isDark={isDark} />
+        <Navigation isDark={isDark} />
         <AlbumMobileHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <AlbumHeader artist={artist.name} venue={venue.name} isDark={isDark} date={date} />
         <section className="c-row">
@@ -90,10 +87,8 @@ export const getServerSideProps = async ({ params }) => {
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
 
   const { post }: { post: AlbumQuery['post'] } = await fetcher(ALBUM, mergeSlug);
-  const { navigation } = await contentfulRequest({ query: NAVIGATION });
-  const navigationItems = navigation.pageCollection.items;
 
-  return { props: { post, navigationItems } };
+  return { props: { post } };
 };
 
 export default AlbumPage;

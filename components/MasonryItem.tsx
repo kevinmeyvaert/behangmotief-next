@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { FC } from 'react';
-import { Artist, Dimensions, Image, Post, Venue } from '../types/wannabes.types';
+
 import LazyImage from '../components/LazyImage';
+import { Artist, Dimensions, Image, Post, Venue } from '../types/wannabes.types';
 
 interface Props {
   src: string;
