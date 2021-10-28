@@ -5,10 +5,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
 
-import MobileNavigationContextWrapper, {
-  MobileNavigationContext,
-} from '../context/MobileNavContext';
-
 export function reportWebVitals({ id, name, label, value }) {
   if (!(window as any).dataLayer) {
     return;
@@ -33,7 +29,7 @@ function Tracking({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-      TagManager.initialize({ gtmId: process.env.NEXT_GTM });
+    TagManager.initialize({ gtmId: process.env.NEXT_GTM });
   }, []);
 
   useEffect(() => {
@@ -54,15 +50,7 @@ function Tracking({ children }) {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Tracking>
-      <MobileNavigationContextWrapper>
-        <MobileNavigationContext.Consumer>
-          {({ mobileNavActive }) => (
-            <div id="body" className={mobileNavActive ? 'has-open-nav' : undefined}>
-              <Component {...pageProps} />
-            </div>
-          )}
-        </MobileNavigationContext.Consumer>
-      </MobileNavigationContextWrapper>
+      <Component {...pageProps} />
     </Tracking>
   );
 }

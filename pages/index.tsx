@@ -1,45 +1,71 @@
 import request from 'graphql-request';
-import { FC } from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import Masonry from 'react-masonry-css';
 import type { InferGetStaticPropsType } from 'next';
-import Slider from 'react-slick';
+import Head from 'next/head';
+import { FC } from 'react';
+import Masonry from 'react-masonry-css';
+import useSWRInfinite from 'swr/infinite';
 
-import { contentfulRequest, WANNABES_API_ENDPOINT } from '../lib/api';
-import { POSTS } from '../queries/wannabes';
-import type { SearchQuery } from '../types/wannabes.types';
+import Footer from '../components/Footer';
 import MasonryItem from '../components/MasonryItem';
 import Navigation from '../components/Navigation';
-import { NAVIGATION, RANDOM_SPREADS } from '../queries/contentful';
-import BlockNewsPaper from '../components/blocks/BlockNewsPaper';
-import Footer from '../components/Footer';
 import useDarkMode from '../hooks/useDarkMode';
+import useEndlessScroll from '../hooks/useEndlessScroll';
+import { contentfulRequest, WANNABES_API_ENDPOINT } from '../lib/api';
+import { loadingStatus } from '../lib/helpers';
+import { NAVIGATION } from '../queries/contentful';
+import { POSTS } from '../queries/wannabes';
+import type { SearchQuery } from '../types/wannabes.types';
+
+const NUMBER_OF_POSTS = 15;
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  posts,
-  spreads,
+  initialData,
   navigationItems,
 }) => {
-  const router = useRouter();
   const isDark = useDarkMode();
+  const { data, error, size, setSize } = useSWRInfinite(
+    (index) => {
+      return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
+    },
+    (query, start, limit) => {
+      return request(WANNABES_API_ENDPOINT, query, {
+        start,
+        limit,
+      });
+    },
+  );
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    arrows: false,
-    autoplay: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplaySpeed: 5000,
-  };
+  // TODO: figure out SWR defaults
+  const dataSwitch = data || initialData;
+
+  const canLoadMore = size * NUMBER_OF_POSTS < initialData[0].posts.pagination.total;
+  const [, isLoadingMore] = loadingStatus(data, error, size);
+  useEndlessScroll(size, setSize, isLoadingMore, 1000, canLoadMore);
+
+  const posts = dataSwitch.reduce(
+    (acc, page) => [...acc, ...page.posts.data.map((post) => post)],
+    [],
+  );
+  const updatedPosts = posts?.map((p) => {
+    if (p.thumbnail.photographer.firstName !== 'Kevin') {
+      const kevThumbnail = p.images.filter((i) => i.photographer.firstName === 'Kevin')[0];
+      return {
+        ...p,
+        thumbnail: {
+          blurhash: kevThumbnail.blurhash,
+          hires: kevThumbnail.resized,
+        },
+      };
+    } else {
+      return p;
+    }
+  });
 
   return (
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
         <Head>
-          <title>Behangmotief</title>
+          <title>Wannabes - Behangmotief</title>
           <meta
             name="description"
             content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
@@ -59,16 +85,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
           <meta name="twitter:title" content="BEHANGMOTIEF" />
           <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
         </Head>
-        <Navigation items={navigationItems} isDark={isDark} />
-        <section className="c-row">
-          <div className="o-container c-slider">
-            <Slider {...settings}>
-              {spreads.map((spread) => (
-                <BlockNewsPaper contentBlock={spread} single key={spread.spreadTitle} />
-              ))}
-            </Slider>
-          </div>
-        </section>
+        <Navigation isDark={isDark} />
         <section className="c-row">
           <div className="o-container">
             <Masonry
@@ -80,7 +97,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
               className="c-masonry"
               columnClassName="c-masonry--grid-column"
             >
-              {posts.map((post) => (
+              {updatedPosts.map((post) => (
                 <MasonryItem
                   src={post.thumbnail.hires}
                   artist={post.artist.name}
@@ -93,14 +110,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
                 />
               ))}
             </Masonry>
-            <div className="o-container o-flex o-align-center o-justify-end">
-              <button
-                className="c-home--button"
-                onClick={() => router.push('/wannabes').then(() => window.scrollTo(0, 0))}
-              >
-                See all recent albums →
-              </button>
-            </div>
           </div>
         </section>
       </main>
@@ -110,30 +119,11 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
 };
 
 export const getStaticProps = async () => {
-  const { posts }: SearchQuery = await request(WANNABES_API_ENDPOINT, POSTS, {
+  const initialPosts: SearchQuery = await request(WANNABES_API_ENDPOINT, POSTS, {
     start: 0,
-    limit: 6,
+    limit: NUMBER_OF_POSTS,
   });
-  const { randomSpreads } = await contentfulRequest({ query: RANDOM_SPREADS });
-  const spreads = randomSpreads.items;
-  const { navigation } = await contentfulRequest({ query: NAVIGATION });
-  const navigationItems = navigation.pageCollection.items;
-
-  const updatedPostData = posts.data.map(p => {
-    if (p.thumbnail.photographer.firstName !== 'Kevin') {
-      const kevThumbnail = p.images.filter(i => i.photographer.firstName === 'Kevin')[0]
-      return {
-        ...p, thumbnail: {
-          blurhash: kevThumbnail.blurhash,
-          hires: kevThumbnail.resized,
-        }
-      }
-    } else {
-      return p
-    }
-  });
-
-  return { props: { posts: updatedPostData, spreads, navigationItems }, revalidate: 1800 };
+  return { props: { initialData: [initialPosts] }, revalidate: 1800 };
 };
 
 export default Home;
