@@ -1,5 +1,5 @@
 import request from 'graphql-request';
-import type { InferGetServerSidePropsType } from 'next';
+import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { FC } from 'react';
 import Masonry from 'react-masonry-css';
@@ -16,7 +16,7 @@ import type { AlbumQuery } from '../../types/wannabes.types';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ post }) => {
+const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
   const isDark = useDarkMode();
   const { artist, venue, images, thumbnail, date } = post;
   const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');

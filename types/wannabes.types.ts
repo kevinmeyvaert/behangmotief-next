@@ -1,5 +1,7 @@
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -12,177 +14,29 @@ export type Scalars = {
   Upload: any;
 };
 
-
-export type Post = {
-  __typename?: 'Post';
-  id: Scalars['ID'];
-  slug: Scalars['String'];
-  url?: Maybe<Scalars['String']>;
-  artist?: Maybe<Artist>;
-  venue?: Maybe<Venue>;
-  thumbnail?: Maybe<Image>;
-  photographers?: Maybe<Array<Maybe<Photographer>>>;
-  images?: Maybe<Array<Maybe<Image>>>;
-  event?: Maybe<Event>;
-  date?: Maybe<Scalars['Date']>;
-  timestamp?: Maybe<Scalars['Int']>;
-  searchScore?: Maybe<Scalars['Float']>;
-};
-
 export type Artist = {
   __typename?: 'Artist';
   id: Scalars['String'];
-  slug: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
   lastPost?: Maybe<Post>;
+  name?: Maybe<Scalars['String']>;
+  postCount?: Maybe<Scalars['Int']>;
   posts?: Maybe<PostList>;
+  searchScore?: Maybe<Scalars['Float']>;
   similar?: Maybe<ArtistList>;
+  slug: Scalars['String'];
   spotifyFollowers?: Maybe<Scalars['Int']>;
   spotifyGenres?: Maybe<Array<Maybe<Scalars['String']>>>;
   spotifyPopularity?: Maybe<Scalars['Int']>;
-  postCount?: Maybe<Scalars['Int']>;
-  searchScore?: Maybe<Scalars['Float']>;
 };
-
 
 export type ArtistPostsArgs = {
-  start?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
 };
-
 
 export type ArtistSimilarArgs = {
-  start?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
-};
-
-export type Venue = {
-  __typename?: 'Venue';
-  id: Scalars['String'];
-  slug: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  lastPost?: Maybe<Post>;
-  posts?: Maybe<PostList>;
-  postCount?: Maybe<Scalars['Int']>;
-  searchScore?: Maybe<Scalars['Float']>;
-};
-
-
-export type VenuePostsArgs = {
   start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-export type Photographer = {
-  __typename?: 'Photographer';
-  id: Scalars['String'];
-  fullName: Scalars['String'];
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  active?: Maybe<Scalars['Boolean']>;
-  lastPost?: Maybe<Post>;
-  posts?: Maybe<PostList>;
-  postCount?: Maybe<Scalars['Int']>;
-  slug?: Maybe<Scalars['String']>;
-  image?: Maybe<Image>;
-  email?: Maybe<Scalars['String']>;
-  website?: Maybe<Scalars['String']>;
-  facebook?: Maybe<Scalars['String']>;
-  twitter?: Maybe<Scalars['String']>;
-  instagram?: Maybe<Scalars['String']>;
-  searchScore?: Maybe<Scalars['Float']>;
-  startYear?: Maybe<Scalars['String']>;
-  bestof?: Maybe<PostList>;
-};
-
-
-export type PhotographerPostsArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type PhotographerBestofArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-export type Event = {
-  __typename?: 'Event';
-  id: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  slug?: Maybe<Scalars['String']>;
-  lastPost?: Maybe<Post>;
-  posts?: Maybe<PostList>;
-  postCount?: Maybe<Scalars['Int']>;
-  searchScore?: Maybe<Scalars['Float']>;
-};
-
-
-export type EventPostsArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-export type Image = {
-  __typename?: 'Image';
-  id: Scalars['String'];
-  hires?: Maybe<Scalars['String']>;
-  dimensions?: Maybe<Dimensions>;
-  photographer?: Maybe<Photographer>;
-  resized?: Maybe<Scalars['String']>;
-  tiny?: Maybe<Scalars['String']>;
-  blurhash?: Maybe<Scalars['String']>;
-};
-
-
-export type ImageResizedArgs = {
-  width: Scalars['Int'];
-  height: Scalars['Int'];
-  square?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type ImageTinyArgs = {
-  square?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type ImageBlurhashArgs = {
-  square?: Maybe<Scalars['Boolean']>;
-};
-
-export type Dimensions = {
-  __typename?: 'Dimensions';
-  width?: Maybe<Scalars['Int']>;
-  height?: Maybe<Scalars['Int']>;
-};
-
-export type Stats = {
-  __typename?: 'Stats';
-  id: Scalars['String'];
-  postCount?: Maybe<Scalars['Int']>;
-  artistCount?: Maybe<Scalars['Int']>;
-  venueCount?: Maybe<Scalars['Int']>;
-  photographerCount?: Maybe<Scalars['Int']>;
-};
-
-
-export type StatsPhotographerCountArgs = {
-  onlyActive?: Maybe<Scalars['Boolean']>;
-};
-
-export type Pagination = {
-  __typename?: 'Pagination';
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  total?: Maybe<Scalars['Int']>;
-};
-
-export type PostList = {
-  __typename?: 'PostList';
-  data?: Maybe<Array<Maybe<Post>>>;
-  pagination?: Maybe<Pagination>;
 };
 
 export type ArtistList = {
@@ -191,16 +45,112 @@ export type ArtistList = {
   pagination?: Maybe<Pagination>;
 };
 
+export enum CacheControlScope {
+  PRIVATE = 'PRIVATE',
+  PUBLIC = 'PUBLIC',
+}
+
+export type Dimensions = {
+  __typename?: 'Dimensions';
+  height?: Maybe<Scalars['Int']>;
+  width?: Maybe<Scalars['Int']>;
+};
+
+export type Event = {
+  __typename?: 'Event';
+  id: Scalars['String'];
+  lastPost?: Maybe<Post>;
+  name?: Maybe<Scalars['String']>;
+  postCount?: Maybe<Scalars['Int']>;
+  posts?: Maybe<PostList>;
+  searchScore?: Maybe<Scalars['Float']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+export type EventPostsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
 export type EventList = {
   __typename?: 'EventList';
   data?: Maybe<Array<Maybe<Event>>>;
   pagination?: Maybe<Pagination>;
 };
 
-export type VenueList = {
-  __typename?: 'VenueList';
-  data?: Maybe<Array<Maybe<Venue>>>;
-  pagination?: Maybe<Pagination>;
+export type Image = {
+  __typename?: 'Image';
+  blurhash?: Maybe<Scalars['String']>;
+  dimensions?: Maybe<Dimensions>;
+  hires?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  photographer?: Maybe<Photographer>;
+  resized?: Maybe<Scalars['String']>;
+  tiny?: Maybe<Scalars['String']>;
+};
+
+export type ImageBlurhashArgs = {
+  square?: Maybe<Scalars['Boolean']>;
+};
+
+export type ImageResizedArgs = {
+  height: Scalars['Int'];
+  square?: Maybe<Scalars['Boolean']>;
+  width: Scalars['Int'];
+};
+
+export type ImageTinyArgs = {
+  square?: Maybe<Scalars['Boolean']>;
+};
+
+export type LetterPart = {
+  __typename?: 'LetterPart';
+  artistCount?: Maybe<Scalars['Int']>;
+  artists?: Maybe<Array<Maybe<Artist>>>;
+  firstArtist?: Maybe<Artist>;
+  firstLetter?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  lastArtist?: Maybe<Artist>;
+  lastLetter?: Maybe<Scalars['String']>;
+};
+
+export type Pagination = {
+  __typename?: 'Pagination';
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+export type Photographer = {
+  __typename?: 'Photographer';
+  active?: Maybe<Scalars['Boolean']>;
+  bestof?: Maybe<PostList>;
+  email?: Maybe<Scalars['String']>;
+  facebook?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']>;
+  fullName: Scalars['String'];
+  id: Scalars['String'];
+  image?: Maybe<Image>;
+  instagram?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  lastPost?: Maybe<Post>;
+  postCount?: Maybe<Scalars['Int']>;
+  posts?: Maybe<PostList>;
+  searchScore?: Maybe<Scalars['Float']>;
+  slug?: Maybe<Scalars['String']>;
+  startYear?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  website?: Maybe<Scalars['String']>;
+};
+
+export type PhotographerBestofArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type PhotographerPostsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
 };
 
 export type PhotographerList = {
@@ -209,287 +159,378 @@ export type PhotographerList = {
   pagination?: Maybe<Pagination>;
 };
 
-export type LetterPart = {
-  __typename?: 'LetterPart';
+export type Post = {
+  __typename?: 'Post';
+  artist?: Maybe<Artist>;
+  date?: Maybe<Scalars['Date']>;
+  event?: Maybe<Event>;
   id: Scalars['ID'];
-  firstLetter?: Maybe<Scalars['String']>;
-  lastLetter?: Maybe<Scalars['String']>;
-  firstArtist?: Maybe<Artist>;
-  lastArtist?: Maybe<Artist>;
-  artists?: Maybe<Array<Maybe<Artist>>>;
-  artistCount?: Maybe<Scalars['Int']>;
+  images?: Maybe<Array<Maybe<Image>>>;
+  photographers?: Maybe<Array<Maybe<Photographer>>>;
+  searchScore?: Maybe<Scalars['Float']>;
+  slug: Scalars['String'];
+  thumbnail?: Maybe<Image>;
+  timestamp?: Maybe<Scalars['Int']>;
+  url?: Maybe<Scalars['String']>;
+  venue?: Maybe<Venue>;
 };
 
-export type SearchResult = {
-  __typename?: 'SearchResult';
-  artists?: Maybe<ArtistList>;
-  posts?: Maybe<PostList>;
-  venues?: Maybe<VenueList>;
-  events?: Maybe<EventList>;
-  photographers?: Maybe<PhotographerList>;
-};
-
-
-export type SearchResultArtistsArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type SearchResultPostsArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type SearchResultVenuesArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type SearchResultEventsArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type SearchResultPhotographersArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-export type Slugs = {
-  __typename?: 'Slugs';
-  id: Scalars['ID'];
-  posts?: Maybe<Array<Maybe<Scalars['String']>>>;
-  artists?: Maybe<Array<Maybe<Scalars['String']>>>;
-  venues?: Maybe<Array<Maybe<Scalars['String']>>>;
-  events?: Maybe<Array<Maybe<Scalars['String']>>>;
-  photographers?: Maybe<Array<Maybe<Scalars['String']>>>;
+export type PostList = {
+  __typename?: 'PostList';
+  data?: Maybe<Array<Maybe<Post>>>;
+  pagination?: Maybe<Pagination>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  posts?: Maybe<PostList>;
-  post?: Maybe<Post>;
-  postSearch?: Maybe<PostList>;
-  randomPost?: Maybe<PostList>;
-  artists?: Maybe<ArtistList>;
+  allSlugs?: Maybe<Slugs>;
   artist?: Maybe<Artist>;
+  artists?: Maybe<ArtistList>;
   artistsSplittedInLetterParts?: Maybe<Array<Maybe<LetterPart>>>;
   artistsStartingWithLetter?: Maybe<Array<Maybe<Artist>>>;
-  events?: Maybe<EventList>;
+  bestof?: Maybe<PostList>;
   event?: Maybe<Event>;
-  venues?: Maybe<VenueList>;
-  venue?: Maybe<Venue>;
-  photographers?: Maybe<PhotographerList>;
+  events?: Maybe<EventList>;
   photographer?: Maybe<Photographer>;
+  photographers?: Maybe<PhotographerList>;
+  post?: Maybe<Post>;
+  postSearch?: Maybe<PostList>;
+  posts?: Maybe<PostList>;
+  randomPost?: Maybe<PostList>;
   search?: Maybe<SearchResult>;
   stats?: Maybe<Stats>;
-  bestof?: Maybe<PostList>;
-  allSlugs?: Maybe<Slugs>;
+  venue?: Maybe<Venue>;
+  venues?: Maybe<VenueList>;
 };
-
-
-export type QueryPostsArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPostArgs = {
-  slug?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryPostSearchArgs = {
-  artist?: Maybe<Scalars['String']>;
-  venue?: Maybe<Scalars['String']>;
-  photographer?: Maybe<Scalars['String']>;
-  event?: Maybe<Scalars['String']>;
-  artistId?: Maybe<Scalars['String']>;
-  venueId?: Maybe<Scalars['String']>;
-  photographerId?: Maybe<Scalars['String']>;
-  eventId?: Maybe<Scalars['String']>;
-  artistSlug?: Maybe<Scalars['String']>;
-  venueSlug?: Maybe<Scalars['String']>;
-  eventSlug?: Maybe<Scalars['String']>;
-  photographerSlug?: Maybe<Scalars['String']>;
-  year?: Maybe<Scalars['Int']>;
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  random?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QueryRandomPostArgs = {
-  amount?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryArtistsArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
 
 export type QueryArtistArgs = {
-  slug?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
 };
 
+export type QueryArtistsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
 
 export type QueryArtistsSplittedInLetterPartsArgs = {
   amount?: Maybe<Scalars['Int']>;
 };
 
-
 export type QueryArtistsStartingWithLetterArgs = {
   letter?: Maybe<Scalars['String']>;
 };
 
+export type QueryBestofArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type QueryEventArgs = {
+  id?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+};
 
 export type QueryEventsArgs = {
-  start?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<Scalars['String']>;
   sortDirection?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryEventArgs = {
-  slug?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryVenuesArgs = {
   start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
 };
-
-
-export type QueryVenueArgs = {
-  slug?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryPhotographersArgs = {
-  onlyActive?: Maybe<Scalars['Boolean']>;
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-};
-
 
 export type QueryPhotographerArgs = {
-  slug?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
 };
 
+export type QueryPhotographersArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  onlyActive?: Maybe<Scalars['Boolean']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type QueryPostArgs = {
+  id?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+export type QueryPostSearchArgs = {
+  all?: Maybe<Scalars['String']>;
+  artist?: Maybe<Scalars['String']>;
+  artistId?: Maybe<Scalars['String']>;
+  artistSlug?: Maybe<Scalars['String']>;
+  event?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']>;
+  eventSlug?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  photographer?: Maybe<Scalars['String']>;
+  photographerId?: Maybe<Scalars['String']>;
+  photographerSlug?: Maybe<Scalars['String']>;
+  random?: Maybe<Scalars['Boolean']>;
+  start?: Maybe<Scalars['Int']>;
+  venue?: Maybe<Scalars['String']>;
+  venueId?: Maybe<Scalars['String']>;
+  venueSlug?: Maybe<Scalars['String']>;
+  year?: Maybe<Scalars['Int']>;
+};
+
+export type QueryPostsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type QueryRandomPostArgs = {
+  amount?: Maybe<Scalars['Int']>;
+};
 
 export type QuerySearchArgs = {
+  limit?: Maybe<Scalars['Int']>;
   q?: Maybe<Scalars['String']>;
+  random?: Maybe<Scalars['Boolean']>;
+  start?: Maybe<Scalars['Int']>;
   startsWith?: Maybe<Scalars['Boolean']>;
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
 };
 
-
-export type QueryBestofArgs = {
-  start?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
+export type QueryVenueArgs = {
+  id?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
 };
 
-export enum CacheControlScope {
-  PUBLIC = 'PUBLIC',
-  PRIVATE = 'PRIVATE'
-}
+export type QueryVenuesArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
 
+export type SearchResult = {
+  __typename?: 'SearchResult';
+  artists?: Maybe<ArtistList>;
+  events?: Maybe<EventList>;
+  photographers?: Maybe<PhotographerList>;
+  posts?: Maybe<PostList>;
+  venues?: Maybe<VenueList>;
+};
+
+export type SearchResultArtistsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type SearchResultEventsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type SearchResultPhotographersArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type SearchResultPostsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type SearchResultVenuesArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type Slugs = {
+  __typename?: 'Slugs';
+  artists?: Maybe<Array<Maybe<Scalars['String']>>>;
+  events?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id: Scalars['ID'];
+  photographers?: Maybe<Array<Maybe<Scalars['String']>>>;
+  posts?: Maybe<Array<Maybe<Scalars['String']>>>;
+  venues?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type Stats = {
+  __typename?: 'Stats';
+  artistCount?: Maybe<Scalars['Int']>;
+  id: Scalars['String'];
+  photographerCount?: Maybe<Scalars['Int']>;
+  postCount?: Maybe<Scalars['Int']>;
+  venueCount?: Maybe<Scalars['Int']>;
+};
+
+export type StatsPhotographerCountArgs = {
+  onlyActive?: Maybe<Scalars['Boolean']>;
+};
+
+export type Venue = {
+  __typename?: 'Venue';
+  id: Scalars['String'];
+  lastPost?: Maybe<Post>;
+  name?: Maybe<Scalars['String']>;
+  postCount?: Maybe<Scalars['Int']>;
+  posts?: Maybe<PostList>;
+  searchScore?: Maybe<Scalars['Float']>;
+  slug: Scalars['String'];
+};
+
+export type VenuePostsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+};
+
+export type VenueList = {
+  __typename?: 'VenueList';
+  data?: Maybe<Array<Maybe<Venue>>>;
+  pagination?: Maybe<Pagination>;
+};
 
 export type SearchQueryVariables = Exact<{
   start?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 }>;
 
+export type SearchQuery = {
+  __typename?: 'Query';
+  posts?:
+    | {
+        __typename?: 'PostList';
+        data?:
+          | Array<
+              | {
+                  __typename?: 'Post';
+                  id: string;
+                  date?: any | null | undefined;
+                  slug: string;
+                  artist?:
+                    | { __typename?: 'Artist'; name?: string | null | undefined }
+                    | null
+                    | undefined;
+                  images?:
+                    | Array<
+                        | {
+                            __typename?: 'Image';
+                            blurhash?: string | null | undefined;
+                            resized?: string | null | undefined;
+                            photographer?:
+                              | {
+                                  __typename?: 'Photographer';
+                                  firstName?: string | null | undefined;
+                                }
+                              | null
+                              | undefined;
+                          }
+                        | null
+                        | undefined
+                      >
+                    | null
+                    | undefined;
+                  thumbnail?:
+                    | {
+                        __typename?: 'Image';
+                        blurhash?: string | null | undefined;
+                        hires?: string | null | undefined;
+                        photographer?:
+                          | { __typename?: 'Photographer'; firstName?: string | null | undefined }
+                          | null
+                          | undefined;
+                        dimensions?:
+                          | {
+                              __typename?: 'Dimensions';
+                              width?: number | null | undefined;
+                              height?: number | null | undefined;
+                            }
+                          | null
+                          | undefined;
+                      }
+                    | null
+                    | undefined;
+                  venue?:
+                    | { __typename?: 'Venue'; id: string; name?: string | null | undefined }
+                    | null
+                    | undefined;
+                  event?:
+                    | { __typename?: 'Event'; name?: string | null | undefined }
+                    | null
+                    | undefined;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+        pagination?:
+          | {
+              __typename?: 'Pagination';
+              start?: number | null | undefined;
+              limit?: number | null | undefined;
+              total?: number | null | undefined;
+            }
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+};
 
-export type SearchQuery = (
-  { __typename?: 'Query' }
-  & { posts?: Maybe<(
-    { __typename?: 'PostList' }
-    & { data?: Maybe<Array<Maybe<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'date' | 'slug'>
-      & { artist?: Maybe<(
-        { __typename?: 'Artist' }
-        & Pick<Artist, 'name'>
-      )>, thumbnail?: Maybe<(
-        { __typename?: 'Image' }
-        & Pick<Image, 'blurhash' | 'hires'>
-        & { dimensions?: Maybe<(
-          { __typename?: 'Dimensions' }
-          & Pick<Dimensions, 'width' | 'height'>
-        )> }
-      )>, venue?: Maybe<(
-        { __typename?: 'Venue' }
-        & Pick<Venue, 'id' | 'name'>
-      )> }
-    )>>>, pagination?: Maybe<(
-      { __typename?: 'Pagination' }
-      & Pick<Pagination, 'start' | 'limit' | 'total'>
-    )> }
-  )> }
-);
+export type GetAlbumPathsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAlbumPathsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAlbumPathsQuery = (
-  { __typename?: 'Query' }
-  & { posts?: Maybe<(
-    { __typename?: 'PostList' }
-    & { data?: Maybe<Array<Maybe<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'slug'>
-    )>>> }
-  )> }
-);
+export type GetAlbumPathsQuery = {
+  __typename?: 'Query';
+  posts?:
+    | {
+        __typename?: 'PostList';
+        data?: Array<{ __typename?: 'Post'; slug: string } | null | undefined> | null | undefined;
+      }
+    | null
+    | undefined;
+};
 
 export type AlbumQueryVariables = Exact<{
   slug?: Maybe<Scalars['String']>;
 }>;
 
-
-export type AlbumQuery = (
-  { __typename?: 'Query' }
-  & { post?: Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'date' | 'id' | 'url'>
-    & { thumbnail?: Maybe<(
-      { __typename?: 'Image' }
-      & Pick<Image, 'resized'>
-    )>, artist?: Maybe<(
-      { __typename?: 'Artist' }
-      & Pick<Artist, 'name'>
-    )>, venue?: Maybe<(
-      { __typename?: 'Venue' }
-      & Pick<Venue, 'name'>
-    )>, thumbs?: Maybe<Array<Maybe<(
-      { __typename?: 'Image' }
-      & Pick<Image, 'resized'>
-      & { dimensions?: Maybe<(
-        { __typename?: 'Dimensions' }
-        & Pick<Dimensions, 'width' | 'height'>
-      )> }
-    )>>>, images?: Maybe<Array<Maybe<(
-      { __typename?: 'Image' }
-      & Pick<Image, 'blurhash' | 'hires'>
-      & { dimensions?: Maybe<(
-        { __typename?: 'Dimensions' }
-        & Pick<Dimensions, 'width' | 'height'>
-      )> }
-    )>>> }
-  )> }
-);
+export type AlbumQuery = {
+  __typename?: 'Query';
+  post?:
+    | {
+        __typename?: 'Post';
+        date?: any | null | undefined;
+        id: string;
+        url?: string | null | undefined;
+        thumbnail?:
+          | {
+              __typename?: 'Image';
+              resized?: string | null | undefined;
+              photographer?:
+                | { __typename?: 'Photographer'; firstName?: string | null | undefined }
+                | null
+                | undefined;
+            }
+          | null
+          | undefined;
+        artist?: { __typename?: 'Artist'; name?: string | null | undefined } | null | undefined;
+        venue?: { __typename?: 'Venue'; name?: string | null | undefined } | null | undefined;
+        images?:
+          | Array<
+              | {
+                  __typename?: 'Image';
+                  blurhash?: string | null | undefined;
+                  hires?: string | null | undefined;
+                  dimensions?:
+                    | {
+                        __typename?: 'Dimensions';
+                        width?: number | null | undefined;
+                        height?: number | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                  photographer?:
+                    | { __typename?: 'Photographer'; firstName?: string | null | undefined }
+                    | null
+                    | undefined;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+};

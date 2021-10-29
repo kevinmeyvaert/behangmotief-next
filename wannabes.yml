@@ -10,3 +10,5 @@ generates:
     config:
       namingConvention:
         enumValues: keep
+        maybeValue: T
+        avoidOptionals: true

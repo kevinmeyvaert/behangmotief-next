@@ -119,7 +119,7 @@ export const getStaticProps = async () => {
     start: 0,
     limit: NUMBER_OF_POSTS,
   });
-  return { props: { initialData: [initialPosts] }, revalidate: 1800 };
+  return { props: { initialData: [initialPosts] }, revalidate: 60 };
 };
 
 export default Home;
