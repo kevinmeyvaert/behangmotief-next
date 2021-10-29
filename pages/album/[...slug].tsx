@@ -11,12 +11,12 @@ import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
 import useDarkMode from '../../hooks/useDarkMode';
 import { WANNABES_API_ENDPOINT } from '../../lib/api';
-import { ALBUM } from '../../queries/wannabes';
+import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import type { AlbumQuery } from '../../types/wannabes.types';
 
 const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
 
-const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ post }) => {
+const AlbumPage: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ post }) => {
   const isDark = useDarkMode();
   const { artist, venue, images, thumbnail, date } = post;
   const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
@@ -82,13 +82,19 @@ const AlbumPage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
   );
 };
 
-export const getServerSideProps = async ({ params }) => {
+export async function getStaticPaths() {
+  const res = await request(WANNABES_API_ENDPOINT, ALBUM_PATHS);
+  const paths = res.posts.data.map((post) => ({
+    params: { slug: post.slug.split('/') },
+  }));
+  return { paths, fallback: 'blocking' };
+}
+
+export const getStaticProps = async ({ params }) => {
   const { slug } = params;
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
-
   const { post }: { post: AlbumQuery['post'] } = await fetcher(ALBUM, mergeSlug);
-
-  return { props: { post } };
+  return { props: { post }, revalidate: 60 };
 };
 
 export default AlbumPage;

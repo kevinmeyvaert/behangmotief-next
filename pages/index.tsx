@@ -10,18 +10,14 @@ import MasonryItem from '../components/MasonryItem';
 import Navigation from '../components/Navigation';
 import useDarkMode from '../hooks/useDarkMode';
 import useEndlessScroll from '../hooks/useEndlessScroll';
-import { contentfulRequest, WANNABES_API_ENDPOINT } from '../lib/api';
+import { WANNABES_API_ENDPOINT } from '../lib/api';
 import { loadingStatus } from '../lib/helpers';
-import { NAVIGATION } from '../queries/contentful';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 
 const NUMBER_OF_POSTS = 15;
 
-const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  initialData,
-  navigationItems,
-}) => {
+const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const isDark = useDarkMode();
   const { data, error, size, setSize } = useSWRInfinite(
     (index) => {
@@ -65,7 +61,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
     <>
       <main className={isDark ? 'themed-main isDark' : 'themed-main isLight'}>
         <Head>
-          <title>Wannabes - Behangmotief</title>
+          <title>Behangmotief</title>
           <meta
             name="description"
             content="Behangmotief / Kevin Meyvaert's concert- and festivalphoto portfolio website."
