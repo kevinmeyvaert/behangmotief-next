@@ -1,4 +1,3 @@
-import request from 'graphql-request';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { FC } from 'react';
@@ -10,11 +9,9 @@ import Footer from '../../components/Footer';
 import LazyImage from '../../components/LazyImage';
 import Navigation from '../../components/Navigation';
 import useDarkMode from '../../hooks/useDarkMode';
-import { WANNABES_API_ENDPOINT } from '../../lib/api';
+import { fetcher } from '../../lib/api';
 import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
-import type { AlbumQuery } from '../../types/wannabes.types';
-
-const fetcher = (query: string, slug: string) => request(WANNABES_API_ENDPOINT, query, { slug });
+import { AlbumQuery, GetAlbumPathsQuery } from '../../types/wannabes.types';
 
 const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
   const isDark = useDarkMode();
@@ -83,7 +80,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
 };
 
 export async function getStaticPaths() {
-  const res = await request(WANNABES_API_ENDPOINT, ALBUM_PATHS);
+  const res = await fetcher<GetAlbumPathsQuery>(ALBUM_PATHS);
   const paths = res.posts.data.map((post) => ({
     params: { slug: post.slug.split('/') },
   }));
@@ -93,7 +90,7 @@ export async function getStaticPaths() {
 export const getStaticProps = async ({ params }) => {
   const { slug } = params;
   const mergeSlug = Array.isArray(slug) ? slug?.join('/') : slug;
-  const { post }: { post: AlbumQuery['post'] } = await fetcher(ALBUM, mergeSlug);
+  const { post } = await fetcher<AlbumQuery>(ALBUM, { slug: mergeSlug });
   return { props: { post }, revalidate: 60 };
 };
 

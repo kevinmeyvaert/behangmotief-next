@@ -1,4 +1,3 @@
-import request from 'graphql-request';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { FC } from 'react';
@@ -10,7 +9,7 @@ import MasonryItem from '../components/MasonryItem';
 import Navigation from '../components/Navigation';
 import useDarkMode from '../hooks/useDarkMode';
 import useEndlessScroll from '../hooks/useEndlessScroll';
-import { WANNABES_API_ENDPOINT } from '../lib/api';
+import { fetcher } from '../lib/api';
 import { loadingStatus } from '../lib/helpers';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
@@ -19,12 +18,12 @@ const NUMBER_OF_POSTS = 15;
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const isDark = useDarkMode();
-  const { data, error, size, setSize } = useSWRInfinite(
+  const { data, error, size, setSize } = useSWRInfinite<SearchQuery>(
     (index) => {
       return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
     },
     (query, start, limit) => {
-      return request(WANNABES_API_ENDPOINT, query, {
+      return fetcher(query, {
         start,
         limit,
       });
@@ -115,7 +114,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
 };
 
 export const getStaticProps = async () => {
-  const initialPosts: SearchQuery = await request(WANNABES_API_ENDPOINT, POSTS, {
+  const initialPosts = await fetcher<SearchQuery>(POSTS, {
     start: 0,
     limit: NUMBER_OF_POSTS,
   });
