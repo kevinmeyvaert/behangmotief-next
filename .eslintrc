@@ -16,7 +16,8 @@
     "prettier",
     "react-hooks",
     "jsx-a11y",
-    "simple-import-sort"
+    "simple-import-sort",
+    "import"
   ],
   "extends": [
     "airbnb-typescript",
