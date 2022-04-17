@@ -1,59 +1,36 @@
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
-import useSWRInfinite from 'swr/infinite';
+import { InfiniteData } from 'react-query';
 
 import Footer from '../components/Footer';
 import MasonryItem from '../components/MasonryItem';
 import Navigation from '../components/Navigation';
 import useDarkMode from '../hooks/useDarkMode';
-import useEndlessScroll from '../hooks/useEndlessScroll';
+import { usePagedAlbums } from '../hooks/usePagedAlbums';
 import { fetcher } from '../lib/api';
-import { loadingStatus } from '../lib/helpers';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 
-const NUMBER_OF_POSTS = 15;
-
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const isDark = useDarkMode();
-  const { data, error, size, setSize } = useSWRInfinite<SearchQuery>(
-    (index) => {
-      return [POSTS, index * NUMBER_OF_POSTS, NUMBER_OF_POSTS];
-    },
-    (query, start, limit) => {
-      return fetcher(query, {
-        start,
-        limit,
-      });
-    },
-  );
+  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage } = usePagedAlbums({
+    initialData,
+  });
 
-  // TODO: figure out SWR defaults
-  const dataSwitch = data || initialData;
+  const endReached = useCallback(() => {
+    fetchNextPage({
+      pageParam: albums.length,
+    });
+  }, [fetchNextPage, albums]);
 
-  const canLoadMore = size * NUMBER_OF_POSTS < initialData[0].posts.pagination.total;
-  const [, isLoadingMore] = loadingStatus(data, error, size);
-  useEndlessScroll(size, setSize, isLoadingMore, 1000, canLoadMore);
-
-  const posts = dataSwitch.reduce(
-    (acc, page) => [...acc, ...page.posts.data.map((post) => post)],
-    [],
-  );
-  const updatedPosts = posts?.map((p) => {
-    if (p.thumbnail.photographer.firstName !== 'Kevin') {
-      const kevThumbnail = p.images.filter((i) => i.photographer.firstName === 'Kevin')[0];
-      return {
-        ...p,
-        thumbnail: {
-          blurhash: kevThumbnail.blurhash,
-          hires: kevThumbnail.resized,
-        },
-      };
-    } else {
-      return p;
-    }
+  const [infiniteRef] = useInfiniteScroll({
+    loading: isFetchingNextPage,
+    hasNextPage: hasNextPage,
+    onLoadMore: endReached,
+    rootMargin: '400px',
   });
 
   return (
@@ -92,7 +69,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
               className="c-masonry"
               columnClassName="c-masonry--grid-column"
             >
-              {updatedPosts.map((post) => (
+              {albums.map((post) => (
                 <MasonryItem
                   src={post.thumbnail.hires}
                   artist={post.artist.name}
@@ -104,6 +81,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
                   event={post.event?.name}
                 />
               ))}
+              {(!isLoading || hasNextPage) && <div ref={infiniteRef} />}
             </Masonry>
           </div>
         </section>
@@ -116,9 +94,10 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
 export const getStaticProps = async () => {
   const initialPosts = await fetcher<SearchQuery>(POSTS, {
     start: 0,
-    limit: NUMBER_OF_POSTS,
+    limit: 15,
   });
-  return { props: { initialData: [initialPosts] }, revalidate: 60 };
+  const initialInfiniteData = { pages: [initialPosts] } as InfiniteData<SearchQuery>;
+  return { props: { initialData: initialInfiniteData }, revalidate: 60 };
 };
 
 export default Home;

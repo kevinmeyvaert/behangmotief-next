@@ -13,7 +13,7 @@ interface Props {
   slug: Post['slug'];
   dimensions: Dimensions;
   blurhash: Image['blurhash'];
-  event?: Post['event'];
+  event?: Post['event']['name'];
 }
 
 const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, blurhash }) => {

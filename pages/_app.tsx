@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 export function reportWebVitals({ id, name, label, value }) {
   if (!(window as any).dataLayer) {
@@ -48,10 +49,13 @@ function Tracking({ children }) {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const queryClient = new QueryClient();
   return (
-    <Tracking>
-      <Component {...pageProps} />
-    </Tracking>
+    <QueryClientProvider client={queryClient}>
+      <Tracking>
+        <Component {...pageProps} />
+      </Tracking>
+    </QueryClientProvider>
   );
 }
 
