@@ -1,10 +1,13 @@
-import '../styles/index.scss';
+import '@fontsource/merriweather-sans';
 
+import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
 import { QueryClient, QueryClientProvider } from 'react-query';
+
+import theme from '../theme/theme';
 
 export function reportWebVitals({ id, name, label, value }) {
   if (!(window as any).dataLayer) {
@@ -53,7 +56,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Tracking>
-        <Component {...pageProps} />
+        <ChakraProvider theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
       </Tracking>
     </QueryClientProvider>
   );

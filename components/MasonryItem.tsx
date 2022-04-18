@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
+import { Box, Text } from '@chakra-ui/layout';
 import Link from 'next/link';
 import { FC } from 'react';
 
@@ -18,7 +17,18 @@ interface Props {
 
 const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, blurhash }) => {
   return (
-    <div className="c-masonry--item">
+    <Box
+      role="group"
+      position="relative"
+      overflow="hidden"
+      transition="0.3s"
+      boxShadow="0 18px 36px -18px rgba(0, 0, 0, 0.33)"
+      mb={6}
+      _hover={{
+        transform: 'translateY(-10px)',
+        boxShadow: '0 30px 60px -10px rgba(0, 0, 0, 0.3)',
+      }}
+    >
       <Link href="/album/[...slug]" as={`/album/${slug}`}>
         <a>
           <LazyImage
@@ -29,10 +39,24 @@ const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, b
             dimensions={dimensions}
             blurhash={blurhash}
           />
+          <Text
+            fontSize="16px"
+            position="absolute"
+            textAlign="center"
+            width="100%"
+            bottom={0}
+            transition="0.3s"
+            opacity={0}
+            color="white"
+            p={2}
+            background="linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))"
+            _groupHover={{ opacity: 1 }}
+          >
+            {`${artist} at ${event ? event : venue}`}
+          </Text>
         </a>
       </Link>
-      <p>{`${artist} at ${event ? event : venue}`}</p>
-    </div>
+    </Box>
   );
 };
 

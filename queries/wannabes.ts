@@ -12,7 +12,7 @@ export const POSTS = gql`
         slug
         images {
           blurhash
-          photographer { 
+          photographer {
             firstName
           }
           resized(width: 1200, height: 800)
@@ -20,7 +20,7 @@ export const POSTS = gql`
         thumbnail {
           blurhash
           hires
-          photographer { 
+          photographer {
             firstName
           }
           dimensions {
@@ -61,8 +61,8 @@ export const ALBUM = gql`
       date
       thumbnail {
         resized(width: 1200, height: 800)
-        photographer { 
-        	firstName
+        photographer {
+          firstName
         }
       }
       id
@@ -80,8 +80,8 @@ export const ALBUM = gql`
           width
           height
         }
-        photographer { 
-        	firstName
+        photographer {
+          firstName
         }
       }
     }
