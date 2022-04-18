@@ -12,7 +12,6 @@ import {
   IconButton,
   Spinner,
   useDisclosure,
-  Text,
 } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
@@ -23,6 +22,7 @@ import Masonry from 'react-masonry-css';
 import { InfiniteData } from 'react-query';
 
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
 import useDebouncedValue from '../hooks/useDebounce';
@@ -103,34 +103,12 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
       </Head>
 
       <Container maxW={{ base: 'max-content' }}>
-        <Box as="header">
-          <Flex gap={2} mt={4} justify="end">
-            <form onSubmit={handleOnSubmit}>
-              <InputGroup w="sm">
-                <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-                <Input
-                  type="search "
-                  placeholder="Search an artist or venue"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                />
-                {searchInput !== '' && (
-                  <InputRightElement
-                    children={
-                      <IconButton
-                        aria-label="Remove search input"
-                        icon={<SmallCloseIcon color="gray.300" />}
-                        onClick={() => setSearchInput('')}
-                        size="sm"
-                      />
-                    }
-                  />
-                )}
-              </InputGroup>
-            </form>
-            <IconButton icon={<InfoIcon color="gray.600" />} aria-label="About" onClick={onOpen} />
-          </Flex>
-        </Box>
+        <Header
+          onSubmitSearch={handleOnSubmit}
+          onSetSearchInput={setSearchInput}
+          onOpenSideBar={onOpen}
+          searchInput={searchInput}
+        />
         <Center
           height="56"
           position="sticky"
