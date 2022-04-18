@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request';
 
 export const POSTS = gql`
-  query Search($start: Int, $limit: Int) {
-    posts: postSearch(photographerSlug: "kevin-meyvaert", start: $start, limit: $limit) {
+  query Search($start: Int, $limit: Int, $all: String) {
+    posts: postSearch(photographerSlug: "kevin-meyvaert", start: $start, limit: $limit, all: $all) {
       data {
         id
         artist {

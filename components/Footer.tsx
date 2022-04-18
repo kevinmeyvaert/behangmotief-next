@@ -1,20 +1,24 @@
+import { Box, Container, HStack, Text } from '@chakra-ui/layout';
+
 const Footer = () => {
   return (
-    <footer className="c-row c-row--flush footer">
-      <div className="o-container o-flex o-align-center o-justify-space-between">
-        <p>Made with ♥️ in Gent.</p>
-        <div>
-          <a
-            href="https://instagram.com/behangmotief"
-            target="_blank"
-            title="@behangmotief on Instagram"
-            rel="noreferrer"
-          >
-            @behangmotief
-          </a>
-        </div>
-      </div>
-    </footer>
+    <Box as="footer" bg="#fcfcff" color="black" mt={6} fontFamily="Poppins">
+      <Container maxW={{ sm: 'max-content', xl: 'container.xl' }}>
+        <HStack justify={'space-between'} py={8}>
+          <Text>Made with ♥️ in Gent, Belgium.</Text>
+          <Text>
+            <a
+              href="https://instagram.com/behangmotief"
+              target="_blank"
+              title="@behangmotief on Instagram"
+              rel="noreferrer"
+            >
+              &copy; Behangmotief, {new Date().getFullYear()}
+            </a>
+          </Text>
+        </HStack>
+      </Container>
+    </Box>
   );
 };
 

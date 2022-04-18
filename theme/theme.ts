@@ -9,7 +9,7 @@ const styles = {
   global: (props) => ({
     body: {
       color: mode('black', 'white')(props),
-      bg: mode('white', 'black')(props),
+      bg: mode('#fcfcff', 'black')(props),
     },
   }),
 };
@@ -19,7 +19,7 @@ const theme = extendTheme({
   styles,
   fonts: {
     heading: 'Merriweather Sans, sans-serif',
-    body: 'Merriweather Sans, sans-serif',
+    body: 'Poppins, sans-serif',
   },
 });
 

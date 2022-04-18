@@ -1,11 +1,23 @@
 import { useColorMode } from '@chakra-ui/color-mode';
-import { MoonIcon, SearchIcon, SunIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement } from '@chakra-ui/input';
-import { Box, Center, Container, Flex } from '@chakra-ui/layout';
-import { IconButton } from '@chakra-ui/react';
+import { InfoIcon, SearchIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import { Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/input';
+import { Box, Center, Container, Flex, Heading, HStack } from '@chakra-ui/layout';
+import {
+  CloseButton,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  IconButton,
+  Spinner,
+  useDisclosure,
+  Text,
+} from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import { FC, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { FC, useCallback, useEffect, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
 import { InfiniteData } from 'react-query';
@@ -13,6 +25,7 @@ import { InfiniteData } from 'react-query';
 import Footer from '../components/Footer';
 import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
+import useDebouncedValue from '../hooks/useDebounce';
 import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
 import { fetcher } from '../lib/api';
@@ -20,11 +33,17 @@ import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
-  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage } = usePagedAlbums({
-    initialData,
-  });
-  const { colorMode, toggleColorMode, setColorMode } = useColorMode();
+  const router = useRouter();
+  const [searchInput, setSearchInput] = useState('');
+  const debouncedSearchInput = useDebouncedValue(searchInput);
+  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch } =
+    usePagedAlbums({
+      initialData,
+      searchInput,
+    });
+  const { setColorMode } = useColorMode();
   const { stickyRef, isSticky } = useIsSticky();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const endReached = useCallback(() => {
     fetchNextPage({
@@ -40,8 +59,24 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
   });
 
   useEffect(() => {
-    setColorMode(isSticky ? 'dark' : 'light')
-  }, [isSticky])
+    setSearchInput(Array.isArray(router.query.q) ? router.query.q[0] : router.query.q || '');
+  }, []);
+
+  useEffect(() => {
+    setColorMode(isSticky ? 'dark' : 'light');
+  }, [isSticky]);
+
+  useEffect(() => {
+    refetch();
+  }, [debouncedSearchInput]);
+
+  const handleOnSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      refetch();
+    },
+    [refetch],
+  );
 
   return (
     <>
@@ -67,13 +102,33 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
 
-      <Container maxW="container.xl">
+      <Container maxW={{ base: 'max-content' }}>
         <Box as="header">
           <Flex gap={2} mt={4} justify="end">
-            <InputGroup w="sm">
-              <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
-              <Input type="search " placeholder="Search an artist or venue" />
-            </InputGroup>
+            <form onSubmit={handleOnSubmit}>
+              <InputGroup w="sm">
+                <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
+                <Input
+                  type="search "
+                  placeholder="Search an artist or venue"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+                {searchInput !== '' && (
+                  <InputRightElement
+                    children={
+                      <IconButton
+                        aria-label="Remove search input"
+                        icon={<SmallCloseIcon color="gray.300" />}
+                        onClick={() => setSearchInput('')}
+                        size="sm"
+                      />
+                    }
+                  />
+                )}
+              </InputGroup>
+            </form>
+            <IconButton icon={<InfoIcon color="gray.600" />} aria-label="About" onClick={onOpen} />
           </Flex>
         </Box>
         <Center
@@ -84,15 +139,17 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           pointerEvents="none"
           ref={stickyRef}
         >
-          <Box transition="0.3s" width={isSticky ? '75px' : '115px'}>
+          <Box transition="0.3s" width={isSticky ? '65px' : '95px'}>
             <Logo />
           </Box>
         </Center>
         <Masonry
           breakpointCols={{
-            default: 3,
-            700: 2,
-            500: 1,
+            default: 5,
+            1920: 4,
+            1280: 3,
+            768: 2,
+            640: 1,
           }}
           className="c-masonry"
           columnClassName="c-masonry--grid-column"
@@ -109,10 +166,27 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
               event={post.event?.name}
             />
           ))}
-          {(!isLoading || hasNextPage) && <div ref={infiniteRef} />}
         </Masonry>
+        {(!isLoading || hasNextPage) && <div ref={infiniteRef} />}
       </Container>
+      {(isLoading || isFetchingNextPage) && (
+        <Box position="fixed" zIndex="popover" bottom={4} textAlign="center" width="100%">
+          <Spinner />
+        </Box>
+      )}
       <Footer />
+      <Drawer onClose={onClose} isOpen={isOpen} size="lg">
+        <DrawerOverlay />
+        <DrawerContent bg="black" color="white">
+          <DrawerHeader>
+            <HStack justify="space-between">
+              <Heading>12800 ISO and giving 0 fucks.</Heading>
+              <CloseButton onClick={onClose} />
+            </HStack>
+          </DrawerHeader>
+          <DrawerBody>hey</DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
