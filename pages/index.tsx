@@ -102,7 +102,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
 
-      <Container maxW="container.xl">
+      <Container maxW="container.2xl">
         <Header
           onSubmitSearch={handleOnSubmit}
           onSetSearchInput={setSearchInput}

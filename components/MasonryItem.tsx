@@ -28,6 +28,13 @@ const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, b
         transform: 'translateY(-10px)',
         boxShadow: '0 30px 60px -10px rgba(0, 0, 0, 0.3)',
       }}
+      _focusWithin={{
+        transform: 'translateY(-10px)',
+        boxShadow: '0 30px 60px -10px rgba(0, 0, 0, 0.3)',
+        h2: {
+          opacity: 1,
+        },
+      }}
       as="article"
     >
       <Link href="/album/[...slug]" as={`/album/${slug}`}>

@@ -1,7 +1,7 @@
 import { useColorMode } from '@chakra-ui/color-mode';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, Center, Container, Flex } from '@chakra-ui/layout';
-import { Button, IconButton } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { FC, useEffect } from 'react';
@@ -51,7 +51,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
         <meta name="twitter:image" content={thumbnail.resized} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <Container maxW="container.xl">
+      <Container maxW="container.2xl">
         <Box as="header">
           <Flex gap={2} mt={4} justify="start">
             <form action="/">

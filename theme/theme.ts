@@ -17,6 +17,11 @@ const styles = {
 const theme = extendTheme({
   config,
   styles,
+  sizes: {
+    container: {
+      '2xl': '1920px',
+    },
+  },
   fonts: {
     heading: 'Merriweather Sans, sans-serif',
     body: 'Poppins, sans-serif',
