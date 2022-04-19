@@ -102,7 +102,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
 
-      <Container maxW={{ base: 'max-content' }}>
+      <Container maxW="container.xl">
         <Header
           onSubmitSearch={handleOnSubmit}
           onSetSearchInput={setSearchInput}
@@ -123,9 +123,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         </Center>
         <Masonry
           breakpointCols={{
-            default: 5,
-            1920: 4,
-            1280: 3,
+            default: 3,
             768: 2,
             640: 1,
           }}

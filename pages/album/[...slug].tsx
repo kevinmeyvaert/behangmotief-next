@@ -51,7 +51,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
         <meta name="twitter:image" content={thumbnail.resized} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <Container maxW={{ base: 'max-content' }}>
+      <Container maxW="container.xl">
         <Box as="header">
           <Flex gap={2} mt={4} justify="start">
             <form action="/">
@@ -82,8 +82,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           <div className="o-container">
             <Masonry
               breakpointCols={{
-                default: 3,
-                768: 2,
+                default: 2,
                 640: 1,
               }}
               className="c-masonry"

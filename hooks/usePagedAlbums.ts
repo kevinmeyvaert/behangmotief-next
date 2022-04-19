@@ -9,7 +9,7 @@ import { Post, SearchQuery } from '../types/wannabes.types';
 const STALE_30_MINUTES = 1800000;
 
 export const usePagedAlbums = ({
-  pageSize = 20,
+  pageSize = 15,
   initialData,
   searchInput,
 }: {
