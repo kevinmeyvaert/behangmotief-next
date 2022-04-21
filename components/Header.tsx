@@ -1,4 +1,4 @@
-import { InfoIcon, SearchIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import { SearchIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/input';
 import { Box, Flex } from '@chakra-ui/layout';
 import { IconButton } from '@chakra-ui/react';
@@ -15,6 +15,12 @@ const Header = ({ onSubmitSearch, onSetSearchInput, onOpenSideBar, searchInput }
               placeholder="Search an artist or venue"
               value={searchInput}
               onChange={(e) => onSetSearchInput(e.target.value)}
+              _focusVisible={{
+                boxShadow: 'none',
+                border: 'none',
+                outlineColor: 'black',
+                outlineOffset: '-2px',
+              }}
             />
             {searchInput !== '' && (
               <InputRightElement
@@ -31,9 +37,19 @@ const Header = ({ onSubmitSearch, onSetSearchInput, onOpenSideBar, searchInput }
           </InputGroup>
         </form>
         <IconButton
-          icon={<InfoIcon color="gray.600" />}
           aria-label="About"
           onClick={onOpenSideBar}
+          bgImage="url('/icon.jpg')"
+          bgSize="cover"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+          _hover={{
+            backgroundColor: 'none',
+            opacity: 0.7,
+          }}
+          _focusVisible={{
+            opacity: 0.7,
+          }}
         />
       </Flex>
     </Box>

@@ -1,7 +1,17 @@
 import { useColorMode } from '@chakra-ui/color-mode';
-import { InfoIcon, SearchIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon, InfoIcon, SearchIcon, SmallCloseIcon } from '@chakra-ui/icons';
 import { Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/input';
-import { Box, Center, Container, Flex, Heading, HStack } from '@chakra-ui/layout';
+import {
+  Box,
+  Center,
+  Container,
+  Heading,
+  HStack,
+  List,
+  ListIcon,
+  ListItem,
+  Text,
+} from '@chakra-ui/layout';
 import {
   CloseButton,
   Drawer,
@@ -15,6 +25,7 @@ import {
 } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useEffect, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
@@ -29,6 +40,7 @@ import useDebouncedValue from '../hooks/useDebounce';
 import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
 import { fetcher } from '../lib/api';
+import profile from '../public/profile.jpg';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 
@@ -151,16 +163,56 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         </Box>
       )}
       <Footer />
-      <Drawer onClose={onClose} isOpen={isOpen} size="lg">
+      <Drawer onClose={onClose} isOpen={isOpen} size="md">
         <DrawerOverlay />
         <DrawerContent bg="black" color="white">
           <DrawerHeader>
-            <HStack justify="space-between">
-              <Heading>12800 ISO and giving 0 fucks.</Heading>
-              <CloseButton onClick={onClose} />
+            <HStack justify="end">
+              <CloseButton onClick={onClose} _focus={{ outlineColor: 'white' }} />
             </HStack>
           </DrawerHeader>
-          <DrawerBody>hey</DrawerBody>
+
+          <DrawerBody>
+            <iframe
+              src="https://giphy.com/embed/BHtwZCc9vJAvLI745F"
+              width="320"
+              height="480"
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+            <Text lineHeight="2" mb={5} mt={10}>
+              Belgian freelance concert- &amp; festivalphotographer based in Gent. Part of Wannabes,
+              a rockphotography collective.
+            </Text>
+            <Heading as="h3" fontSize="xl" mb={4}>
+              Contact
+            </Heading>
+            <Text lineHeight="2">hallo@behangmotief.be</Text>
+            <Text lineHeight="2" mb={5}>
+              +32 468 16 74 72
+            </Text>
+            <Heading as="h3" fontSize="xl" mb={4}>
+              Referrals
+            </Heading>
+            <List spacing={2}>
+              <ListItem>
+                <ListIcon as={ChevronRightIcon} color="white" />
+                Crammerock
+              </ListItem>
+              <ListItem>
+                <ListIcon as={ChevronRightIcon} color="white" />
+                Democrazy
+              </ListItem>
+              <ListItem>
+                <ListIcon as={ChevronRightIcon} color="white" />
+                Studio Brussel
+              </ListItem>
+              <ListItem>
+                <ListIcon as={ChevronRightIcon} color="white" />
+                Cactusfestival
+              </ListItem>
+            </List>
+          </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>
