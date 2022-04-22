@@ -49,7 +49,7 @@ const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, b
           />
           <Heading
             as="h2"
-            fontSize="16px"
+            fontSize={{ base: '14px', xl: '16px' }}
             position="absolute"
             textAlign="center"
             width="100%"
