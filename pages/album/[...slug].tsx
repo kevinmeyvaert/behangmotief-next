@@ -4,6 +4,7 @@ import { Box, Center, Container, Flex } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 import Masonry from 'react-masonry-css';
 
@@ -19,12 +20,18 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
   const { artist, venue, images, thumbnail, date } = post;
   const { stickyRef, isSticky } = useIsSticky();
   const { setColorMode } = useColorMode();
+  const router = useRouter();
 
   const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
 
   useEffect(() => {
     setColorMode(isSticky ? 'dark' : 'light');
   }, [isSticky]);
+
+  const handleBackClick = (e) => {
+    e.preventDefault();
+    router.push('/');
+  };
 
   return (
     <>
@@ -60,6 +67,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
                 aria-label="Back"
                 type="submit"
                 variant="unstyled"
+                onClick={handleBackClick}
               >
                 Back
               </Button>

@@ -1,10 +1,10 @@
 import '@fontsource/merriweather-sans';
 import '@fontsource/poppins';
 
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, SlideFade } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -54,11 +54,20 @@ function Tracking({ children }) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
+  const router = useRouter();
+
   return (
     <QueryClientProvider client={queryClient}>
       <Tracking>
         <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
+          <SlideFade
+            in
+            key={router.asPath}
+            offsetY="20px"
+            transition={{ enter: { duration: 0.3 } }}
+          >
+            <Component {...pageProps} />
+          </SlideFade>
         </ChakraProvider>
       </Tracking>
     </QueryClientProvider>

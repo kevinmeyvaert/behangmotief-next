@@ -37,7 +37,7 @@ const Header = ({ onSubmitSearch, onSetSearchInput, onOpenSideBar, searchInput }
                   size="xs"
                   background="none"
                   _focusVisible={{
-                    outlineColor: "black",
+                    outlineColor: 'black',
                   }}
                 />
               }

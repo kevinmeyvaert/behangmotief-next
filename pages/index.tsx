@@ -173,13 +173,9 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           </DrawerHeader>
 
           <DrawerBody>
-            <iframe
-              src="https://giphy.com/embed/BHtwZCc9vJAvLI745F"
-              width="320"
-              height="480"
-              frameBorder="0"
-              allowFullScreen
-            ></iframe>
+            <Box width='50%' margin="0 auto" borderRadius="full" overflow={"hidden"}>
+              <Image src={profile} />
+            </Box>
             <Text lineHeight="2" mb={5} mt={10}>
               Belgian freelance concert- &amp; festivalphotographer based in Gent. Part of Wannabes,
               a rockphotography collective.
