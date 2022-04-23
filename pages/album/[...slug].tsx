@@ -1,6 +1,6 @@
 import { useColorMode } from '@chakra-ui/color-mode';
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Center, Container, Flex } from '@chakra-ui/layout';
+import { Box, Center, Container, Flex, Heading } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
@@ -86,32 +86,36 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
             <Logo />
           </Box>
         </Center>
-        <section className="c-row">
-          <div className="o-container">
-            <Masonry
-              breakpointCols={{
-                default: 2,
-                640: 1,
-              }}
-              className="c-masonry"
-              columnClassName="c-masonry--grid-column"
-            >
-              {filteredImages.map((photo, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Box as="figure" key={index} className="c-album--photo-item" mb={6}>
-                  <LazyImage
-                    src={photo.hires}
-                    blurhash={photo.blurhash}
-                    alt={artist.name}
-                    dimensions={photo.dimensions}
-                    sizes="(min-width: 73.75em) calc(80% * 73.75em)"
-                    srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400,PD2/${photo.hires} 400w`}
-                  />
-                </Box>
-              ))}
-            </Masonry>
-          </div>
-        </section>
+        <Heading lineHeight={0.75} marginBottom="-0.15em" fontSize="6xl">
+          {artist.name}
+        </Heading>
+        <Masonry
+          breakpointCols={{
+            default: 2,
+            640: 1,
+          }}
+          className="c-masonry"
+          columnClassName="c-masonry--grid-column"
+        >
+          <Box position="absolute" zIndex="overlay" overflow="hidden">
+            <Heading lineHeight={0.75} marginTop="-0.61em" color="white" fontSize="6xl">
+              {artist.name}
+            </Heading>
+          </Box>
+          {filteredImages.map((photo, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Box as="figure" key={index} className="c-album--photo-item" mb={6}>
+              <LazyImage
+                src={photo.hires}
+                blurhash={photo.blurhash}
+                alt={artist.name}
+                dimensions={photo.dimensions}
+                sizes="(min-width: 73.75em) calc(80% * 73.75em)"
+                srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400,PD2/${photo.hires} 400w`}
+              />
+            </Box>
+          ))}
+        </Masonry>
       </Container>
       <Footer />
     </>
