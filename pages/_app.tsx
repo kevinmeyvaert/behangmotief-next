@@ -1,10 +1,7 @@
-import '@fontsource/merriweather-sans';
-import '@fontsource/poppins';
-
 import { ChakraProvider, SlideFade } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
 import { QueryClient, QueryClientProvider } from 'react-query';
 

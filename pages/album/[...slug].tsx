@@ -1,7 +1,8 @@
 import { useColorMode } from '@chakra-ui/color-mode';
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Center, Container, Flex, Heading } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
+import { Box, Center, Container, Flex, Heading, Text } from '@chakra-ui/layout';
+import { Fade } from '@chakra-ui/transition'
+import { Button, chakra } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -68,6 +69,9 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
                 type="submit"
                 variant="unstyled"
                 onClick={handleBackClick}
+                _hover={{
+                  transform: "translateY(3px)"
+                }}
               >
                 Back
               </Button>
@@ -86,9 +90,12 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
             <Logo />
           </Box>
         </Center>
-        <Heading lineHeight={0.75} marginBottom="-0.15em" fontSize="6xl">
-          {artist.name}
-        </Heading>
+        <Fade in transition={{ enter: { duration: 0.5 } }}>
+          <Text ml={5}><chakra.span fontWeight="bold" fontSize="20px">{venue.name}</chakra.span> &mdash; {new Date(date).toLocaleDateString('be-NL')}</Text>
+          <Heading lineHeight={0.75} ml={4} mb="-0.10em" fontSize="6xl" letterSpacing={"-1px"}>
+            {artist.name}
+          </Heading>
+        </Fade>
         <Masonry
           breakpointCols={{
             default: 2,
@@ -98,7 +105,12 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           columnClassName="c-masonry--grid-column"
         >
           <Box position="absolute" zIndex="overlay" overflow="hidden">
-            <Heading lineHeight={0.75} marginTop="-0.61em" color="white" fontSize="6xl">
+            <Heading ml={4} mt="-0.87em" color="white" fontSize="6xl" sx={{
+              "-webkit-text-fill-color": "transparent",
+              "-webkit-text-stroke-width": "1px",
+              "-webkit-text-stroke-color": "white",
+            }}
+              letterSpacing={"-1px"}>
               {artist.name}
             </Heading>
           </Box>

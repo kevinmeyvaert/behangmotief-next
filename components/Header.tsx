@@ -20,6 +20,9 @@ const Header = ({ onSubmitSearch, onSetSearchInput, onOpenSideBar, searchInput }
             placeholder="Search an artist or venue"
             value={searchInput}
             onChange={(e) => onSetSearchInput(e.target.value)}
+            _focus={{
+              borderColor: "black"
+            }}
             _focusVisible={{
               boxShadow: 'none',
               border: 'none',

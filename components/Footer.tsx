@@ -2,7 +2,7 @@ import { Box, Container, HStack, Text } from '@chakra-ui/layout';
 
 const Footer = () => {
   return (
-    <Box as="footer" bg="#fcfcff" color="black" mt={6} fontFamily="Poppins">
+    <Box as="footer" bg="#fcfcff" color="black" mt={6}>
       <Container maxW={{ sm: 'max-content', xl: 'container.xl' }}>
         <HStack justify={'space-between'} py={8}>
           <Text>Made with ♥️ in Gent, Belgium.</Text>

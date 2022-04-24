@@ -23,8 +23,8 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'Merriweather Sans, sans-serif',
-    body: 'Poppins, sans-serif',
+    heading: 'Helvetica, sans-serif',
+    body: 'Helvetica, sans-serif',
   },
   components: {
     Button: {

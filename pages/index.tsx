@@ -167,7 +167,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <DrawerOverlay />
         <DrawerContent bg="black" color="white">
           <DrawerHeader>
-            <HStack justify="end">
+            <HStack justify="flex-end">
               <CloseButton onClick={onClose} _focus={{ outlineColor: 'white' }} />
             </HStack>
           </DrawerHeader>
