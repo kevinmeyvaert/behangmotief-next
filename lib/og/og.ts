@@ -18,7 +18,7 @@ export async function getScreenshot(isDev, slug) {
   const page = await getPage(isDev);
 
   await page.setViewport({ width: 1200, height: 630 });
-  await page.goto(`${isDev ? 'http://localhost:3000' : 'https://www.wannabes.be'}${path}`);
+  await page.goto(`${isDev ? 'http://localhost:3000' : `${process.env.VERCEL_URL}`}${path}`);
 
   const file = await page.screenshot({ type: 'jpeg' });
   return file;
