@@ -23,6 +23,9 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
   const { setColorMode } = useColorMode();
   const router = useRouter();
 
+  const { slug } = router.query;
+  const mergeSlug = slug?.join('/');
+
   const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
 
   useEffect(() => {
@@ -49,7 +52,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           property="og:description"
           content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
         />
-        <meta property="og:image" content={thumbnail.resized} />
+        <meta property="og:image" content={`https://behangmotief.be/api/og/${mergeSlug}`} />
 
         <meta name="twitter:title" content={`${artist.name} | ${venue.name}`} />
         <meta
