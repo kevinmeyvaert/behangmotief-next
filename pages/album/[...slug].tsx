@@ -1,8 +1,8 @@
 import { useColorMode } from '@chakra-ui/color-mode';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, Center, Container, Flex, Heading, Text } from '@chakra-ui/layout';
-import { Fade } from '@chakra-ui/transition'
 import { Button, chakra } from '@chakra-ui/react';
+import { Fade } from '@chakra-ui/transition';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -70,7 +70,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
                 variant="unstyled"
                 onClick={handleBackClick}
                 _hover={{
-                  transform: "translateY(3px)"
+                  transform: 'translateY(3px)',
                 }}
               >
                 Back
@@ -90,44 +90,67 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
             <Logo />
           </Box>
         </Center>
-        <Fade in transition={{ enter: { duration: 0.5 } }}>
-          <Text ml={5}><chakra.span fontWeight="bold" fontSize="20px">{venue.name}</chakra.span> &mdash; {new Date(date).toLocaleDateString('be-NL')}</Text>
-          <Heading lineHeight={0.75} ml={4} mb="-0.10em" fontSize="6xl" letterSpacing={"-1px"}>
-            {artist.name}
-          </Heading>
-        </Fade>
-        <Masonry
-          breakpointCols={{
-            default: 2,
-            640: 1,
-          }}
-          className="c-masonry"
-          columnClassName="c-masonry--grid-column"
-        >
-          <Box position="absolute" zIndex="overlay" overflow="hidden">
-            <Heading ml={4} mt="-0.87em" color="white" fontSize="6xl" sx={{
-              "-webkit-text-fill-color": "transparent",
-              "-webkit-text-stroke-width": "1px",
-              "-webkit-text-stroke-color": "white",
-            }}
-              letterSpacing={"-1px"}>
+        <Box position="relative">
+          <Fade in transition={{ enter: { duration: 0.5 } }}>
+            <Text ml={5}>
+              <chakra.span fontWeight="bold" fontSize="20px">
+                {venue.name}
+              </chakra.span>{' '}
+              &mdash; {new Date(date).toLocaleDateString('be-NL')}
+            </Text>
+            <Heading
+              lineHeight={0.8}
+              ml={4}
+              mb="-0.25em"
+              fontSize="6xl"
+              letterSpacing={'-1px'}
+              textTransform="uppercase"
+            >
               {artist.name}
             </Heading>
-          </Box>
-          {filteredImages.map((photo, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Box as="figure" key={index} className="c-album--photo-item" mb={6}>
-              <LazyImage
-                src={photo.hires}
-                blurhash={photo.blurhash}
-                alt={artist.name}
-                dimensions={photo.dimensions}
-                sizes="(min-width: 73.75em) calc(80% * 73.75em)"
-                srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400,PD2/${photo.hires} 400w`}
-              />
+          </Fade>
+          <Masonry
+            breakpointCols={{
+              default: 2,
+              640: 1,
+            }}
+            className="c-masonry"
+            columnClassName="c-masonry--grid-column"
+          >
+            <Box position="absolute" zIndex="overlay" overflow="hidden" top={0}>
+              <Heading
+                ml={4}
+                lineHeight={0.8}
+                mt="0.5em"
+                color="white"
+                fontSize="6xl"
+                sx={{
+                  '-webkit-text-fill-color': 'transparent',
+                  '-webkit-text-stroke-width': '1px',
+                  '-webkit-text-stroke-color': 'white',
+                }}
+                letterSpacing="-1px"
+                textTransform="uppercase"
+                wordBreak="break-word"
+              >
+                {artist.name}
+              </Heading>
             </Box>
-          ))}
-        </Masonry>
+            {filteredImages.map((photo, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Box as="figure" key={index} className="c-album--photo-item" mb={6}>
+                <LazyImage
+                  src={photo.hires}
+                  blurhash={photo.blurhash}
+                  alt={artist.name}
+                  dimensions={photo.dimensions}
+                  sizes="(min-width: 73.75em) calc(80% * 73.75em)"
+                  srcSet={`https://r.wannabes.be/S=W1600,H1600/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400/${photo.hires} 400w`}
+                />
+              </Box>
+            ))}
+          </Masonry>
+        </Box>
       </Container>
       <Footer />
     </>

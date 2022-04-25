@@ -17,7 +17,7 @@ export const usePagedAlbums = ({
   initialData: InfiniteData<SearchQuery>;
   searchInput?: string;
 }) => {
-  const { data, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch } =
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch, isFetching } =
     useInfiniteQuery<Awaited<SearchQuery>>(
       'albums',
       ({ pageParam = 0 }) =>
@@ -48,6 +48,7 @@ export const usePagedAlbums = ({
   return {
     albums: allAlbums,
     isLoading,
+    isFetching,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,

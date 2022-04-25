@@ -21,9 +21,9 @@
   ],
   "extends": [
     "airbnb-typescript",
-    "plugin:prettier/recommended",
     "prettier",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:@next/next/recommended"
   ],
   "rules": {
     "no-param-reassign": [

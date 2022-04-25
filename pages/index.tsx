@@ -1,7 +1,7 @@
 import { useColorMode } from '@chakra-ui/color-mode';
-import { ChevronRightIcon, InfoIcon, SearchIcon, SmallCloseIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/input';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
+  AspectRatio,
   Box,
   Center,
   Container,
@@ -10,6 +10,7 @@ import {
   List,
   ListIcon,
   ListItem,
+  SimpleGrid,
   Text,
 } from '@chakra-ui/layout';
 import {
@@ -19,7 +20,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  IconButton,
+  Skeleton,
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -36,6 +37,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
+import MasonrySkeleton from '../components/MasonrySkeleton';
 import useDebouncedValue from '../hooks/useDebounce';
 import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
@@ -48,7 +50,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
   const router = useRouter();
   const [searchInput, setSearchInput] = useState('');
   const debouncedSearchInput = useDebouncedValue(searchInput);
-  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch } =
+  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch, isFetching } =
     usePagedAlbums({
       initialData,
       searchInput,
@@ -56,6 +58,8 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
   const { setColorMode } = useColorMode();
   const { stickyRef, isSticky } = useIsSticky();
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const hasAlbums = albums.length > 0;
 
   const endReached = useCallback(() => {
     fetchNextPage({
@@ -133,28 +137,37 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             <Logo />
           </Box>
         </Center>
-        <Masonry
-          breakpointCols={{
-            default: 3,
-            768: 2,
-            640: 1,
-          }}
-          className="c-masonry"
-          columnClassName="c-masonry--grid-column"
-        >
-          {albums.map((post) => (
-            <MasonryItem
-              src={post.thumbnail.hires}
-              artist={post.artist.name}
-              venue={post.venue.name}
-              slug={post.slug}
-              key={post.slug}
-              dimensions={post.thumbnail?.dimensions}
-              blurhash={post.thumbnail.blurhash}
-              event={post.event?.name}
-            />
-          ))}
-        </Masonry>
+        {isFetching && !hasAlbums && <MasonrySkeleton />}
+        {!hasAlbums && !isFetching && debouncedSearchInput !== '' && (
+          <Center>
+            <Heading textAlign="center">
+              No results were found for "{debouncedSearchInput}". :(
+            </Heading>
+          </Center>
+        )}
+        {hasAlbums && (
+          <Masonry
+            breakpointCols={{
+              default: 3,
+              640: 1,
+            }}
+            className="c-masonry"
+            columnClassName="c-masonry--grid-column"
+          >
+            {albums.map((post) => (
+              <MasonryItem
+                src={post.thumbnail.hires}
+                artist={post.artist.name}
+                venue={post.venue.name}
+                slug={post.slug}
+                key={post.slug}
+                dimensions={post.thumbnail?.dimensions}
+                blurhash={post.thumbnail.blurhash}
+                event={post.event?.name}
+              />
+            ))}
+          </Masonry>
+        )}
         {(!isLoading || hasNextPage) && <div ref={infiniteRef} />}
       </Container>
       {(isLoading || isFetchingNextPage) && (
@@ -173,7 +186,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           </DrawerHeader>
 
           <DrawerBody>
-            <Box width='50%' margin="0 auto" borderRadius="full" overflow={"hidden"}>
+            <Box width="50%" margin="0 auto" borderRadius="full" overflow={'hidden'}>
               <Image src={profile} />
             </Box>
             <Text lineHeight="2" mb={5} mt={10}>
