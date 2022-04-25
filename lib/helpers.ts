@@ -1,6 +1,18 @@
-export const loadingStatus = (data: any, error: any, size: number) => {
-  const isLoadingInitialData = !data && !error;
-  const isLoadingMore =
-    isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
-  return [isLoadingInitialData, isLoadingMore];
+import { Post } from '../types/wannabes.types';
+
+export const filterOwnAlbums = (albums?: Post[]) => {
+  return albums?.map((album) => {
+    if (album.thumbnail.photographer.firstName !== 'Kevin') {
+      const kevThumbnail = album.images.filter((i) => i.photographer.firstName === 'Kevin')[0];
+      return {
+        ...album,
+        thumbnail: {
+          blurhash: kevThumbnail.blurhash,
+          hires: kevThumbnail.resized,
+        },
+      };
+    } else {
+      return album;
+    }
+  });
 };

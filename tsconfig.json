@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "allowJs": false,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
-    "strict": false,
+    "strict": true,
     "strictNullChecks": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveConstEnums": true,
-    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "sourceMap": true,
     "lib": [
       "es6",
@@ -24,7 +22,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules"

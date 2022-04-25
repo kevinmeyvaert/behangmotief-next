@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request';
 
 export const POSTS = gql`
-  query Search($start: Int, $limit: Int) {
-    posts: postSearch(photographerSlug: "kevin-meyvaert", start: $start, limit: $limit) {
+  query Search($start: Int, $limit: Int, $all: String) {
+    posts: postSearch(photographerSlug: "kevin-meyvaert", start: $start, limit: $limit, all: $all) {
       data {
         id
         artist {
@@ -12,7 +12,7 @@ export const POSTS = gql`
         slug
         images {
           blurhash
-          photographer { 
+          photographer {
             firstName
           }
           resized(width: 1200, height: 800)
@@ -20,7 +20,7 @@ export const POSTS = gql`
         thumbnail {
           blurhash
           hires
-          photographer { 
+          photographer {
             firstName
           }
           dimensions {
@@ -61,8 +61,8 @@ export const ALBUM = gql`
       date
       thumbnail {
         resized(width: 1200, height: 800)
-        photographer { 
-        	firstName
+        photographer {
+          firstName
         }
       }
       id
@@ -80,8 +80,8 @@ export const ALBUM = gql`
           width
           height
         }
-        photographer { 
-        	firstName
+        photographer {
+          firstName
         }
       }
     }
