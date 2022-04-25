@@ -26,7 +26,6 @@
     "graphql": "^16.3.0",
     "graphql-request": "^4.2.0",
     "next": "^12.1.5",
-    "next-og-image": "^2.0.0",
     "next-plugin-graphql": "0.0.2",
     "react": "^18.0.0",
     "react-blurhash": "git+https://github.com/zeroxme/react-blurhash.git",
