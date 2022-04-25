@@ -3,25 +3,30 @@ import { chakra } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import { FC } from 'react';
 
+import Logo from '../../components/Logo';
 import { fetcher } from '../../lib/api';
 import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import { AlbumQuery, GetAlbumPathsQuery } from '../../types/wannabes.types';
 
 const OgImage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
+  const date = new Date(post.date);
+  const day = date.getUTCDay();
+  const month = date.getUTCMonth();
+  const year = date.getFullYear();
   return (
     <Center background="black" p={10} mt="-5px">
       <Box width={1024} height={630} position="relative">
-        <Text ml={5}>
+        <Text ml={5} color="white" size="xl">
           <chakra.span fontWeight="bold" fontSize="20px">
             {post.venue.name}
           </chakra.span>{' '}
-          &mdash; {new Date(post.date).toLocaleDateString('be-NL')}
+          &mdash; {`${day}/${month + 1}/${year}`}
         </Text>
         <Heading
           lineHeight={0.8}
           ml={4}
-          mb="-0.25em"
-          fontSize="6xl"
+          mb="-0.45em"
+          fontSize="9xl"
           letterSpacing={'-1px'}
           textTransform="uppercase"
           color="white"
@@ -35,10 +40,10 @@ const OgImage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) =
             position="absolute"
             ml={4}
             transform="translateY(-100%)"
-            top={'0.25em'}
+            top={'0.45em'}
             lineHeight={0.8}
             color="white"
-            fontSize="6xl"
+            fontSize="9xl"
             sx={{
               '-webkit-text-fill-color': 'transparent',
               '-webkit-text-stroke-width': '1px',
@@ -51,6 +56,9 @@ const OgImage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) =
             {post.artist.name}
           </Heading>
           <img src={`https://r.wannabes.be/S=W1600,H1600/${post.thumbnail.resized}`} />
+        </Box>
+        <Box position="absolute" width="15%" right="30" bottom="61px">
+          <Logo color="white" />
         </Box>
       </Box>
     </Center>
