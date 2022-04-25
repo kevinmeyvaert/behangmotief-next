@@ -49,7 +49,10 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           property="og:description"
           content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
         />
-        <meta property="og:image" content={`${process.env.VERCEL_URL}/api/og-image/2022/04/23/ramkot-vooruit/og-image.png``} />
+        <meta
+          property="og:image"
+          content={`${process.env.VERCEL_URL}/api/og-image/2022/04/23/ramkot-vooruit/og-image.png`}
+        />
 
         <meta name="twitter:title" content={`${artist.name} | ${venue.name}`} />
         <meta
