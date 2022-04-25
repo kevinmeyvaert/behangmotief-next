@@ -1,4 +1,4 @@
-import { ChakraProvider, SlideFade } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -51,20 +51,12 @@ function Tracking({ children }) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
-  const router = useRouter();
 
   return (
     <QueryClientProvider client={queryClient}>
       <Tracking>
         <ChakraProvider theme={theme}>
-          <SlideFade
-            in
-            key={router.asPath}
-            offsetY="20px"
-            transition={{ enter: { duration: 0.3 } }}
-          >
-            <Component {...pageProps} />
-          </SlideFade>
+          <Component {...pageProps} />
         </ChakraProvider>
       </Tracking>
     </QueryClientProvider>

@@ -1,7 +1,6 @@
 import { useColorMode } from '@chakra-ui/color-mode';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
-  AspectRatio,
   Box,
   Center,
   Container,
@@ -10,7 +9,6 @@ import {
   List,
   ListIcon,
   ListItem,
-  SimpleGrid,
   Text,
 } from '@chakra-ui/layout';
 import {
@@ -20,7 +18,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Skeleton,
+  SlideFade,
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -95,7 +93,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
   );
 
   return (
-    <>
+    <SlideFade in key={router.asPath} offsetY="20px" transition={{ enter: { duration: 0.3 } }}>
       <Head>
         <title>Behangmotief</title>
         <meta
@@ -224,7 +222,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </>
+    </SlideFade>
   );
 };
 

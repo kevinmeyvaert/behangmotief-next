@@ -1,7 +1,7 @@
 import { useColorMode } from '@chakra-ui/color-mode';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Box, Center, Container, Flex, Heading, Text } from '@chakra-ui/layout';
-import { Button, chakra } from '@chakra-ui/react';
+import { Button, chakra, SlideFade } from '@chakra-ui/react';
 import { Fade } from '@chakra-ui/transition';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
@@ -35,7 +35,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
   };
 
   return (
-    <>
+    <SlideFade in key={router.asPath} offsetY="20px" transition={{ enter: { duration: 0.3 } }}>
       <Head>
         <title>{`${artist.name} | ${venue.name} - Behangmotief`}</title>
         <meta
@@ -153,7 +153,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
         </Box>
       </Container>
       <Footer />
-    </>
+    </SlideFade>
   );
 };
 
