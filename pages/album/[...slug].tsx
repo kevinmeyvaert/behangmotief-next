@@ -18,7 +18,7 @@ import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import { AlbumQuery, GetAlbumPathsQuery } from '../../types/wannabes.types';
 
 const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
-  const { artist, venue, images, thumbnail, date } = post;
+  const { artist, venue, images, date } = post;
   const { stickyRef, isSticky } = useIsSticky();
   const { setColorMode } = useColorMode();
   const router = useRouter();
@@ -59,7 +59,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           name="twitter:description"
           content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
         />
-        <meta name="twitter:image" content={thumbnail.resized} />
+        <meta name="twitter:image" content={`https://behangmotief.be/api/og/${mergeSlug}`} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <Container maxW="container.2xl">

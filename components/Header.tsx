@@ -21,7 +21,7 @@ const Header = ({ onSubmitSearch, onSetSearchInput, onOpenSideBar, searchInput }
             value={searchInput}
             onChange={(e) => onSetSearchInput(e.target.value)}
             _focus={{
-              borderColor: "black"
+              borderColor: 'black',
             }}
             _focusVisible={{
               boxShadow: 'none',
