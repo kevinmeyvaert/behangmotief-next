@@ -40,7 +40,7 @@ import useDebouncedValue from '../hooks/useDebounce';
 import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
 import { fetcher } from '../lib/api';
-import profile from '../public/profile.jpg';
+import profile from '../public/profile.gif';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 
@@ -184,7 +184,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           </DrawerHeader>
 
           <DrawerBody>
-            <Box width="50%" margin="0 auto" borderRadius="full" overflow={'hidden'}>
+            <Box width="75%" margin="0 auto" overflow={'hidden'}>
               <Image src={profile} />
             </Box>
             <Text lineHeight="2" mb={5} mt={10}>
