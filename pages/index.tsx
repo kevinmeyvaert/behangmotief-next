@@ -36,6 +36,7 @@ import Header from '../components/Header';
 import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
 import MasonrySkeleton from '../components/MasonrySkeleton';
+import MotionBox from '../components/MotionBox';
 import useDebouncedValue from '../hooks/useDebounce';
 import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
@@ -184,8 +185,15 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           </DrawerHeader>
 
           <DrawerBody>
-            <Box width="75%" margin="0 auto" overflow={'hidden'}>
-              <Image src={profile} />
+            <Box width="100%" overflow={'hidden'}>
+              <Box
+                margin="0 auto"
+                backgroundImage="/profile-sprites-sm.jpg"
+                backgroundSize="cover"
+                width="400px"
+                height="500px"
+                animation="profile-picture 0.9s steps(6) infinite"
+              />
             </Box>
             <Text lineHeight="2" mb={5} mt={10}>
               Belgian freelance concert- &amp; festivalphotographer based in Gent. Part of Wannabes,
