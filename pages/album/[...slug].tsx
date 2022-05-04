@@ -66,7 +66,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           content={`https://behangmotief.be/api/og/album/${mergeSlug}`}
         />
       </Head>
-      <Container maxW="container.2xl">
+      <Container maxW="container.xl">
         <Box as="header">
           <Flex gap={2} mt={4} justify="start">
             <form action="/">
