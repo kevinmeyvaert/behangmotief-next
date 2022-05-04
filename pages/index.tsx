@@ -24,7 +24,6 @@ import {
 } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useEffect, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
@@ -36,12 +35,10 @@ import Header from '../components/Header';
 import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
 import MasonrySkeleton from '../components/MasonrySkeleton';
-import MotionBox from '../components/MotionBox';
 import useDebouncedValue from '../hooks/useDebounce';
 import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
 import { fetcher } from '../lib/api';
-import profile from '../public/profile.gif';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 

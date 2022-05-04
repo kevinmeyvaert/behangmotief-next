@@ -52,7 +52,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           property="og:description"
           content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
         />
-        <meta property="og:image" content={`https://behangmotief.be/api/og/${mergeSlug}`} />
+        <meta property="og:image" content={`https://behangmotief.be/api/og/album/${mergeSlug}`} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${artist.name} | ${venue.name}`} />
@@ -61,7 +61,10 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
         />
         <meta name="twitter:site" content="@behangmotief" />
-        <meta name="twitter:image:src" content={`https://behangmotief.be/api/og/${mergeSlug}`} />
+        <meta
+          name="twitter:image:src"
+          content={`https://behangmotief.be/api/og/album/${mergeSlug}`}
+        />
       </Head>
       <Container maxW="container.2xl">
         <Box as="header">

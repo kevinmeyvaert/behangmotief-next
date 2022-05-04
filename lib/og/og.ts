@@ -23,3 +23,14 @@ export async function getScreenshot(isDev, slug) {
   const file = await page.screenshot({ type: 'jpeg' });
   return file;
 }
+
+export async function getStoryScreenshot(isDev, slug) {
+  const path = `/og/${slug.join('/')}`;
+  const page = await getPage(isDev);
+
+  await page.setViewport({ width: 1080, height: 1920 });
+  await page.goto(`${isDev ? 'http://localhost:3000' : 'https://www.behangmotief.be'}${path}`);
+
+  const file = await page.screenshot({ type: 'jpeg' });
+  return file;
+}

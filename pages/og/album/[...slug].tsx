@@ -1,26 +1,33 @@
+import { useColorMode } from '@chakra-ui/color-mode';
 import { Box, Center, Heading, Text } from '@chakra-ui/layout';
 import { chakra } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
-import Logo from '../../components/Logo';
-import { fetcher } from '../../lib/api';
-import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
-import { AlbumQuery, GetAlbumPathsQuery } from '../../types/wannabes.types';
+import Logo from '../../../components/Logo';
+import { fetcher } from '../../../lib/api';
+import { ALBUM, ALBUM_PATHS } from '../../../queries/wannabes';
+import { AlbumQuery, GetAlbumPathsQuery } from '../../../types/wannabes.types';
 
 const OgImage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
+  const { setColorMode } = useColorMode();
   const date = new Date(post.date);
   const day = date.getDate();
   const month = date.getUTCMonth();
   const year = date.getFullYear();
+
+  useEffect(() => {
+    setColorMode('dark');
+  }, []);
+
   return (
     <>
       <Head>
         <meta name="robots" content="noindex" />
       </Head>
-      <Center background="black" p={10} mt="-5px">
-        <Box width={1024} height={630} position="relative">
+      <Center background="black" p={10} height="100vh">
+        <Box width={1024} height={630} position="relative" mt={10}>
           <Text ml={5} color="white" size="xl">
             <chakra.span fontWeight="bold" fontSize="20px">
               {post.venue.name}
