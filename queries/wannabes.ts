@@ -70,6 +70,9 @@ export const ALBUM = gql`
       artist {
         name
       }
+      event {
+        name
+      }
       venue {
         name
       }

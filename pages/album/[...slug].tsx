@@ -18,7 +18,7 @@ import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import { AlbumQuery, GetAlbumPathsQuery } from '../../types/wannabes.types';
 
 const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
-  const { artist, venue, images, thumbnail, date } = post;
+  const { artist, venue, images, thumbnail, date, event } = post;
   const { stickyRef, isSticky } = useIsSticky();
   const { setColorMode } = useColorMode();
   const router = useRouter();
@@ -27,6 +27,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
   const mergeSlug = slug?.join('/');
 
   const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
+  const location = event ? event.name : venue.name;
 
   useEffect(() => {
     setColorMode(isSticky ? 'dark' : 'light');
@@ -40,24 +41,24 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
   return (
     <SlideFade in key={router.asPath} offsetY="20px" transition={{ enter: { duration: 0.3 } }}>
       <Head>
-        <title>{`${artist.name} | ${venue.name} - Behangmotief`}</title>
+        <title>{`${artist.name} | ${location} - Behangmotief`}</title>
         <meta
           name="description"
-          content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
+          content={`Photos taken at the ${artist.name} show at ${location}.`}
         />
 
-        <meta property="og:title" content={`${artist.name} | ${venue.name}`} />
+        <meta property="og:title" content={`${artist.name} | ${location}`} />
         <meta property="og:type" content="website" />
         <meta
           property="og:description"
-          content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
+          content={`Photos taken at the ${artist.name} show at ${location}.`}
         />
         <meta property="og:image" content={`https://behangmotief.be/api/og/${mergeSlug}`} />
 
-        <meta name="twitter:title" content={`${artist.name} | ${venue.name}`} />
+        <meta name="twitter:title" content={`${artist.name} | ${location}`} />
         <meta
           name="twitter:description"
-          content={`Photos taken at the ${artist.name} show at ${venue.name}.`}
+          content={`Photos taken at the ${artist.name} show at ${location}.`}
         />
         <meta name="twitter:image" content={thumbnail.resized} />
         <meta name="twitter:card" content="summary_large_image" />
@@ -95,9 +96,9 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
         </Center>
         <Box position="relative">
           <Fade in transition={{ enter: { duration: 0.5 } }}>
-            <Text ml={5}>
+            <Text ml={5} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
               <chakra.span fontWeight="bold" fontSize="20px">
-                {venue.name}
+                {location}
               </chakra.span>{' '}
               &mdash; {new Date(date).toLocaleDateString('be-NL')}
             </Text>
