@@ -17,6 +17,8 @@ const OgImage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) =
   const month = date.getUTCMonth();
   const year = date.getFullYear();
 
+  const location = post.event ? post.event.name : post.venue.name;
+
   useEffect(() => {
     setColorMode('dark');
   }, []);
@@ -30,7 +32,7 @@ const OgImage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) =
         <Box width={1024} height={630} position="relative" mt={10}>
           <Text ml={5} color="white" size="xl">
             <chakra.span fontWeight="bold" fontSize="20px">
-              {post.venue.name}
+              {location}
             </chakra.span>{' '}
             &mdash; {`${day}/${month + 1}/${year}`}
           </Text>

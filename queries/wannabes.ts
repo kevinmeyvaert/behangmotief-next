@@ -73,6 +73,9 @@ export const ALBUM = gql`
       venue {
         name
       }
+      event {
+        name
+      }
       images {
         blurhash
         hires
