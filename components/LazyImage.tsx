@@ -28,9 +28,11 @@ interface Props {
   alt: string;
   dimensions: Dimensions;
   blurhash: Image['blurhash'];
+  containerStyle?: React.CSSProperties;
+  errorContainerStyle?: React.CSSProperties;
 }
 
-const LazyImage: FC<Props> = ({ src, alt, dimensions, className, srcSet, sizes, blurhash }) => {
+const LazyImage: FC<Props> = ({ src, alt, dimensions, className, srcSet, sizes, blurhash, containerStyle, errorContainerStyle }) => {
   const [ref, loaded, onLoad] = useImageLoaded();
   const [isError, setIsError] = useState(false);
 
@@ -49,7 +51,7 @@ const LazyImage: FC<Props> = ({ src, alt, dimensions, className, srcSet, sizes, 
   const fallbackHeight = dimensions?.height || '800';
 
   return (
-    <>
+    <div style={{...containerStyle, ...(isError && errorContainerStyle)}}>
       <Blurhash
         hash={validatedBlurhash(blurhash)}
         width={`${fallbackWidth}px`}
@@ -76,9 +78,9 @@ const LazyImage: FC<Props> = ({ src, alt, dimensions, className, srcSet, sizes, 
         onLoad={onLoad}
         width={fallbackWidth}
         height={fallbackHeight}
-        style={{ position: loaded ? 'relative' : 'absolute', maxWidth: '100%' }}
+        style={{ position: loaded ? 'relative' : 'absolute', maxWidth: '100%', display: isError ? 'none' : 'block' }}
       />
-    </>
+    </div>
   );
 };
 

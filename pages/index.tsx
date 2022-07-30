@@ -114,7 +114,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
       </Head>
 
-      <Container maxW="container.2xl">
+      <Container maxW="container.2xl" as="header">
         <Header
           onSubmitSearch={handleOnSubmit}
           onSetSearchInput={setSearchInput}
@@ -128,11 +128,14 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           zIndex="overlay"
           pointerEvents="none"
           ref={stickyRef}
+          as="section"
         >
           <Box transition="0.3s" width={isSticky ? '65px' : '95px'}>
             <Logo />
           </Box>
         </Center>
+      </Container>
+      <Container maxW="container.2xl" as="main">
         {isFetching && !hasAlbums && <MasonrySkeleton />}
         {!hasAlbums && !isFetching && debouncedSearchInput !== '' && (
           <Center>

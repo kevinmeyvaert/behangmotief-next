@@ -67,8 +67,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           content={`https://behangmotief.be/api/og/album/${mergeSlug}`}
         />
       </Head>
-      <Container maxW="container.xl">
-        <Box as="header">
+      <Container maxW="container.xl" as="header">
           <Flex gap={2} mt={4} justify="start">
             <form action="/">
               <Button
@@ -85,7 +84,6 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
               </Button>
             </form>
           </Flex>
-        </Box>
         <Center
           height="56"
           position="sticky"
@@ -98,7 +96,8 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
             <Logo />
           </Box>
         </Center>
-        <Box position="relative">
+        </Container>
+        <Container maxW="container.xl" position="relative" as="main">
           <Fade in transition={{ enter: { duration: 0.5 } }}>
             <Text ml={5} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
               <chakra.span fontWeight="bold" fontSize="20px">
@@ -148,6 +147,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
               // eslint-disable-next-line react/no-array-index-key
               <Box as="figure" key={index} className="c-album--photo-item" mb={6}>
                 <LazyImage
+                  errorContainerStyle={{ marginBottom: `calc(var(--chakra-space-6) * -1)`, visibility: "hidden" }}
                   src={photo.hires}
                   blurhash={photo.blurhash}
                   alt={artist.name}
@@ -158,7 +158,6 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
               </Box>
             ))}
           </Masonry>
-        </Box>
       </Container>
       <Footer />
     </SlideFade>
