@@ -22,25 +22,33 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
+import { dehydrate, InfiniteData, QueryClient } from '@tanstack/react-query';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useEffect, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
-import { InfiniteData } from 'react-query';
+import create from 'zustand';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
-import MasonrySkeleton from '../components/MasonrySkeleton';
 import useDebouncedValue from '../hooks/useDebounce';
 import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
 import { fetcher } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
+
+export const usePositionStore = create<{
+  position: number;
+  setPosition: (position: number) => void;
+}>((set) => ({
+  position: 0,
+  setPosition: (position) => set({ position }),
+}));
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const router = useRouter();
@@ -54,6 +62,13 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
   const { setColorMode } = useColorMode();
   const { stickyRef, isSticky } = useIsSticky();
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const position = usePositionStore((state) => state.position);
+  useEffect(() => {
+    if (position !== 0) {
+      window.scrollTo({ top: position });
+    }
+  }, []);
 
   const hasAlbums = albums.length > 0;
 
@@ -136,7 +151,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         </Center>
       </Container>
       <Container maxW="container.2xl" as="main">
-        {isFetching && !hasAlbums && <MasonrySkeleton />}
         {!hasAlbums && !isFetching && debouncedSearchInput !== '' && (
           <Center>
             <Heading textAlign="center">
@@ -144,29 +158,27 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             </Heading>
           </Center>
         )}
-        {hasAlbums && (
-          <Masonry
-            breakpointCols={{
-              default: 3,
-              640: 1,
-            }}
-            className="c-masonry"
-            columnClassName="c-masonry--grid-column"
-          >
-            {albums.map((post) => (
-              <MasonryItem
-                src={post.thumbnail.hires}
-                artist={post.artist.name}
-                venue={post.venue.name}
-                slug={post.slug}
-                key={post.slug}
-                dimensions={post.thumbnail?.dimensions}
-                blurhash={post.thumbnail.blurhash}
-                event={post.event?.name}
-              />
-            ))}
-          </Masonry>
-        )}
+        <Masonry
+          breakpointCols={{
+            default: 3,
+            640: 1,
+          }}
+          className="c-masonry"
+          columnClassName="c-masonry--grid-column"
+        >
+          {albums.map((post) => (
+            <MasonryItem
+              src={post.thumbnail.hires}
+              artist={post.artist.name}
+              venue={post.venue.name}
+              slug={post.slug}
+              key={post.slug}
+              dimensions={post.thumbnail?.dimensions}
+              blurhash={post.thumbnail.blurhash}
+              event={post.event?.name}
+            />
+          ))}
+        </Masonry>
         {(!isLoading || hasNextPage) && <div ref={infiniteRef} />}
       </Container>
       {(isLoading || isFetchingNextPage) && (
@@ -240,7 +252,14 @@ export const getStaticProps = async () => {
     limit: 15,
   });
   const initialInfiniteData = { pages: [initialPosts] } as InfiniteData<SearchQuery>;
-  return { props: { initialData: initialInfiniteData }, revalidate: 60 };
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(['posts'], () => initialPosts);
+
+  return {
+    props: { initialData: initialInfiniteData, dehydratedState: dehydrate(queryClient) },
+    revalidate: 60,
+  };
 };
 
 export default Home;

@@ -1,5 +1,5 @@
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { InfiniteData, useInfiniteQuery } from 'react-query';
 
 import { fetcher } from '../lib/api';
 import { filterOwnAlbums } from '../lib/helpers';
@@ -19,7 +19,7 @@ export const usePagedAlbums = ({
 }) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch, isFetching } =
     useInfiniteQuery<Awaited<SearchQuery>>(
-      'albums',
+      ['albums'],
       ({ pageParam = 0 }) =>
         fetcher(POSTS, {
           start: pageParam,

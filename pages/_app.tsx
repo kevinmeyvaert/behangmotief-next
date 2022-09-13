@@ -1,9 +1,9 @@
 import { ChakraProvider } from '@chakra-ui/react';
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import TagManager from 'react-gtm-module';
-import { QueryClient, QueryClientProvider } from 'react-query';
 
 import theme from '../theme/theme';
 
@@ -49,16 +49,18 @@ function Tracking({ children }) {
   return <>{children}</>;
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const queryClient = new QueryClient();
+function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: any }>) {
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Tracking>
-        <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
-        </ChakraProvider>
-      </Tracking>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Tracking>
+          <ChakraProvider theme={theme}>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </Tracking>
+      </Hydrate>
     </QueryClientProvider>
   );
 }
