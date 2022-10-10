@@ -10,6 +10,8 @@ import {
   ListIcon,
   ListItem,
   Text,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/layout';
 import {
   CloseButton,
@@ -20,6 +22,7 @@ import {
   DrawerOverlay,
   SlideFade,
   Spinner,
+  Tag,
   useDisclosure,
 } from '@chakra-ui/react';
 import { dehydrate, InfiniteData, QueryClient } from '@tanstack/react-query';
@@ -104,6 +107,8 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
     },
     [refetch],
   );
+
+  const referrals = ["Crammerock", "Studio Brussel", "Cactusfestival", "HEAR HEAR", "Pukkelpop", "Boomtown", "VI.BE"]
 
   return (
     <SlideFade in key={router.asPath} offsetY="20px" transition={{ enter: { duration: 0.3 } }}>
@@ -221,24 +226,15 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             <Heading as="h3" fontSize="xl" mb={4}>
               Referrals
             </Heading>
-            <List spacing={2}>
-              <ListItem>
-                <ListIcon as={ChevronRightIcon} color="white" />
-                Crammerock
-              </ListItem>
-              <ListItem>
-                <ListIcon as={ChevronRightIcon} color="white" />
-                Democrazy
-              </ListItem>
-              <ListItem>
-                <ListIcon as={ChevronRightIcon} color="white" />
-                Studio Brussel
-              </ListItem>
-              <ListItem>
-                <ListIcon as={ChevronRightIcon} color="white" />
-                Cactusfestival
-              </ListItem>
-            </List>
+            <Wrap spacing={2} mb={4}>
+              {referrals.map(referral =>
+                  <WrapItem>
+                <Tag size="lg">
+                  {referral}
+                </Tag>
+                </WrapItem>
+              )}
+            </Wrap>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
