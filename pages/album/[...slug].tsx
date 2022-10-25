@@ -53,7 +53,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           property="og:description"
           content={`Photos taken at the ${artist.name} show at ${location}.`}
         />
-        <meta property="og:image" content={`https://r.wannabes.be/S=W1600,H1600/${post.thumbnail.resized}`} />
+        <meta property="og:image" content={post.thumbnail.resized} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${artist.name} | ${location}`} />
@@ -64,7 +64,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
         <meta name="twitter:site" content="@behangmotief" />
         <meta
           name="twitter:image:src"
-          content={`https://r.wannabes.be/S=W1600,H1600/${post.thumbnail.resized}`}
+          content={post.thumbnail.resized}
         />
       </Head>
       <Container maxW="container.xl" as="header">
