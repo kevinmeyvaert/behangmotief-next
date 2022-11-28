@@ -1,18 +1,7 @@
+import 'flickity/css/flickity.css';
+
 import { useColorMode } from '@chakra-ui/color-mode';
-import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Center,
-  Container,
-  Heading,
-  HStack,
-  List,
-  ListIcon,
-  ListItem,
-  Text,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/layout';
+import { Box, Center, Container, Heading, HStack, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import {
   CloseButton,
   Drawer,
@@ -30,6 +19,7 @@ import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useEffect, useState } from 'react';
+import Flickity from 'react-flickity-component';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
 import create from 'zustand';
@@ -53,15 +43,34 @@ export const usePositionStore = create<{
   setPosition: (position) => set({ position }),
 }));
 
+const flickityOptions = {
+  initialIndex: 0,
+  autoPlay: 5000,
+  wrapAround: true,
+  prevNextButtons: false,
+  pauseAutoPlayOnHover: false,
+  freeScroll: false,
+  draggable: false,
+  pageDots: false,
+};
+
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState('');
   const debouncedSearchInput = useDebouncedValue(searchInput);
-  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch, isFetching } =
+  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, isFetching } =
     usePagedAlbums({
       initialData,
-      searchInput,
+      key: 'albums',
     });
+  const {
+    albums: searchAlbums,
+    isFetching: isLoadingSearch,
+    refetch,
+  } = usePagedAlbums({
+    searchInput,
+    key: 'search',
+  });
   const { setColorMode } = useColorMode();
   const { stickyRef, isSticky } = useIsSticky();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -108,7 +117,15 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
     [refetch],
   );
 
-  const referrals = ["Crammerock", "Studio Brussel", "Cactusfestival", "HEAR HEAR", "Pukkelpop", "Boomtown", "VI.BE"]
+  const referrals = [
+    'Crammerock',
+    'Studio Brussel',
+    'Cactusfestival',
+    'HEAR HEAR',
+    'Pukkelpop',
+    'Boomtown',
+    'VI.BE',
+  ];
 
   return (
     <SlideFade in key={router.asPath} offsetY="20px" transition={{ enter: { duration: 0.3 } }}>
@@ -132,28 +149,114 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <meta name="twitter:url" content="http://behangmotief.be/" />
         <meta name="twitter:title" content="BEHANGMOTIEF" />
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
+
+        <style>
+          {`
+          .carousel {
+            height: calc(100vh - 2rem);
+            overflow: hidden;
+          }
+          .flickity-viewport {
+            height: 100% !important;
+          }
+          `}
+        </style>
       </Head>
 
-      <Container maxW="container.2xl" as="header">
+      <Container
+        maxW="container.2xl"
+        as="header"
+        w={{ base: `calc(100vw - 2rem)`, xl: `calc(100vw - 2rem)` }}
+        h={'calc(100vh - 2rem)'}
+        position="relative"
+        px={0}
+        my={4}
+      >
         <Header
           onSubmitSearch={handleOnSubmit}
           onSetSearchInput={setSearchInput}
           onOpenSideBar={onOpen}
           searchInput={searchInput}
+          isLoadingSearch={isLoadingSearch}
+          albums={searchAlbums}
         />
-        <Center
-          height="56"
-          position="sticky"
-          top={0}
+        <Flickity
+          className={'carousel'} // default ''
+          elementType={'div'} // default 'div'
+          options={flickityOptions} // takes flickity options {}
+          disableImagesLoaded={false} // default false
+          static // default false
+        >
+          <Box
+            width="100%"
+            height="100%"
+            background={
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-11-28-warhaus-handelsbeurs-gent-JdYRzL6Phyfwqc6eD.jpg)'
+            }
+            backgroundSize="cover"
+            backgroundPosition="center"
+          />
+          <Box
+            width="100%"
+            height="100%"
+            background={
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-11-03-meau-vooruit-4GxTzErtDoxrenBnQ.jpg)'
+            }
+            backgroundSize="cover"
+            backgroundPosition="center"
+          />
+          <Box
+            width="100%"
+            height="100%"
+            background={
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-01-fred-again-pukkelpop-pukkelpop-2022-ddGxAQ4LgjCappsXZ.jpg)'
+            }
+            backgroundSize="cover"
+            backgroundPosition="center"
+          />
+          <Box
+            width="100%"
+            height="100%"
+            background={
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-05-high-hi-crammerock-crammerock-2022-TDokaoXRyMSzTgJn4.jpg)'
+            }
+            backgroundSize="cover"
+            backgroundPosition="center"
+          />
+          <Box
+            width="100%"
+            height="100%"
+            background={
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-01-wet-leg-pukkelpop-pukkelpop-2022-9deRQSokqzJrtwZqS.jpg)'
+            }
+            backgroundSize="cover"
+            backgroundPosition="center"
+          />
+          <Box
+            width="100%"
+            height="100%"
+            background={
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-01-tom-misch-pukkelpop-pukkelpop-2022-m3wSqYZ4GQkdBPjbb.jpg)'
+            }
+            backgroundSize="cover"
+            backgroundPosition="center"
+          />
+        </Flickity>
+
+        <Box
+          position="absolute"
+          bottom={0}
+          right={0}
+          p={4}
           zIndex="overlay"
           pointerEvents="none"
           ref={stickyRef}
           as="section"
         >
-          <Box transition="0.3s" width={isSticky ? '65px' : '95px'}>
-            <Logo />
+          <Box transition="0.3s" width={'65px'}>
+            <Logo color="white" />
           </Box>
-        </Center>
+        </Box>
       </Container>
       <Container maxW="container.2xl" as="main">
         {!hasAlbums && !isFetching && debouncedSearchInput !== '' && (
@@ -227,13 +330,11 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
               Referrals
             </Heading>
             <Wrap spacing={2} mb={4}>
-              {referrals.map(referral =>
-                  <WrapItem>
-                <Tag size="lg">
-                  {referral}
-                </Tag>
+              {referrals.map((referral) => (
+                <WrapItem>
+                  <Tag size="lg">{referral}</Tag>
                 </WrapItem>
-              )}
+              ))}
             </Wrap>
           </DrawerBody>
         </DrawerContent>

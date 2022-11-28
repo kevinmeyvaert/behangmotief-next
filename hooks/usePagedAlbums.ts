@@ -12,14 +12,16 @@ export const usePagedAlbums = ({
   pageSize = 15,
   initialData,
   searchInput,
+  key,
 }: {
   pageSize?: number;
-  initialData: InfiniteData<SearchQuery>;
+  initialData?: InfiniteData<SearchQuery>;
   searchInput?: string;
+  key: string;
 }) => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, refetch, isFetching } =
     useInfiniteQuery<Awaited<SearchQuery>>(
-      ['albums'],
+      [key],
       ({ pageParam = 0 }) =>
         fetcher(POSTS, {
           start: pageParam,
