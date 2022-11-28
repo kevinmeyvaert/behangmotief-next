@@ -33,7 +33,7 @@ const Header = ({
         <InputGroup>
           <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
           <Input
-            w={{ base: 'sm', md: 'md' }}
+            w={{ base: '100%', md: 'md' }}
             background="white"
             type="search"
             placeholder="Search an artist or venue"
@@ -49,11 +49,7 @@ const Header = ({
               outlineOffset: '-2px',
             }}
           />
-          {isLoadingSearch && (
-            <InputRightElement>
-              <Spinner />
-            </InputRightElement>
-          )}
+          <InputRightElement>{isLoadingSearch && <Spinner />}</InputRightElement>
         </InputGroup>
         <IconButton
           aria-label="About"
@@ -74,7 +70,7 @@ const Header = ({
       </chakra.form>
 
       <Collapse in={searchInput.length > 1} animateOpacity>
-        <Box pos="absolute" top="55px" ml={4} mt={2} w={{ base: 'sm', md: 'md' }}>
+        <Box pos="absolute" top="55px" ml={4} mt={2} pr={8} w={{ base: '100%' }}>
           <Box background={'white'} borderRadius="md" maxH={'75vh'} overflow="scroll" py={4}>
             {albums?.length === 0 && (
               <Text px={4}>
