@@ -102,8 +102,8 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
   }, []);
 
   useEffect(() => {
-    setColorMode(isSticky ? 'dark' : 'light');
-  }, [isSticky]);
+    setColorMode('light');
+  }, []);
 
   useEffect(() => {
     refetch();
