@@ -29,7 +29,6 @@ import Header from '../components/Header';
 import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
 import useDebouncedValue from '../hooks/useDebounce';
-import useIsSticky from '../hooks/useIsSticky';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
 import { fetcher } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
@@ -51,7 +50,7 @@ const flickityOptions = {
   pauseAutoPlayOnHover: false,
   freeScroll: false,
   draggable: false,
-  pageDots: false,
+  pageDots: true,
 };
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
@@ -72,7 +71,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
     key: 'search',
   });
   const { setColorMode } = useColorMode();
-  const { stickyRef, isSticky } = useIsSticky();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const position = usePositionStore((state) => state.position);
@@ -159,6 +157,14 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           .flickity-viewport {
             height: 100% !important;
           }
+          .flickity-page-dots {
+            z-index: 100 !important;
+            bottom: 20px !important;
+          }
+
+          .flickity-page-dots .dot {
+            background: rgba(255,255,255,1) !important;
+          }
           `}
         </style>
       </Head>
@@ -187,6 +193,15 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           disableImagesLoaded={false} // default false
           static // default false
         >
+          <Box
+            width="100%"
+            height="100%"
+            background={
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-12-06-tamino-koninklijk-circus-7JSmaBzyqMYLK5MFr.jpg)'
+            }
+            backgroundSize="cover"
+            backgroundPosition="center"
+          />
           <Box
             width="100%"
             height="100%"
@@ -250,7 +265,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           p={4}
           zIndex="overlay"
           pointerEvents="none"
-          ref={stickyRef}
           as="section"
         >
           <Box transition="0.3s" width={'65px'}>

@@ -38,6 +38,7 @@ const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, b
         },
       }}
       as="article"
+      cursor="pointer"
     >
       <Link href="/album/[...slug]" as={`/album/${slug}`}>
         <a onClick={() => setPosition(window.pageYOffset)}>
