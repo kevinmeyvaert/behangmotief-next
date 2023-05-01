@@ -1,4 +1,5 @@
 import { SearchIcon } from '@chakra-ui/icons';
+import { Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react';
 import {
   Box,
   chakra,
@@ -7,14 +8,12 @@ import {
   Highlight,
   HStack,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   Link,
   Spinner,
   Text,
 } from '@chakra-ui/react';
+
+import Logo from './Logo';
 
 const Header = ({
   onSubmitSearch,
@@ -25,11 +24,11 @@ const Header = ({
   isLoadingSearch,
 }) => {
   return (
-    <Box position={'absolute'} zIndex="overlay" right={0}>
+    <Box position={'relative'} zIndex="overlay" w={{ base: '100%', md: 'initial' }}>
       <chakra.form
         onSubmit={onSubmitSearch}
         display="flex"
-        px={4}
+        p={4}
         flexDirection="row"
         justifyContent="flex-end"
       >
@@ -52,15 +51,16 @@ const Header = ({
               outlineOffset: '-2px',
             }}
           />
-          <InputRightElement>{isLoadingSearch && <Spinner />}</InputRightElement>
+          {isLoadingSearch && (
+            <InputRightElement>
+              <Spinner />
+            </InputRightElement>
+          )}
         </InputGroup>
         <IconButton
           aria-label="About"
           onClick={onOpenSideBar}
-          bgImage="url('/icon.jpg')"
-          bgSize="cover"
-          bgPosition="center"
-          bgRepeat="no-repeat"
+          bgColor={'black'}
           ml={2}
           _hover={{
             backgroundColor: 'none',
@@ -69,12 +69,16 @@ const Header = ({
           _focusVisible={{
             opacity: 0.7,
           }}
-        />
+        >
+          <Box width={35}>
+            <Logo color="white" />
+          </Box>
+        </IconButton>
       </chakra.form>
 
       <Collapse in={searchInput.length > 1} animateOpacity>
-        <Box pos="absolute" top="55px" ml={4} mt={2} pr={8} w={{ base: '100%' }}>
-          <Box background={'white'} borderRadius="md" maxH={'75vh'} overflow="scroll" py={4}>
+        <Box pos="absolute" top="55px" pt={2} pr={0} w={{ base: '100%' }}>
+          <Box background={'white'} maxH={'75vh'} overflow="scroll" py={4}>
             {albums?.length === 0 && (
               <Text px={4}>
                 Found no results for <chakra.span bg="gray.300">{searchInput}</chakra.span>. 🥺
@@ -82,7 +86,11 @@ const Header = ({
             )}
             {albums?.length > 0 &&
               albums?.map((album, i) => (
-                <Link href={`/album/${album.slug}`} _hover={{ textDecoration: 'none' }}>
+                <Link
+                  href={`/album/${album.slug}`}
+                  _hover={{ textDecoration: 'none' }}
+                  key={album.id}
+                >
                   <HStack _hover={{ backgroundColor: 'gray.100' }} px={4} py={2}>
                     <Box
                       w="25%"

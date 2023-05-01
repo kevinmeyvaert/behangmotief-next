@@ -30,7 +30,6 @@ import { create } from 'zustand';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import Logo from '../components/Logo';
 import MasonryItem from '../components/MasonryItem';
 import useDebouncedValue from '../hooks/useDebounce';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
@@ -164,18 +163,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         </style>
       </Head>
 
-      <Container
-        maxW="container.2xl"
-        as="header"
-        px={0}
-        my={8}
-        p={4}
-        position="relative"
-        display="flex"
-      >
-        <Box transition="0.3s" width={'65px'}>
-          <Logo />
-        </Box>
+      <Box as="header" position="relative" display="flex" justifyContent={'flex-end'}>
         <Header
           onSubmitSearch={handleOnSubmit}
           onSetSearchInput={setSearchInput}
@@ -184,7 +172,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           isLoadingSearch={isLoadingSearch}
           albums={searchAlbums}
         />
-      </Container>
+      </Box>
       <Container maxW="container.2xl" as="main">
         {!hasAlbums && !isFetching && debouncedSearchInput !== '' && (
           <Center>
