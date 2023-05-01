@@ -1,5 +1,3 @@
-import 'flickity/css/flickity.css';
-
 import {
   Box,
   Center,
@@ -26,7 +24,6 @@ import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useEffect, useState } from 'react';
-import Flickity from 'react-flickity-component';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
 import { create } from 'zustand';
@@ -48,17 +45,6 @@ export const usePositionStore = create<{
   position: 0,
   setPosition: (position) => set({ position }),
 }));
-
-const flickityOptions = {
-  initialIndex: 0,
-  autoPlay: 5000,
-  wrapAround: true,
-  prevNextButtons: false,
-  pauseAutoPlayOnHover: false,
-  freeScroll: false,
-  draggable: false,
-  pageDots: true,
-};
 
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
   const router = useRouter();
@@ -181,12 +167,15 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
       <Container
         maxW="container.2xl"
         as="header"
-        w={{ base: `calc(100vw - 2rem)`, xl: `calc(100vw - 2rem)` }}
-        h={'calc(100vh - 2rem)'}
-        position="relative"
         px={0}
-        my={4}
+        my={8}
+        p={4}
+        position="relative"
+        display="flex"
       >
+        <Box transition="0.3s" width={'65px'}>
+          <Logo />
+        </Box>
         <Header
           onSubmitSearch={handleOnSubmit}
           onSetSearchInput={setSearchInput}
@@ -195,91 +184,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           isLoadingSearch={isLoadingSearch}
           albums={searchAlbums}
         />
-        <Flickity
-          className={'carousel'} // default ''
-          elementType={'div'} // default 'div'
-          options={flickityOptions} // takes flickity options {}
-          disableImagesLoaded={false} // default false
-          static // default false
-        >
-          <Box
-            width="100%"
-            height="100%"
-            background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2023-03-31-sylvie-kreusch-ab-JZJeH9seXq9nYkKGm.jpg)'
-            }
-            backgroundSize="cover"
-            backgroundPosition="center"
-          />
-          <Box
-            width="100%"
-            height="100%"
-            background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2023-02-11-meltheads-trix-we-are-open-2023-FkYztzaHdDKshjBNr.jpg)'
-            }
-            backgroundSize="cover"
-            backgroundPosition="center"
-          />
-          <Box
-            width="100%"
-            height="100%"
-            background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-11-03-meau-vooruit-4GxTzErtDoxrenBnQ.jpg)'
-            }
-            backgroundSize="cover"
-            backgroundPosition="center"
-          />
-          <Box
-            width="100%"
-            height="100%"
-            background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-01-fred-again-pukkelpop-pukkelpop-2022-ddGxAQ4LgjCappsXZ.jpg)'
-            }
-            backgroundSize="cover"
-            backgroundPosition="center"
-          />
-          <Box
-            width="100%"
-            height="100%"
-            background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-05-high-hi-crammerock-crammerock-2022-TDokaoXRyMSzTgJn4.jpg)'
-            }
-            backgroundSize="cover"
-            backgroundPosition="center"
-          />
-          <Box
-            width="100%"
-            height="100%"
-            background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-01-wet-leg-pukkelpop-pukkelpop-2022-9deRQSokqzJrtwZqS.jpg)'
-            }
-            backgroundSize="cover"
-            backgroundPosition="center"
-          />
-          <Box
-            width="100%"
-            height="100%"
-            background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-09-01-tom-misch-pukkelpop-pukkelpop-2022-m3wSqYZ4GQkdBPjbb.jpg)'
-            }
-            backgroundSize="cover"
-            backgroundPosition="center"
-          />
-        </Flickity>
-
-        <Box
-          position="absolute"
-          bottom={0}
-          right={0}
-          p={4}
-          zIndex="overlay"
-          pointerEvents="none"
-          as="section"
-        >
-          <Box transition="0.3s" width={'65px'}>
-            <Logo color="white" />
-          </Box>
-        </Box>
       </Container>
       <Container maxW="container.2xl" as="main">
         {!hasAlbums && !isFetching && debouncedSearchInput !== '' && (

@@ -29,7 +29,7 @@ const Header = ({
       <chakra.form
         onSubmit={onSubmitSearch}
         display="flex"
-        p={4}
+        px={4}
         flexDirection="row"
         justifyContent="flex-end"
       >
@@ -82,11 +82,7 @@ const Header = ({
             )}
             {albums?.length > 0 &&
               albums?.map((album, i) => (
-                <Link
-                  href={`/album/${album.slug}`}
-                  _hover={{ textDecoration: 'none' }}
-                  key={album.id}
-                >
+                <Link href={`/album/${album.slug}`} _hover={{ textDecoration: 'none' }}>
                   <HStack _hover={{ backgroundColor: 'gray.100' }} px={4} py={2}>
                     <Box
                       w="25%"
