@@ -8,7 +8,7 @@ generates:
       - 'typescript'
       - 'typescript-operations'
     config:
+      avoidOptionals: true
+      maybeValue: "T"
       namingConvention:
         enumValues: keep
-        maybeValue: T
-        avoidOptionals: true

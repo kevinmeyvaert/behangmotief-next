@@ -1,6 +1,4 @@
-import { useColorMode } from '@chakra-ui/color-mode';
-import { Box, Center, Heading, Text } from '@chakra-ui/layout';
-import { chakra } from '@chakra-ui/react';
+import { Box, Center, chakra, Heading, Text, useColorMode } from '@chakra-ui/react';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { FC, useEffect } from 'react';

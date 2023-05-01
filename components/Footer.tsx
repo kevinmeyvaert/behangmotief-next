@@ -1,4 +1,4 @@
-import { Box, Container, HStack, Text } from '@chakra-ui/layout';
+import { Box, Container, HStack, Text } from '@chakra-ui/react';
 
 const Footer = () => {
   return (

@@ -40,33 +40,36 @@ const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, b
       as="article"
       cursor="pointer"
     >
-      <Link href="/album/[...slug]" as={`/album/${slug}`}>
-        <a onClick={() => setPosition(window.pageYOffset)}>
-          <LazyImage
-            srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${src} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${src} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${src} 800w, https://r.wannabes.be/S=W400,H400,PD2/${src} 400w`}
-            sizes="(min-width: 90em) 25vw, (min-width: 73.75em) 33vw, (min-width: 35.5em) 50vw, 100vw"
-            src={`https://r.wannabes.be/S=W800,H800,PD2/${src}`}
-            alt={artist}
-            dimensions={dimensions}
-            blurhash={blurhash}
-          />
-          <Heading
-            as="h2"
-            fontSize={{ base: '14px', xl: '16px' }}
-            position="absolute"
-            textAlign="center"
-            width="100%"
-            bottom={0}
-            transition="0.3s"
-            opacity={{ base: 1, xl: 0 }}
-            color="white"
-            p={2}
-            background="linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))"
-            _groupHover={{ opacity: 1 }}
-          >
-            {`${artist} at ${event ? event : venue}`}
-          </Heading>
-        </a>
+      <Link
+        href="/album/[...slug]"
+        as={`/album/${slug}`}
+        onClick={() => setPosition(window.pageYOffset)}
+        passHref
+      >
+        <LazyImage
+          srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${src} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${src} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${src} 800w, https://r.wannabes.be/S=W400,H400,PD2/${src} 400w`}
+          sizes="(min-width: 90em) 25vw, (min-width: 73.75em) 33vw, (min-width: 35.5em) 50vw, 100vw"
+          src={`https://r.wannabes.be/S=W800,H800,PD2/${src}`}
+          alt={artist}
+          dimensions={dimensions}
+          blurhash={blurhash}
+        />
+        <Heading
+          as="h2"
+          fontSize={{ base: '14px', xl: '16px' }}
+          position="absolute"
+          textAlign="center"
+          width="100%"
+          bottom={0}
+          transition="0.3s"
+          opacity={{ base: 1, xl: 0 }}
+          color="white"
+          p={2}
+          background="linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))"
+          _groupHover={{ opacity: 1 }}
+        >
+          {`${artist} at ${event ? event : venue}`}
+        </Heading>
       </Link>
     </Box>
   );

@@ -1,15 +1,14 @@
-import { extendTheme } from '@chakra-ui/react';
-import { mode } from '@chakra-ui/theme-tools';
+import { extendTheme, StyleFunctionProps } from '@chakra-ui/react';
 
 const config = {
   initialColorMode: 'light',
 };
 
 const styles = {
-  global: (props) => ({
+  global: (props: StyleFunctionProps) => ({
     body: {
-      color: mode('black', 'white')(props),
-      bg: mode('#fcfcff', 'black')(props),
+      color: props.colorMode === 'dark' ? 'white' : 'black',
+      bg: props.colorMode === 'dark' ? 'black' : '#fcfcff',
     },
   }),
 };

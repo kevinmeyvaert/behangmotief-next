@@ -1,5 +1,4 @@
-import { AspectRatio, SimpleGrid } from '@chakra-ui/layout';
-import { Skeleton } from '@chakra-ui/react';
+import { AspectRatio, SimpleGrid, Skeleton } from '@chakra-ui/react';
 
 const MasonrySkeleton = () => {
   const foo = new Array(9).fill(0);

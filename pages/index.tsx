@@ -1,18 +1,25 @@
 import 'flickity/css/flickity.css';
 
-import { useColorMode } from '@chakra-ui/color-mode';
-import { Box, Center, Container, Heading, HStack, Text, Wrap, WrapItem } from '@chakra-ui/react';
 import {
+  Box,
+  Center,
   CloseButton,
+  Container,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  Heading,
+  HStack,
   SlideFade,
   Spinner,
   Tag,
+  Text,
+  useColorMode,
   useDisclosure,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react';
 import { dehydrate, InfiniteData, QueryClient } from '@tanstack/react-query';
 import type { InferGetStaticPropsType } from 'next';
@@ -22,7 +29,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import Flickity from 'react-flickity-component';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
-import create from 'zustand';
+import { create } from 'zustand';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -116,12 +123,14 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
   );
 
   const referrals = [
+    'Democrazy',
     'Crammerock',
     'Studio Brussel',
     'Cactusfestival',
     'HEAR HEAR',
     'Pukkelpop',
     'Boomtown',
+    'Gladiolen',
     'VI.BE',
   ];
 
@@ -197,7 +206,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             width="100%"
             height="100%"
             background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-12-06-tamino-koninklijk-circus-7JSmaBzyqMYLK5MFr.jpg)'
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2023-03-31-sylvie-kreusch-ab-JZJeH9seXq9nYkKGm.jpg)'
             }
             backgroundSize="cover"
             backgroundPosition="center"
@@ -206,7 +215,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             width="100%"
             height="100%"
             background={
-              'url(https://r.wannabes.be/S=W1600,H1600/hires-2022-11-28-warhaus-handelsbeurs-gent-JdYRzL6Phyfwqc6eD.jpg)'
+              'url(https://r.wannabes.be/S=W1600,H1600/hires-2023-02-11-meltheads-trix-we-are-open-2023-FkYztzaHdDKshjBNr.jpg)'
             }
             backgroundSize="cover"
             backgroundPosition="center"
@@ -345,7 +354,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             </Heading>
             <Wrap spacing={2} mb={4}>
               {referrals.map((referral) => (
-                <WrapItem>
+                <WrapItem key={referral}>
                   <Tag size="lg">{referral}</Tag>
                 </WrapItem>
               ))}

@@ -1,5 +1,4 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react';
 import {
   Box,
   chakra,
@@ -8,6 +7,10 @@ import {
   Highlight,
   HStack,
   IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   Link,
   Spinner,
   Text,
@@ -79,7 +82,11 @@ const Header = ({
             )}
             {albums?.length > 0 &&
               albums?.map((album, i) => (
-                <Link href={`/album/${album.slug}`} _hover={{ textDecoration: 'none' }}>
+                <Link
+                  href={`/album/${album.slug}`}
+                  _hover={{ textDecoration: 'none' }}
+                  key={album.id}
+                >
                   <HStack _hover={{ backgroundColor: 'gray.100' }} px={4} py={2}>
                     <Box
                       w="25%"
