@@ -67,7 +67,7 @@ const OgImage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) =
             >
               {post.artist.name}
             </Heading>
-            <img src={`https://r.wannabes.be/S=W1600,H1600/${post.thumbnail.resized}`} />
+            <img src={`https://images.wannabes.be/S=W1600,H1600/${post.thumbnail.resized}`} />
           </Box>
           <Box position="absolute" width="15%" right="30" bottom="61px">
             <Logo color="white" />

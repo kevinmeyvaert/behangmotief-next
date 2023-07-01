@@ -47,9 +47,9 @@ const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, b
         passHref
       >
         <LazyImage
-          srcSet={`https://r.wannabes.be/S=W1600,H1600,PD2/${src} 1600w, https://r.wannabes.be/S=W1200,H1200,PD2/${src} 1200w, https://r.wannabes.be/S=W800,H800,PD2/${src} 800w, https://r.wannabes.be/S=W400,H400,PD2/${src} 400w`}
+          srcSet={`https://images.wannabes.be/S=W1600,H1600,PD2/${src} 1600w, https://images.wannabes.be/S=W1200,H1200,PD2/${src} 1200w, https://images.wannabes.be/S=W800,H800,PD2/${src} 800w, https://images.wannabes.be/S=W400,H400,PD2/${src} 400w`}
           sizes="(min-width: 90em) 25vw, (min-width: 73.75em) 33vw, (min-width: 35.5em) 50vw, 100vw"
-          src={`https://r.wannabes.be/S=W800,H800,PD2/${src}`}
+          src={`https://images.wannabes.be/S=W800,H800,PD2/${src}`}
           alt={artist}
           dimensions={dimensions}
           blurhash={blurhash}

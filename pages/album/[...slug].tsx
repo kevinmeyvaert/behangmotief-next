@@ -159,7 +159,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
                 alt={artist.name}
                 dimensions={photo.dimensions}
                 sizes="(min-width: 73.75em) calc(80% * 73.75em)"
-                srcSet={`https://r.wannabes.be/S=W1600,H1600/${photo.hires} 1600w, https://r.wannabes.be/S=W1200,H1200/${photo.hires} 1200w, https://r.wannabes.be/S=W800,H800/${photo.hires} 800w, https://r.wannabes.be/S=W400,H400/${photo.hires} 400w`}
+                srcSet={`https://images.wannabes.be/S=W1600,H1600/${photo.hires} 1600w, https://images.wannabes.be/S=W1200,H1200/${photo.hires} 1200w, https://images.wannabes.be/S=W800,H800/${photo.hires} 800w, https://images.wannabes.be/S=W400,H400/${photo.hires} 400w`}
               />
             </Box>
           ))}

@@ -95,7 +95,7 @@ const Header = ({
                     <Box
                       w="25%"
                       pt="16.665%"
-                      bg={`url(https://r.wannabes.be/S=W800,H800,PD2/${album.thumbnail.hires})`}
+                      bg={`url(https://images.wannabes.be/S=W800,H800,PD2/${album.thumbnail.hires})`}
                       bgSize="cover"
                       bgPos="center"
                     />
