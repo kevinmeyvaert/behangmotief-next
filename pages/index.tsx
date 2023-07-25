@@ -117,6 +117,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
     'Boomtown',
     'Gladiolen',
     'VI.BE',
+    'Gent Jazz',
   ];
 
   return (
