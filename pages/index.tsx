@@ -238,10 +238,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             <Heading as="h3" fontSize="xl" mb={4}>
               Contact
             </Heading>
-            <Text lineHeight="2">hallo@behangmotief.be</Text>
-            <Text lineHeight="2" mb={5}>
-              +32 468 16 74 72
-            </Text>
+            <Text lineHeight="2" mb={5}>hallo@behangmotief.be</Text>
             <Heading as="h3" fontSize="xl" mb={4}>
               Referrals
             </Heading>
