@@ -19,7 +19,7 @@ import {
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
-import { dehydrate, InfiniteData, QueryClient } from '@tanstack/react-query';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -45,18 +45,18 @@ export const usePositionStore = create<{
   setPosition: (position) => set({ position }),
 }));
 
-const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData }) => {
+const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
   const router = useRouter();
   const [searchInput, setSearchInput] = useState('');
   const debouncedSearchInput = useDebouncedValue(searchInput);
   const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, isFetching } =
     usePagedAlbums({
-      initialData,
       key: 'albums',
     });
   const {
     albums: searchAlbums,
-    isFetching: isLoadingSearch,
+    isFetching: isFetchingSearch,
+    isLoading: isLoadingSearch,
     refetch,
   } = usePagedAlbums({
     searchInput,
@@ -72,12 +72,10 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
     }
   }, []);
 
-  const hasAlbums = albums.length > 0;
+  const hasAlbums = albums?.length > 0;
 
   const endReached = useCallback(() => {
-    fetchNextPage({
-      pageParam: albums.length,
-    });
+    fetchNextPage();
   }, [fetchNextPage, albums]);
 
   const [infiniteRef] = useInfiniteScroll({
@@ -142,26 +140,6 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
         <meta name="twitter:url" content="http://behangmotief.be/" />
         <meta name="twitter:title" content="BEHANGMOTIEF" />
         <meta name="twitter:image" content="http://behangmotief.be/og.jpg" />
-
-        <style>
-          {`
-          .carousel {
-            height: calc(100vh - 2rem);
-            overflow: hidden;
-          }
-          .flickity-viewport {
-            height: 100% !important;
-          }
-          .flickity-page-dots {
-            z-index: 100 !important;
-            bottom: 20px !important;
-          }
-
-          .flickity-page-dots .dot {
-            background: rgba(255,255,255,1) !important;
-          }
-          `}
-        </style>
       </Head>
 
       <Box as="header" position="relative" display="flex" justifyContent={'flex-end'}>
@@ -170,7 +148,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           onSetSearchInput={setSearchInput}
           onOpenSideBar={onOpen}
           searchInput={searchInput}
-          isLoadingSearch={isLoadingSearch}
+          isFetchingSearch={isFetchingSearch && !isLoadingSearch}
           albums={searchAlbums}
         />
       </Box>
@@ -190,7 +168,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
           className="c-masonry"
           columnClassName="c-masonry--grid-column"
         >
-          {albums.map((post) => (
+          {albums?.map((post) => (
             <MasonryItem
               src={post.thumbnail.hires}
               artist={post.artist.name}
@@ -238,7 +216,9 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ initialData 
             <Heading as="h3" fontSize="xl" mb={4}>
               Contact
             </Heading>
-            <Text lineHeight="2" mb={5}>hallo@behangmotief.be</Text>
+            <Text lineHeight="2" mb={5}>
+              hallo@behangmotief.be
+            </Text>
             <Heading as="h3" fontSize="xl" mb={4}>
               Referrals
             </Heading>
@@ -261,13 +241,12 @@ export const getStaticProps = async () => {
     start: 0,
     limit: 15,
   });
-  const initialInfiniteData = { pages: [initialPosts] } as InfiniteData<SearchQuery>;
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(['posts'], () => initialPosts);
+  await queryClient.prefetchQuery({ queryKey: ['posts'], queryFn: () => initialPosts });
 
   return {
-    props: { initialData: initialInfiniteData, dehydratedState: dehydrate(queryClient) },
+    props: { dehydratedState: dehydrate(queryClient) },
     revalidate: 60,
   };
 };

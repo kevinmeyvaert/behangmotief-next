@@ -15,8 +15,7 @@ import {
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC, useEffect } from 'react';
-import Masonry from 'react-masonry-css';
+import { FC, useEffect, useRef, useState } from 'react';
 
 import Footer from '../../components/Footer';
 import LazyImage from '../../components/LazyImage';
@@ -26,18 +25,38 @@ import { fetcher } from '../../lib/api';
 import { ALBUM, ALBUM_PATHS } from '../../queries/wannabes';
 import { AlbumQuery, GetAlbumPathsQuery } from '../../types/wannabes.types';
 
+const useScrollPosition = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const handleScroll = () => {
+    const position = window.scrollY;
+    setScrollPosition(position);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  return scrollPosition;
+};
+
 const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post }) => {
   const { artist, venue, images, date, event } = post;
   const { stickyRef, isSticky } = useIsSticky();
   const { setColorMode } = useColorMode();
   const router = useRouter();
 
-  const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
-  const location = event ? event.name : venue.name;
+  const firstImageRef = useRef<HTMLDivElement>(null);
+  const scrollPosition = useScrollPosition();
 
   useEffect(() => {
-    setColorMode(isSticky ? 'dark' : 'light');
-  }, [isSticky]);
+    const shouldBeDark = scrollPosition > firstImageRef.current.offsetTop;
+    setColorMode(shouldBeDark ? 'dark' : 'light');
+  }, [scrollPosition]);
+
+  const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
+  const location = event ? event.name : venue.name;
 
   const handleBackClick = (e) => {
     e.preventDefault();
@@ -70,7 +89,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
         <meta name="twitter:site" content="@behangmotief" />
         <meta name="twitter:image:src" content={post.thumbnail.resized} />
       </Head>
-      <Container maxW="container.xl" as="header">
+      <Container maxW="container.xl" as="header" position="relative">
         <Flex gap={2} mt={4} justify="start">
           <form action="/">
             <Button
@@ -87,19 +106,19 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
             </Button>
           </form>
         </Flex>
-        <Center
-          height="56"
-          position="sticky"
-          top={0}
-          zIndex="overlay"
-          pointerEvents="none"
-          ref={stickyRef}
-        >
-          <Box transition="0.3s" width={isSticky ? '65px' : '95px'}>
-            <Logo />
-          </Box>
-        </Center>
       </Container>
+      <Center
+        height="56"
+        position="sticky"
+        top={0}
+        zIndex="overlay"
+        pointerEvents="none"
+        ref={stickyRef}
+      >
+        <Box transition="0.3s" width={isSticky ? '65px' : '95px'}>
+          <Logo />
+        </Box>
+      </Center>
       <Container maxW="container.xl" position="relative" as="main">
         <Fade in transition={{ enter: { duration: 0.5 } }}>
           <Text ml={5} whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
@@ -119,14 +138,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
             {artist.name}
           </Heading>
         </Fade>
-        <Masonry
-          breakpointCols={{
-            default: 2,
-            640: 1,
-          }}
-          className="c-masonry"
-          columnClassName="c-masonry--grid-column"
-        >
+        <Box>
           <Box position="absolute" zIndex="overlay" overflow="hidden" top={0}>
             <Heading
               ml={4}
@@ -148,7 +160,13 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
           </Box>
           {filteredImages.map((photo, index) => (
             // eslint-disable-next-line react/no-array-index-key
-            <Box as="figure" key={index} className="c-album--photo-item" mb={6}>
+            <Box
+              as="figure"
+              key={index}
+              className="c-album--photo-item"
+              mb={6}
+              ref={index === 0 ? firstImageRef : undefined}
+            >
               <LazyImage
                 errorContainerStyle={{
                   marginBottom: `calc(var(--chakra-space-6) * -1)`,
@@ -163,7 +181,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
               />
             </Box>
           ))}
-        </Masonry>
+        </Box>
       </Container>
       <Footer />
     </SlideFade>

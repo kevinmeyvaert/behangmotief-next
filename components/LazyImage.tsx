@@ -35,7 +35,6 @@ interface Props {
 const LazyImage: FC<Props> = ({ src, alt, dimensions, className, srcSet, sizes, blurhash, containerStyle, errorContainerStyle }) => {
   const [ref, loaded, onLoad] = useImageLoaded();
   const [isError, setIsError] = useState(false);
-
   const setSizes =
     sizes || '(min-width: 90em) 25vw, (min-width: 73.75em) 33vw, (min-width: 35.5em) 50vw, 100vw';
 

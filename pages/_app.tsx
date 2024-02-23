@@ -1,5 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HydrationBoundary } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -54,13 +55,13 @@ function MyApp({ Component, pageProps }: AppProps<{ dehydratedState: any }>) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
+      <HydrationBoundary state={pageProps.dehydratedState}>
         <Tracking>
           <ChakraProvider theme={theme}>
             <Component {...pageProps} />
           </ChakraProvider>
         </Tracking>
-      </Hydrate>
+      </HydrationBoundary>
     </QueryClientProvider>
   );
 }

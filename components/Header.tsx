@@ -21,7 +21,7 @@ const Header = ({
   onOpenSideBar,
   searchInput,
   albums,
-  isLoadingSearch,
+  isFetchingSearch,
 }) => {
   return (
     <Box position={'relative'} zIndex="overlay" w={{ base: '100%', md: 'initial' }}>
@@ -51,7 +51,7 @@ const Header = ({
               outlineOffset: '-2px',
             }}
           />
-          {isLoadingSearch && (
+          {isFetchingSearch && searchInput.length && (
             <InputRightElement>
               <Spinner />
             </InputRightElement>
@@ -110,7 +110,7 @@ const Header = ({
                           {album.venue.name}
                         </Highlight>
                       </Text>
-                      <Text>{new Date(album.date).toLocaleDateString('be-NL')}</Text>
+                      {/* <Text>{new Date(album.date).toLocaleDateString('be-NL')}</Text> */}
                     </Box>
                   </HStack>
                   {i !== albums.length - 1 && <Divider />}
