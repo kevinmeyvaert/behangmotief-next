@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FC } from 'react';
 
 import LazyImage from '../components/LazyImage';
-import { usePositionStore } from '../pages';
+import { useSetMasonryPosition } from '../hooks/useMasonryPosition';
 import { Artist, Dimensions, Image, Post, Venue } from '../types/wannabes.types';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const MasonryItem: FC<Props> = ({ src, artist, venue, event, slug, dimensions, blurhash }) => {
-  const setPosition = usePositionStore((state) => state.setPosition);
+  const setPosition = useSetMasonryPosition();
   return (
     <Box
       role="group"

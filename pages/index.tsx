@@ -1,79 +1,50 @@
-import {
-  Box,
-  Center,
-  CloseButton,
-  Container,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerHeader,
-  DrawerOverlay,
-  Heading,
-  HStack,
-  SlideFade,
-  Spinner,
-  Tag,
-  Text,
-  useColorMode,
-  useDisclosure,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react';
+import { Box, Container, SlideFade, Spinner, useDisclosure } from '@chakra-ui/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
-import { create } from 'zustand';
 
+import { AboutDrawer } from '../components/AboutDrawer';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import MasonryItem from '../components/MasonryItem';
-import useDebouncedValue from '../hooks/useDebounce';
+import { useSiteDefaultColorMode } from '../hooks/useDefaultColorMode';
+import { useResetToPreviousPosition } from '../hooks/useMasonryPosition';
 import { usePagedAlbums } from '../hooks/usePagedAlbums';
+import { useSearch } from '../hooks/useSearch';
 import { fetcher } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 
-export const usePositionStore = create<{
-  position: number;
-  setPosition: (position: number) => void;
-}>((set) => ({
-  position: 0,
-  setPosition: (position) => set({ position }),
-}));
-
 const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
-  const router = useRouter();
-  const [searchInput, setSearchInput] = useState('');
-  const debouncedSearchInput = useDebouncedValue(searchInput);
-  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage, isFetching } =
-    usePagedAlbums({
-      key: 'albums',
-    });
-  const {
-    albums: searchAlbums,
-    isFetching: isFetchingSearch,
-    isLoading: isLoadingSearch,
-    refetch,
-  } = usePagedAlbums({
-    searchInput,
-    key: 'search',
+  // Albums
+  const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage } = usePagedAlbums({
+    key: 'albums',
   });
-  const { setColorMode } = useColorMode();
-  const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const position = usePositionStore((state) => state.position);
-  useEffect(() => {
-    if (position !== 0) {
-      window.scrollTo({ top: position });
-    }
-  }, []);
+  // Search
+  const {
+    setSearchInput,
+    onSubmitSearch,
+    searchAlbums,
+    isFetchingSearch,
+    isLoadingSearch,
+    searchInput,
+  } = useSearch();
 
-  const hasAlbums = albums?.length > 0;
+  // UX Hooks
+  useSiteDefaultColorMode();
+  useResetToPreviousPosition();
 
+  const {
+    isOpen: isDrawerOpen,
+    onClose: handleCloseDrawer,
+    onOpen: handleOpenDrawer,
+  } = useDisclosure();
+
+  // Endless scroll
   const endReached = useCallback(() => {
     fetchNextPage();
   }, [fetchNextPage, albums]);
@@ -85,41 +56,8 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
     rootMargin: '0px 0px 400px 0px',
   });
 
-  useEffect(() => {
-    setSearchInput(Array.isArray(router.query.q) ? router.query.q[0] : router.query.q || '');
-  }, []);
-
-  useEffect(() => {
-    setColorMode('light');
-  }, []);
-
-  useEffect(() => {
-    refetch();
-  }, [debouncedSearchInput]);
-
-  const handleOnSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      refetch();
-    },
-    [refetch],
-  );
-
-  const referrals = [
-    'Democrazy',
-    'Crammerock',
-    'Studio Brussel',
-    'Cactusfestival',
-    'HEAR HEAR',
-    'Pukkelpop',
-    'Boomtown',
-    'Gladiolen',
-    'VI.BE',
-    'Gent Jazz',
-  ];
-
   return (
-    <SlideFade in key={router.asPath} offsetY="20px" transition={{ enter: { duration: 0.3 } }}>
+    <SlideFade in key="homePage" offsetY="20px" transition={{ enter: { duration: 0.3 } }}>
       <Head>
         <title>Behangmotief</title>
         <meta
@@ -144,22 +82,15 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
 
       <Box as="header" position="relative" display="flex" justifyContent={'flex-end'}>
         <Header
-          onSubmitSearch={handleOnSubmit}
+          onSubmitSearch={onSubmitSearch}
           onSetSearchInput={setSearchInput}
-          onOpenSideBar={onOpen}
+          onOpenDrawer={handleOpenDrawer}
           searchInput={searchInput}
           isFetchingSearch={isFetchingSearch && !isLoadingSearch}
           albums={searchAlbums}
         />
       </Box>
       <Container maxW="container.2xl" as="main">
-        {!hasAlbums && !isFetching && debouncedSearchInput !== '' && (
-          <Center>
-            <Heading textAlign="center">
-              No results were found for "{debouncedSearchInput}". :(
-            </Heading>
-          </Center>
-        )}
         <Masonry
           breakpointCols={{
             default: 3,
@@ -189,49 +120,7 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
         </Box>
       )}
       <Footer />
-      <Drawer onClose={onClose} isOpen={isOpen} size="md">
-        <DrawerOverlay />
-        <DrawerContent bg="black" color="white">
-          <DrawerHeader>
-            <HStack justify="flex-end">
-              <CloseButton onClick={onClose} _focus={{ outlineColor: 'white' }} />
-            </HStack>
-          </DrawerHeader>
-
-          <DrawerBody>
-            <Box width="100%" overflow={'hidden'}>
-              <Box
-                margin="0 auto"
-                backgroundImage="/profile-sprites-sm.jpg"
-                backgroundSize="cover"
-                width="400px"
-                height="500px"
-                animation="profile-picture 0.9s steps(6) infinite"
-              />
-            </Box>
-            <Text lineHeight="2" mb={5} mt={10}>
-              Belgian freelance concert- &amp; festivalphotographer based in Gent. Part of Wannabes,
-              a rockphotography collective.
-            </Text>
-            <Heading as="h3" fontSize="xl" mb={4}>
-              Contact
-            </Heading>
-            <Text lineHeight="2" mb={5}>
-              hallo@behangmotief.be
-            </Text>
-            <Heading as="h3" fontSize="xl" mb={4}>
-              Referrals
-            </Heading>
-            <Wrap spacing={2} mb={4}>
-              {referrals.map((referral) => (
-                <WrapItem key={referral}>
-                  <Tag size="lg">{referral}</Tag>
-                </WrapItem>
-              ))}
-            </Wrap>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+      <AboutDrawer onCloseDrawer={handleCloseDrawer} isDrawerOpen={isDrawerOpen} />
     </SlideFade>
   );
 };

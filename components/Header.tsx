@@ -18,7 +18,7 @@ import Logo from './Logo';
 const Header = ({
   onSubmitSearch,
   onSetSearchInput,
-  onOpenSideBar,
+  onOpenDrawer,
   searchInput,
   albums,
   isFetchingSearch,
@@ -59,7 +59,7 @@ const Header = ({
         </InputGroup>
         <IconButton
           aria-label="About"
-          onClick={onOpenSideBar}
+          onClick={onOpenDrawer}
           bgColor={'black'}
           ml={2}
           _hover={{
