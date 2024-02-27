@@ -2,7 +2,8 @@ import { Box, Container, SlideFade, Spinner, useDisclosure } from '@chakra-ui/re
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import type { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import { FC, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { FC, useCallback, useEffect, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import Masonry from 'react-masonry-css';
 
@@ -18,13 +19,16 @@ import { fetcher } from '../lib/api';
 import { POSTS } from '../queries/wannabes';
 import type { SearchQuery } from '../types/wannabes.types';
 
-const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
+const Home: FC<InferGetStaticPropsType<typeof getServerSideProps>> = () => {
   // Albums
+  const [customLandingContent, setCustomLandingContent] = useState('');
   const { albums, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage } = usePagedAlbums({
     key: 'albums',
+    searchInput: customLandingContent,
   });
 
   // Search
+  const router = useRouter();
   const {
     setSearchInput,
     onSubmitSearch,
@@ -33,6 +37,12 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
     isLoadingSearch,
     searchInput,
   } = useSearch();
+
+  useEffect(() => {
+    setCustomLandingContent(
+      Array.isArray(router.query.q) ? router.query.q[0] : router.query.q || '',
+    );
+  }, []);
 
   // UX Hooks
   useSiteDefaultColorMode();
@@ -125,10 +135,11 @@ const Home: FC<InferGetStaticPropsType<typeof getStaticProps>> = () => {
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async ({ query }) => {
   const initialPosts = await fetcher<SearchQuery>(POSTS, {
     start: 0,
     limit: 15,
+    all: query.q,
   });
 
   const queryClient = new QueryClient();
@@ -136,7 +147,6 @@ export const getStaticProps = async () => {
 
   return {
     props: { dehydratedState: dehydrate(queryClient) },
-    revalidate: 60,
   };
 };
 
