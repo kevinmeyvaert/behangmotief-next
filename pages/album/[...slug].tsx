@@ -55,7 +55,7 @@ const AlbumPage: FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ post })
     setColorMode(shouldBeDark ? 'dark' : 'light');
   }, [scrollPosition]);
 
-  const filteredImages = images.filter((i) => i.photographer.firstName === 'Kevin');
+  const filteredImages = images.filter((i) => i.photographer?.firstName === 'Kevin');
   const location = event ? event.name : venue.name;
 
   const handleBackClick = (e) => {
