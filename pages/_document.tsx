@@ -21,11 +21,7 @@ class MyDocument extends Document {
   padding-left: var(--chakra-space-6); /* gutter size */
   background-clip: padding-box;
 }
-
-@keyframes profile-picture {
-  from {background-position-x: 0px;}
-  to {background-position-x: -2400px;}
-}`}
+`}
           </style>
         </Head>
         <body>

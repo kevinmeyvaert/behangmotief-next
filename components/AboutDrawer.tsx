@@ -42,11 +42,10 @@ export const AboutDrawer = ({ isDrawerOpen, onCloseDrawer }) => {
           <Box width="100%" overflow={'hidden'}>
             <Box
               margin="0 auto"
-              backgroundImage="/profile-sprites-sm.jpg"
+              backgroundImage="/profile.jpg"
               backgroundSize="cover"
               width="400px"
               height="500px"
-              animation="profile-picture 0.9s steps(6) infinite"
             />
           </Box>
           <Text lineHeight="2" mb={5} mt={10}>
